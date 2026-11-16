@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tap Tap BD - Admin Panel</title>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: #050811;
+            color: #ffffff;
+            padding: 15px;
+            padding-bottom: 50px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        }
+
+        h2, h3 {
+            color: #fbbf24;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: #030712;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        input[type="file"] {
+            padding: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #1e1b4b;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(245,158,11,0.4);
+            margin-top: 5px;
+        }
+
+        .btn:active { transform: scale(0.98); }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #991b1b);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 6px 12px;
+            font-size: 11px;
+            width: auto;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        /* Item Manage List */
+        .manage-item {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        /* User Table */
+        .table-responsive {
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: left;
+        }
+
+        th {
+            background: #1e293b;
+            color: #fbbf24;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:hover { background: rgba(255,255,255,0.02); }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 15px;
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 900;
+            color: #34d399;
+            margin-top: 5px;
+        }
+
+        /* Login Overlay */
+        #adminLoginOverlay {
+            position: fixed;
+            inset: 0;
+            background: #030712;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #0f172a;
+            color: #fef08a;
+            border: 1px solid #fbbf24;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 13px;
+            transition: 0.3s;
+            opacity: 0;
+            z-index: 10000;
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div id="toast"></div>
+
+    <!-- Login Screen -->
+    <div id="adminLoginOverlay">
+        <div class="card" style="width: 100%; max-width: 350px;">
+            <h3>🔐 Admin Login</h3>
+            <div class="input-group" style="margin-top: 15px;">
+                <label>পাসওয়ার্ড দিন (পাসওয়ার্ড: 112333)</label>
+                <input type="password" id="adminPassInput" placeholder="পাসওয়ার্ড...">
+            </div>
+            <button class="btn" onclick="checkAdminLogin()">লগইন করুন</button>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="container" id="adminDashboard" style="display: none;">
+        <h2 style="margin: 20px 0;">🛡️ Tap Tap BD Admin Panel</h2>
+
+        <!-- Stats -->
+        <div class="stat-grid">
+            <div class="stat-box">
+                <div>মোট রেজিস্টার্ড ইউজার</div>
+                <div class="stat-value" id="totalUsersCount">0</div>
+            </div>
+            <div
