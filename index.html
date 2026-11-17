@@ -560,7 +560,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: MINE (45+ Progressive Cards with TON Option) -->
+        <!-- TAB 2: MINE (45+ Progressive Cards) -->
         <div id="tab-mine" class="tab-page">
             <div class="section-title">⛏️ Mine & Upgrade Cards</div>
             <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">কয়েন শেষ হলে TON দিয়েও সরাসরি আপগ্রেড করতে পারবেন!</p>
@@ -843,16 +843,19 @@
                     localStorage.removeItem('ar_pending_ref');
                 }
 
-                initGameLoops();
-                loadCloudGameData();
-                listenRealtimeUpdates();
+                // ফায়ারবেস থেকে ডাটা নিশ্চিতভাবে লোড করার পর গেম লুপ শুরু হবে
+                loadCloudGameData(() => {
+                    initGameLoops();
+                    listenRealtimeUpdates();
+                });
+
             } catch (e) {
                 console.error("Init error:", e);
                 initGameLoops();
             }
         });
 
-        function loadCloudGameData() {
+        function loadCloudGameData(callback) {
             db.ref('players/' + gameState.uid).once('value', snapshot => {
                 const cloudData = snapshot.val();
                 if (cloudData) {
@@ -879,10 +882,18 @@
                             }
                         }
                     }
-                    renderMineCards();
-                    updateUI();
+                } else {
+                    saveGameData();
                 }
-            }).catch(err => console.log("Cloud load error:", err));
+                renderMineCards();
+                updateUI();
+                if (callback) callback();
+            }).catch(err => {
+                console.log("Cloud load error:", err);
+                renderMineCards();
+                updateUI();
+                if (callback) callback();
+            });
         }
 
         function listenRealtimeUpdates() {
@@ -948,7 +959,6 @@
                 if (result) {
                     gameState.tonSpent = (gameState.tonSpent || 0) + tonAmount;
                     
-                    // গ্লোবাল এডমিন লেজারে স্টোর করা যাতে ওনার দেখতে পারে কোন ইউজার কত TON দিল
                     db.ref('adminTonLogs/' + gameState.uid).set({
                         name: gameState.name,
                         wallet: gameState.wallet,
@@ -970,7 +980,7 @@
             gameState.lastActive = Date.now();
             if (gameState.uid) {
                 const { friends, pendingRefBonus, ...safeData } = gameState;
-                db.ref('players/' + gameState.uid).update(safeData);
+                db.ref('players/' + gameState.uid).set(safeData);
             }
         }
 
@@ -994,9 +1004,6 @@
                 refBox.value = baseUrl + '?ref=' + gameState.uid;
             }
 
-            renderMineCards();
-            updateUI();
-
             if (loopsStarted) return;
             loopsStarted = true;
 
@@ -1015,6 +1022,7 @@
                 updateUI();
             }, 1000);
 
+            // অটো সেভ প্রতি ৩ সেকেন্ডে
             setInterval(saveGameData, 3000);
 
             document.addEventListener('visibilitychange', () => {
