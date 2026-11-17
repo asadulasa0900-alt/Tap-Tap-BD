@@ -23,21 +23,23 @@
         }
 
         body {
-            background: #050811;
+            background: #030712;
             color: #ffffff;
             overflow-x: hidden;
-            padding-bottom: 90px;
+            padding-bottom: 95px;
         }
 
         .app-container {
             max-width: 480px;
             margin: 0 auto;
             min-height: 100vh;
-            background: radial-gradient(circle at top, #1e293b 0%, #030712 75%);
+            background: radial-gradient(circle at top, #1e1b4b 0%, #090d16 60%, #030712 100%);
             position: relative;
-            box-shadow: 0 0 35px rgba(245, 158, 11, 0.2);
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.25);
             display: flex;
             flex-direction: column;
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         /* Top Header */
@@ -46,9 +48,9 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 20px;
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.25);
         }
 
         .user-info {
@@ -58,45 +60,46 @@
         }
 
         .avatar {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border-radius: 14px;
-            background: linear-gradient(135deg, #f59e0b, #b45309);
+            background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
             font-size: 18px;
-            border: 2px solid #fef08a;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+            border: 2px solid #f472b6;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
         }
 
         .profit-box {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
             padding: 8px 14px;
-            border-radius: 24px;
-            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.4);
             text-align: right;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.05);
+            box-shadow: inset 0 2px 6px rgba(255,255,255,0.08);
         }
 
         .profit-label {
-            font-size: 10px;
-            color: #94a3b8;
+            font-size: 9px;
+            color: #93c5fd;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
+            font-weight: 700;
         }
 
         .profit-value {
             font-size: 13px;
             font-weight: 900;
-            color: #fbbf24;
+            color: #34d399;
         }
 
         /* Balance Section */
         .balance-section {
             text-align: center;
-            margin-top: 25px;
+            margin-top: 22px;
         }
 
         .coin-display {
@@ -104,32 +107,32 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            font-size: 42px;
+            font-size: 40px;
             font-weight: 900;
             color: #ffffff;
-            text-shadow: 0 0 25px rgba(251, 191, 36, 0.6);
+            text-shadow: 0 0 25px rgba(168, 85, 247, 0.7);
             letter-spacing: 1px;
         }
 
         .mini-coin {
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle at 30% 30%, #fef08a, #f59e0b 60%, #b45309 100%);
+            width: 38px;
+            height: 38px;
+            background: radial-gradient(circle at 30% 30%, #f472b6, #db2777 60%, #831843 100%);
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            color: #1e1b4b;
+            font-size: 14px;
+            color: #ffffff;
             font-weight: 900;
-            border: 2px solid #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 2px solid #fbcfe8;
+            box-shadow: 0 0 12px rgba(219, 39, 119, 0.8);
         }
 
         /* League Progress */
         .rank-section {
-            padding: 12px 25px;
-            margin-top: 8px;
+            padding: 10px 22px;
+            margin-top: 6px;
         }
 
         .rank-info {
@@ -138,25 +141,25 @@
             font-size: 13px;
             color: #e2e8f0;
             margin-bottom: 6px;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .progress-bg {
             width: 100%;
             height: 10px;
-            background: #0f172a;
+            background: #090d16;
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.9);
         }
 
         .progress-fill {
             height: 100%;
             width: 10%;
-            background: linear-gradient(90deg, #10b981, #fbbf24, #f59e0b);
+            background: linear-gradient(90deg, #ec4899, #8b5cf6, #06b6d4);
             border-radius: 12px;
-            box-shadow: 0 0 12px rgba(251, 191, 36, 0.8);
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.9);
             transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -167,14 +170,14 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .tap-coin-outer {
-            width: 270px;
-            height: 270px;
+            width: 260px;
+            height: 260px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, rgba(0, 0, 0, 0) 70%);
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, rgba(236, 72, 153, 0.1) 50%, rgba(0, 0, 0, 0) 75%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -182,50 +185,48 @@
         }
 
         .tap-coin {
-            width: 230px;
-            height: 230px;
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #fef08a 0%, #f59e0b 45%, #d97706 75%, #78350f 100%);
-            border: 8px solid rgba(255, 255, 255, 0.9);
+            background: radial-gradient(circle at 30% 30%, #f472b6 0%, #a855f7 40%, #6366f1 75%, #312e81 100%);
+            border: 8px solid rgba(255, 255, 255, 0.95);
             box-shadow: 
-                0 20px 0 #78350f, 
-                0 25px 40px rgba(0, 0, 0, 0.8), 
+                0 18px 0 #312e81, 
+                0 25px 45px rgba(139, 92, 246, 0.6), 
                 inset 0 10px 15px rgba(255, 255, 255, 0.6), 
-                inset 0 -10px 15px rgba(0, 0, 0, 0.6);
+                inset 0 -10px 15px rgba(0, 0, 0, 0.7);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             touch-action: manipulation;
-            transition: transform 0.05s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.05s ease;
+            transition: transform 0.05s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
-            background-size: cover;
-            background-position: center;
         }
 
         .tap-coin:active {
-            transform: translateY(12px) scale(0.96);
+            transform: translateY(10px) scale(0.96);
             box-shadow: 
-                0 8px 0 #78350f, 
-                0 12px 20px rgba(0, 0, 0, 0.8), 
+                0 6px 0 #312e81, 
+                0 12px 25px rgba(139, 92, 246, 0.6), 
                 inset 0 6px 10px rgba(255, 255, 255, 0.6), 
-                inset 0 -6px 10px rgba(0, 0, 0, 0.6);
+                inset 0 -6px 10px rgba(0, 0, 0, 0.7);
         }
 
         .coin-symbol {
-            font-size: 72px;
+            font-size: 64px;
             font-weight: 900;
             color: #ffffff;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.6), 0 0 25px rgba(255,255,255,0.4);
+            text-shadow: 0 4px 15px rgba(0,0,0,0.7), 0 0 25px rgba(244,114,182,0.8);
             letter-spacing: 2px;
         }
 
         .coin-subtext {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 900;
-            color: #fef08a;
+            color: #fbcfe8;
             letter-spacing: 3px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
@@ -233,11 +234,11 @@
         /* Floating Text */
         .floating-text {
             position: fixed;
-            color: #fef08a;
+            color: #f472b6;
             font-size: 32px;
             font-weight: 900;
             pointer-events: none;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 0 15px rgba(245,158,11,0.8);
+            text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 0 20px rgba(236,72,153,0.9);
             animation: floatUp 0.8s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
             z-index: 100;
         }
@@ -253,30 +254,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 25px;
-            margin-bottom: 12px;
+            padding: 10px 22px;
+            margin-bottom: 10px;
         }
 
         .energy-box {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
             color: #f8fafc;
         }
 
         .boost-btn {
-            background: linear-gradient(135deg, #ef4444, #991b1b);
+            background: linear-gradient(135deg, #f43f5e, #be123c);
             color: white;
-            border: 1px solid #fca5a5;
-            padding: 10px 20px;
-            border-radius: 24px;
+            border: 1px solid #fda4af;
+            padding: 9px 18px;
+            border-radius: 20px;
             font-weight: 900;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
-            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4), inset 0 2px 4px rgba(255,255,255,0.3);
-            transition: transform 0.1s;
+            box-shadow: 0 6px 15px rgba(244, 63, 94, 0.4);
         }
         .boost-btn:active { transform: scale(0.95); }
 
@@ -297,12 +297,12 @@
         }
 
         .section-title {
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 900;
             margin-bottom: 15px;
-            color: #fbbf24;
+            color: #f472b6;
             text-align: center;
-            text-shadow: 0 2px 8px rgba(251,191,36,0.3);
+            text-shadow: 0 2px 10px rgba(244,114,182,0.4);
         }
 
         /* Cards Design (45+ Progressive Cards) */
@@ -310,25 +310,20 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            max-height: 65vh;
+            max-height: 62vh;
             overflow-y: auto;
             padding-bottom: 30px;
             padding-right: 4px;
         }
 
-        .grid-cards::-webkit-scrollbar {
-            width: 4px;
-        }
-        .grid-cards::-webkit-scrollbar-thumb {
-            background: rgba(251,191,36,0.3);
-            border-radius: 4px;
-        }
+        .grid-cards::-webkit-scrollbar { width: 4px; }
+        .grid-cards::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.4); border-radius: 4px; }
 
         .upgrade-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(145deg, #1e1b4b, #0f172a);
+            border: 1px solid rgba(139, 92, 246, 0.25);
             border-radius: 16px;
-            padding: 14px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -336,28 +331,25 @@
             position: relative;
         }
 
-        .upgrade-card.locked {
-            opacity: 0.6;
-            filter: grayscale(0.5);
-        }
+        .upgrade-card.locked { opacity: 0.55; filter: grayscale(0.5); }
 
         .card-header {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .card-icon {
-            font-size: 26px;
-            background: rgba(255,255,255,0.05);
-            padding: 8px;
+            font-size: 24px;
+            background: rgba(139,92,246,0.15);
+            padding: 7px;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(139,92,246,0.3);
         }
 
         .card-title {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
             color: #f8fafc;
         }
@@ -370,30 +362,50 @@
 
         .card-footer {
             border-top: 1px solid rgba(255,255,255,0.08);
-            padding-top: 10px;
-            margin-top: 8px;
+            padding-top: 8px;
+            margin-top: 6px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 11px;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 4px;
         }
 
         .buy-btn {
-            background: linear-gradient(135deg, #fbbf24, #d97706);
-            color: #1e1b4b;
+            flex: 1;
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            color: #fff;
             border: none;
-            padding: 6px 10px;
-            border-radius: 10px;
-            font-weight: 900;
+            padding: 6px 4px;
+            border-radius: 8px;
+            font-weight: 800;
             cursor: pointer;
-            font-size: 10px;
-            box-shadow: 0 4px 10px rgba(251,191,36,0.4);
+            font-size: 9px;
+            box-shadow: 0 3px 10px rgba(236, 72, 153, 0.4);
+            text-align: center;
+        }
+
+        .buy-ton-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: #fff;
+            border: none;
+            padding: 6px 4px;
+            border-radius: 8px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 9px;
+            box-shadow: 0 3px 10px rgba(14, 165, 233, 0.4);
+            text-align: center;
         }
 
         /* List Cards */
         .list-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(145deg, #1e1b4b, #0f172a);
+            border: 1px solid rgba(139, 92, 246, 0.25);
             border-radius: 16px;
             padding: 15px;
             margin-bottom: 12px;
@@ -407,10 +419,10 @@
             background: linear-gradient(135deg, #10b981, #047857);
             color: #fff;
             border: none;
-            padding: 10px 18px;
+            padding: 9px 16px;
             border-radius: 12px;
             font-weight: 900;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
         }
@@ -432,7 +444,7 @@
             max-width: 450px;
             background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(251, 191, 36, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.4);
             border-radius: 24px;
             display: flex;
             justify-content: space-around;
@@ -457,16 +469,13 @@
         }
 
         .nav-btn.active {
-            background: linear-gradient(135deg, #334155, #1e293b);
-            color: #fbbf24;
-            border: 1px solid rgba(251, 191, 36, 0.4);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            background: linear-gradient(135deg, #312e81, #1e1b4b);
+            color: #f472b6;
+            border: 1px solid rgba(244, 114, 182, 0.5);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
         }
 
-        .nav-icon {
-            font-size: 22px;
-            margin-bottom: 3px;
-        }
+        .nav-icon { font-size: 20px; margin-bottom: 3px; }
 
         /* Toast */
         #toast {
@@ -475,8 +484,8 @@
             left: 50%;
             transform: translateX(-50%) translateY(-100px);
             background: rgba(15, 23, 42, 0.95);
-            color: #fef08a;
-            border: 1px solid rgba(251, 191, 36, 0.6);
+            color: #f472b6;
+            border: 1px solid rgba(244, 114, 182, 0.6);
             padding: 12px 20px;
             border-radius: 16px;
             font-size: 13px;
@@ -488,11 +497,7 @@
             max-width: 90%;
             text-align: center;
         }
-
-        #toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
+        #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
 </head>
 <body>
@@ -506,7 +511,7 @@
                 <div class="avatar" id="userAvatar">A</div>
                 <div>
                     <div id="displayUserName" style="font-size: 14px; font-weight: 900;">Player</div>
-                    <div id="userRankBadge" style="font-size: 11px; color: #fbbf24; font-weight: 800;">Bronze League</div>
+                    <div id="userRankBadge" style="font-size: 11px; color: #f472b6; font-weight: 800;">Bronze League</div>
                 </div>
             </div>
             <div class="profit-box">
@@ -555,21 +560,21 @@
             </div>
         </div>
 
-        <!-- TAB 2: MINE (45+ Progressive Cards) -->
+        <!-- TAB 2: MINE (45+ Progressive Cards with TON Option) -->
         <div id="tab-mine" class="tab-page">
             <div class="section-title">⛏️ Mine & Upgrade Cards</div>
-            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">প্রথম ১০টি কার্ড লেভেল ১০ এ পৌঁছালে পরবর্তী ৫টি কার্ড আনলক হবে!</p>
+            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">কয়েন শেষ হলে TON দিয়েও সরাসরি আপগ্রেড করতে পারবেন!</p>
             <div class="grid-cards" id="mineCardsContainer"></div>
         </div>
 
         <!-- TAB 3: FRIENDS (Referral System) -->
         <div id="tab-friends" class="tab-page">
             <div class="section-title">👥 Invite Friends!</div>
-            <p style="text-align: center; font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">প্রতিটি সফল রেফারে আপনি এবং আপনার বন্ধু পাবেন <strong style="color: #fbbf24;">+1,000 AR Coin</strong>!</p>
+            <p style="text-align: center; font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">প্রতিটি সফল রেফারে আপনি এবং আপনার বন্ধু পাবেন <strong style="color: #f472b6;">+1,000 AR Coin</strong>!</p>
             
             <div class="list-card" style="flex-direction: column; align-items: stretch; gap: 10px;">
                 <div style="font-size: 12px; color: #94a3b8;">আপনার ইউনিক রেফারেল লিংক:</div>
-                <input type="text" id="refLinkBox" readonly style="padding: 12px; background: #1e293b; border: 1px solid #fbbf24; color: #fef08a; border-radius: 12px; font-size: 12px; font-weight: 700; width: 100%;">
+                <input type="text" id="refLinkBox" readonly style="padding: 12px; background: #0f172a; border: 1px solid #8b5cf6; color: #f472b6; border-radius: 12px; font-size: 12px; font-weight: 700; width: 100%;">
                 <button class="action-btn" onclick="copyRefLink()">📋 লিংক কপি করুন</button>
             </div>
 
@@ -578,7 +583,7 @@
                     <div style="font-size: 14px; font-weight: 900;">মোট রেফারেল বন্ধু</div>
                     <div style="font-size: 11px; color: #94a3b8;">রেফার বোনাস অটোমেটিক যুক্ত হয়</div>
                 </div>
-                <div style="font-size: 18px; font-weight: 900; color: #10b981;"><span id="totalFriendsCount">0</span> জন</div>
+                <div style="font-size: 18px; font-weight: 900; color: #34d399;"><span id="totalFriendsCount">0</span> জন</div>
             </div>
         </div>
 
@@ -589,30 +594,27 @@
             <div class="list-card">
                 <div>
                     <div style="font-size: 14px; font-weight: 900;">🎁 ডেইলি রিওয়ার্ড (Daily Check-in)</div>
-                    <div style="font-size: 12px; color: #fbbf24; font-weight: 800;">+2,500 AR Coin</div>
+                    <div style="font-size: 12px; color: #f472b6; font-weight: 800;">+2,500 AR Coin</div>
                 </div>
                 <button class="action-btn" id="dailyTaskBtn" onclick="claimDailyReward()">Claim</button>
             </div>
 
-            <!-- Adsterra Default Ad 1 -->
             <div class="list-card">
                 <div>
                     <div style="font-size: 14px; font-weight: 900;">📺 বিজ্ঞাপন দেখে কয়েন অর্জন করুন (Ad 1)</div>
-                    <div style="font-size: 12px; color: #fbbf24; font-weight: 800;">+1,500 AR Coin</div>
+                    <div style="font-size: 12px; color: #f472b6; font-weight: 800;">+1,500 AR Coin</div>
                 </div>
                 <button class="action-btn" id="defaultAd1Btn" onclick="completeSocialTask('defaultAd1', 1500, 'https://auctionr.org/4/03e62852e0047e5b9397cdccfc07f679')">Watch Ad</button>
             </div>
 
-            <!-- Adsterra Default Ad 2 -->
             <div class="list-card">
                 <div>
                     <div style="font-size: 14px; font-weight: 900;">📺 বিজ্ঞাপন দেখে কয়েন অর্জন করুন (Ad 2)</div>
-                    <div style="font-size: 12px; color: #fbbf24; font-weight: 800;">+1,500 AR Coin</div>
+                    <div style="font-size: 12px; color: #f472b6; font-weight: 800;">+1,500 AR Coin</div>
                 </div>
                 <button class="action-btn" id="defaultAd2Btn" onclick="completeSocialTask('defaultAd2', 1500, 'https://auctionr.org/4/9a5c7b554d5eb6baf0f960b61bcfc927')">Watch Ad</button>
             </div>
 
-            <!-- Dynamic Admin Tasks Container -->
             <div id="dynamicTasksContainer"></div>
         </div>
 
@@ -620,13 +622,13 @@
         <div id="tab-profile" class="tab-page">
             <div class="section-title">👤 User Profile & Data</div>
 
-            <!-- User Profile Details Card -->
             <div class="list-card" style="flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 15px;">
-                <div style="font-size: 14px; font-weight: 900; color: #fbbf24; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;">📋 একাউন্ট বিবরণী</div>
+                <div style="font-size: 14px; font-weight: 900; color: #f472b6; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;">📋 একাউন্ট বিবরণী</div>
                 <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>নাম:</span> <strong id="profileName">Loading...</strong></div>
                 <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>ইউনিক UID:</span> <strong id="profileUid" style="color: #60a5fa;">Loading...</strong></div>
                 <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>মোট কয়েন:</span> <strong id="profileCoins" style="color: #34d399;">0</strong></div>
-                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>সম্পন্ন টাস্ক:</span> <strong id="profileTasksCount" style="color: #fbbf24;">0 টি</strong></div>
+                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>খরচ করা মোট TON:</span> <strong id="profileTonSpent" style="color: #38bdf8;">0.00 TON</strong></div>
+                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>সম্পন্ন টাস্ক:</span> <strong id="profileTasksCount" style="color: #f472b6;">0 টি</strong></div>
             </div>
 
             <div class="section-title" style="margin-top: 20px;">🚀 Boosters & Energy</div>
@@ -642,22 +644,28 @@
             <div class="list-card">
                 <div>
                     <div style="font-size: 14px; font-weight: 900;">👆 Multitap (Level <span id="multitapLvl">1</span>)</div>
-                    <div style="font-size: 11px; color: #fbbf24; font-weight: 800;">প্রতি ট্যাপে +1 কয়েন | খরচ: <span id="multitapCost">500</span> 🪙</div>
+                    <div style="font-size: 11px; color: #f472b6; font-weight: 800;">খরচ: <span id="multitapCost">500</span> 🪙 অথবা <strong>0.05 TON</strong></div>
                 </div>
-                <button class="action-btn" onclick="upgradeMultitap()">Upgrade</button>
+                <div style="display: flex; gap: 6px;">
+                    <button class="buy-btn" onclick="upgradeMultitap('coin')">🪙 কয়েন</button>
+                    <button class="buy-ton-btn" onclick="upgradeMultitap('ton')">💎 0.05 TON</button>
+                </div>
             </div>
 
             <div class="list-card">
                 <div>
                     <div style="font-size: 14px; font-weight: 900;">🔋 Energy Limit (Level <span id="energyLvl">1</span>)</div>
-                    <div style="font-size: 11px; color: #fbbf24; font-weight: 800;">+500 ম্যাক্স এনার্জি | খরচ: <span id="energyCost">500</span> 🪙</div>
+                    <div style="font-size: 11px; color: #f472b6; font-weight: 800;">খরচ: <span id="energyCost">500</span> 🪙 অথবা <strong>0.05 TON</strong></div>
                 </div>
-                <button class="action-btn" onclick="upgradeEnergyLimit()">Upgrade</button>
+                <div style="display: flex; gap: 6px;">
+                    <button class="buy-btn" onclick="upgradeEnergyLimit('coin')">🪙 কয়েন</button>
+                    <button class="buy-ton-btn" onclick="upgradeEnergyLimit('ton')">💎 0.05 TON</button>
+                </div>
             </div>
 
             <div class="section-title" style="margin-top: 25px;">💎 Telegram TON Wallet</div>
             <div class="list-card" style="flex-direction: column; align-items: stretch; gap: 12px; text-align: center;">
-                <div style="font-size: 13px; color: #cbd5e1; font-weight: 700;">টনকিপার বা টেলিগ্রাম ওয়ালেট কানেক্ট করতে নিচের বাটনে ক্লিক করুন:</div>
+                <div style="font-size: 13px; color: #cbd5e1; font-weight: 700;">আপনার পেমেন্ট রিসিভার অ্যাড্রেস: <br><code style="font-size:10px; color:#38bdf8; word-break:break-all;">UQB8uiksaC2YbFEMNJfNXkmNG3pBBiLHw3RfS74f2ubamhBf</code></div>
                 <div id="ton-connect-button" style="display: flex; justify-content: center; margin: 10px 0;"></div>
                 <div id="connectedWalletStatus" style="font-size: 12px; color: #34d399; font-weight: 700; word-break: break-all;">ওয়ালেট সংযুক্ত হয়নি</div>
             </div>
@@ -689,14 +697,16 @@
     </div>
 
     <script>
-        // আপনার ফায়ারবেস কনফিগারেশন (`tap-tap-4ea57`) সঠিকভাবে সেট করা হলো
+        const OWNER_TON_ADDRESS = "UQB8uiksaC2YbFEMNJfNXkmNG3pBBiLHw3RfS74f2ubamhBf";
+
         const firebaseConfig = {
             apiKey: "AIzaSyDTHuKdLhSJqQJTD9EF-m3s3lZJJXt0HcC0",
             authDomain: "tap-tap-4ea57.firebaseapp.com",
             projectId: "tap-tap-4ea57",
             storageBucket: "tap-tap-4ea57.firebasestorage.app",
             messagingSenderId: "882721991361",
-            appId: "1:882721991361:web:84a62978016c87d0514240"
+            appId: "1:882721991361:web:84a62978016c87d0514240",
+            measurementId: "G-5F3ZCKRW6N"
         };
 
         try {
@@ -735,56 +745,56 @@
             cards: {},
             wallet: '',
             friends: 0,
-            tapCoinImage: '',
+            tonSpent: 0,
             lastActive: Date.now()
         };
 
         const mineCardList = [
-            { id: 'card1', name: 'Fan Tokens', icon: '🎟️', baseCost: 200, baseProfit: 100 },
-            { id: 'card2', name: 'Staking Pool', icon: '🏦', baseCost: 500, baseProfit: 250 },
-            { id: 'card3', name: 'BTC Pairs', icon: '📈', baseCost: 1200, baseProfit: 600 },
-            { id: 'card4', name: 'Web3 License', icon: '🌐', baseCost: 3000, baseProfit: 1500 },
-            { id: 'card5', name: 'AI Node Rig', icon: '💻', baseCost: 7500, baseProfit: 3800 },
-            { id: 'card6', name: 'Quantum Miner', icon: '⚡', baseCost: 15000, baseProfit: 7500 },
-            { id: 'card7', name: 'TON Blockchain', icon: '💎', baseCost: 25000, baseProfit: 12000 },
-            { id: 'card8', name: 'Telegram Mini App', icon: '📱', baseCost: 40000, baseProfit: 19000 },
-            { id: 'card9', name: 'Hamster Combo', icon: '🐹', baseCost: 60000, baseProfit: 28000 },
-            { id: 'card10', name: 'Blum Crypto', icon: '🌸', baseCost: 90000, baseProfit: 42000 },
-            { id: 'card11', name: 'Dogs Farming', icon: '🐶', baseCost: 130000, baseProfit: 60000 },
-            { id: 'card12', name: 'CATI Staking', icon: '🐱', baseCost: 180000, baseProfit: 85000 },
-            { id: 'card13', name: 'Major Bot', icon: '⭐', baseCost: 250000, baseProfit: 115000 },
-            { id: 'card14', name: 'X Empire', icon: '👑', baseCost: 350000, baseProfit: 160000 },
-            { id: 'card15', name: 'Memefi Bot', icon: '🥊', baseCost: 500000, baseProfit: 225000 },
-            { id: 'card16', name: 'TapSwap Node', icon: '🔄', baseCost: 700000, baseProfit: 310000 },
-            { id: 'card17', name: 'PocketFi Bot', icon: '🚀', baseCost: 1000000, baseProfit: 450000 },
-            { id: 'card18', name: 'PixelVerse', icon: '👾', baseCost: 1500000, baseProfit: 680000 },
-            { id: 'card19', name: 'Yescoin Swipe', icon: '🟡', baseCost: 2200000, baseProfit: 980000 },
-            { id: 'card20', name: 'Rocky Rabbit', icon: '🐰', baseCost: 3200000, baseProfit: 1400000 },
-            { id: 'card21', name: 'City Holder', icon: '🏙️', baseCost: 4500000, baseProfit: 2000000 },
-            { id: 'card22', name: 'Booms Bot', icon: '💣', baseCost: 6500000, baseProfit: 2900000 },
-            { id: 'card23', name: 'Binance Listing', icon: '🟡', baseCost: 10000000, baseProfit: 4500000 },
-            { id: 'card24', name: 'Bybit Launchpool', icon: '🟣', baseCost: 15000000, baseProfit: 7000000 },
-            { id: 'card25', name: 'OKX Web3', icon: '🟢', baseCost: 22000000, baseProfit: 10000000 },
-            { id: 'card26', name: 'Bitget Wallet', icon: '🔵', baseCost: 30000000, baseProfit: 14000000 },
-            { id: 'card27', name: 'Gate.io Startup', icon: '⛵', baseCost: 42000000, baseProfit: 19000000 },
-            { id: 'card28', name: 'KuCoin Spotlight', icon: '🟨', baseCost: 58000000, baseProfit: 26000000 },
-            { id: 'card29', name: 'MEXC Kickstarter', icon: 'Ⓜ️', baseCost: 80000000, baseProfit: 36000000 },
-            { id: 'card30', name: 'Notcoin Tap', icon: '🪙', baseCost: 110000000, baseProfit: 50000000 },
-            { id: 'card31', name: 'Blum Video Bot', icon: '📺', baseCost: 150000000, baseProfit: 70000000 },
-            { id: 'card32', name: 'Hamster CEO', icon: '👔', baseCost: 200000000, baseProfit: 95000000 },
-            { id: 'card33', name: 'Catizen Club', icon: '🐾', baseCost: 280000000, baseProfit: 130000000 },
-            { id: 'card34', name: 'PAWS Community', icon: '🐾', baseCost: 380000000, baseProfit: 180000000 },
-            { id: 'card35', name: 'Blum Drop', icon: '💧', baseCost: 500000000, baseProfit: 240000000 },
-            { id: 'card36', name: 'TON Connect', icon: '🔗', baseCost: 700000000, baseProfit: 330000000 },
-            { id: 'card37', name: 'Telegram Premium', icon: '⭐', baseCost: 1000000000, baseProfit: 480000000 },
-            { id: 'card38', name: 'Fragment Username', icon: '🏷️', baseCost: 1400000000, baseProfit: 680000000 },
-            { id: 'card39', name: 'GetGems NFT', icon: '🖼️', baseCost: 2000000000, baseProfit: 950000000 },
-            { id: 'card40', name: 'Ston.fi DEX', icon: '🦄', baseCost: 2800000000, baseProfit: 1350000000 },
-            { id: 'card41', name: 'DeDust Pool', icon: '💧', baseCost: 4000000000, baseProfit: 1900000000 },
-            { id: 'card42', name: 'RedPill AI', icon: '💊', baseCost: 5500000000, baseProfit: 2700000000 },
-            { id: 'card43', name: 'CyberConnect', icon: '🛡️', baseCost: 7500000000, baseProfit: 3700000000 },
-            { id: 'card44', name: 'ZeroK Knowledge', icon: '🔒', baseCost: 10000000000, baseProfit: 5000000000 },
-            { id: 'card45', name: 'LayerZero Bridge', icon: '🌉', baseCost: 15000000000, baseProfit: 7500000000 }
+            { id: 'card1', name: 'Fan Tokens', icon: '🎟️', baseCost: 200, baseProfit: 100, tonCost: 0.01 },
+            { id: 'card2', name: 'Staking Pool', icon: '🏦', baseCost: 500, baseProfit: 250, tonCost: 0.02 },
+            { id: 'card3', name: 'BTC Pairs', icon: '📈', baseCost: 1200, baseProfit: 600, tonCost: 0.03 },
+            { id: 'card4', name: 'Web3 License', icon: '🌐', baseCost: 3000, baseProfit: 1500, tonCost: 0.05 },
+            { id: 'card5', name: 'AI Node Rig', icon: '💻', baseCost: 7500, baseProfit: 3800, tonCost: 0.08 },
+            { id: 'card6', name: 'Quantum Miner', icon: '⚡', baseCost: 15000, baseProfit: 7500, tonCost: 0.12 },
+            { id: 'card7', name: 'TON Blockchain', icon: '💎', baseCost: 25000, baseProfit: 12000, tonCost: 0.18 },
+            { id: 'card8', name: 'Telegram Mini App', icon: '📱', baseCost: 40000, baseProfit: 19000, tonCost: 0.25 },
+            { id: 'card9', name: 'Hamster Combo', icon: '🐹', baseCost: 60000, baseProfit: 28000, tonCost: 0.35 },
+            { id: 'card10', name: 'Blum Crypto', icon: '🌸', baseCost: 90000, baseProfit: 42000, tonCost: 0.5 },
+            { id: 'card11', name: 'Dogs Farming', icon: '🐶', baseCost: 130000, baseProfit: 60000, tonCost: 0.7 },
+            { id: 'card12', name: 'CATI Staking', icon: '🐱', baseCost: 180000, baseProfit: 85000, tonCost: 1.0 },
+            { id: 'card13', name: 'Major Bot', icon: '⭐', baseCost: 250000, baseProfit: 115000, tonCost: 1.4 },
+            { id: 'card14', name: 'X Empire', icon: '👑', baseCost: 350000, baseProfit: 160000, tonCost: 1.9 },
+            { id: 'card15', name: 'Memefi Bot', icon: '🥊', baseCost: 500000, baseProfit: 225000, tonCost: 2.5 },
+            { id: 'card16', name: 'TapSwap Node', icon: '🔄', baseCost: 700000, baseProfit: 310000, tonCost: 3.2 },
+            { id: 'card17', name: 'PocketFi Bot', icon: '🚀', baseCost: 1000000, baseProfit: 450000, tonCost: 4.0 },
+            { id: 'card18', name: 'PixelVerse', icon: '👾', baseCost: 1500000, baseProfit: 680000, tonCost: 5.0 },
+            { id: 'card19', name: 'Yescoin Swipe', icon: '🟡', baseCost: 2200000, baseProfit: 980000, tonCost: 6.5 },
+            { id: 'card20', name: 'Rocky Rabbit', icon: '🐰', baseCost: 3200000, baseProfit: 1400000, tonCost: 8.5 },
+            { id: 'card21', name: 'City Holder', icon: '🏙️', baseCost: 4500000, baseProfit: 2000000, tonCost: 11.0 },
+            { id: 'card22', name: 'Booms Bot', icon: '💣', baseCost: 6500000, baseProfit: 2900000, tonCost: 14.0 },
+            { id: 'card23', name: 'Binance Listing', icon: '🟡', baseCost: 10000000, baseProfit: 4500000, tonCost: 18.0 },
+            { id: 'card24', name: 'Bybit Launchpool', icon: '🟣', baseCost: 15000000, baseProfit: 7000000, tonCost: 23.0 },
+            { id: 'card25', name: 'OKX Web3', icon: '🟢', baseCost: 22000000, baseProfit: 10000000, tonCost: 30.0 },
+            { id: 'card26', name: 'Bitget Wallet', icon: '🔵', baseCost: 30000000, baseProfit: 14000000, tonCost: 40.0 },
+            { id: 'card27', name: 'Gate.io Startup', icon: '⛵', baseCost: 42000000, baseProfit: 19000000, tonCost: 52.0 },
+            { id: 'card28', name: 'KuCoin Spotlight', icon: '🟨', baseCost: 58000000, baseProfit: 26000000, tonCost: 68.0 },
+            { id: 'card29', name: 'MEXC Kickstarter', icon: 'Ⓜ️', baseCost: 80000000, baseProfit: 36000000, tonCost: 88.0 },
+            { id: 'card30', name: 'Notcoin Tap', icon: '🪙', baseCost: 110000000, baseProfit: 50000000, tonCost: 115.0 },
+            { id: 'card31', name: 'Blum Video Bot', icon: '📺', baseCost: 150000000, baseProfit: 70000000, tonCost: 150.0 },
+            { id: 'card32', name: 'Hamster CEO', icon: '👔', baseCost: 200000000, baseProfit: 95000000, tonCost: 195.0 },
+            { id: 'card33', name: 'Catizen Club', icon: '🐾', baseCost: 280000000, baseProfit: 130000000, tonCost: 250.0 },
+            { id: 'card34', name: 'PAWS Community', icon: '🐾', baseCost: 380000000, baseProfit: 180000000, tonCost: 320.0 },
+            { id: 'card35', name: 'Blum Drop', icon: '💧', baseCost: 500000000, baseProfit: 240000000, tonCost: 400.0 },
+            { id: 'card36', name: 'TON Connect', icon: '🔗', baseCost: 700000000, baseProfit: 330000000, tonCost: 500.0 },
+            { id: 'card37', name: 'Telegram Premium', icon: '⭐', baseCost: 1000000000, baseProfit: 480000000, tonCost: 650.0 },
+            { id: 'card38', name: 'Fragment Username', icon: '🏷️', baseCost: 1400000000, baseProfit: 680000000, tonCost: 850.0 },
+            { id: 'card39', name: 'GetGems NFT', icon: '🖼️', baseCost: 2000000000, baseProfit: 950000000, tonCost: 1100.0 },
+            { id: 'card40', name: 'Ston.fi DEX', icon: '🦄', baseCost: 2800000000, baseProfit: 1350000000, tonCost: 1450.0 },
+            { id: 'card41', name: 'DeDust Pool', icon: '💧', baseCost: 4000000000, baseProfit: 1900000000, tonCost: 1900.0 },
+            { id: 'card42', name: 'RedPill AI', icon: '💊', baseCost: 5500000000, baseProfit: 2700000000, tonCost: 2500.0 },
+            { id: 'card43', name: 'CyberConnect', icon: '🛡️', baseCost: 7500000000, baseProfit: 3700000000, tonCost: 3300.0 },
+            { id: 'card44', name: 'ZeroK Knowledge', icon: '🔒', baseCost: 10000000000, baseProfit: 5000000000, tonCost: 4300.0 },
+            { id: 'card45', name: 'LayerZero Bridge', icon: '🌉', baseCost: 15000000000, baseProfit: 7500000000, tonCost: 5500.0 }
         ];
 
         let toastTimer = null;
@@ -800,13 +810,9 @@
         window.addEventListener('DOMContentLoaded', () => {
             try {
                 const tg = window.Telegram?.WebApp;
-                if (tg) {
-                    tg.ready();
-                    tg.expand();
-                }
+                if (tg) { tg.ready(); tg.expand(); }
 
                 const telegramUser = tg?.initDataUnsafe?.user;
-
                 if (telegramUser && telegramUser.id) {
                     gameState.uid = 'TG_' + telegramUser.id;
                     gameState.name = telegramUser.first_name || telegramUser.username || 'Telegram User';
@@ -825,12 +831,9 @@
                 localStorage.setItem('ar_uid', gameState.uid);
                 localStorage.setItem('ar_name', gameState.name);
 
-                // Referral Link Handling
                 const urlParams = new URLSearchParams(window.location.search);
                 const refParam = urlParams.get('ref') || urlParams.get('start');
-                if (refParam) {
-                    localStorage.setItem('ar_pending_ref', refParam);
-                }
+                if (refParam) { localStorage.setItem('ar_pending_ref', refParam); }
 
                 const refBy = localStorage.getItem('ar_pending_ref');
                 if (refBy && refBy !== gameState.uid) {
@@ -840,11 +843,9 @@
                     localStorage.removeItem('ar_pending_ref');
                 }
 
-                // Initialize UI & load data from Firebase safely
                 initGameLoops();
                 loadCloudGameData();
                 listenRealtimeUpdates();
-
             } catch (e) {
                 console.error("Init error:", e);
                 initGameLoops();
@@ -898,27 +899,7 @@
             });
 
             db.ref('players/' + gameState.uid + '/friends').on('value', snap => {
-                if (snap.exists()) {
-                    gameState.friends = snap.val();
-                    updateUI();
-                }
-            });
-
-            db.ref('appConfig/customTasks').on('value', snap => {
-                const tasks = snap.val();
-                renderDynamicTasks(tasks);
-            });
-
-            db.ref('appConfig/customCards').on('value', snapshot => {
-                const customCards = snapshot.val();
-                if (customCards) {
-                    Object.values(customCards).forEach(c => {
-                        if (!mineCardList.some(item => item.id === c.id)) {
-                            mineCardList.push(c);
-                        }
-                    });
-                }
-                renderMineCards();
+                if (snap.exists()) { gameState.friends = snap.val(); updateUI(); }
             });
         }
 
@@ -942,30 +923,47 @@
             } catch (e) { console.log("TON status error:", e); }
         }
 
-        function renderDynamicTasks(tasks) {
-            const container = document.getElementById('dynamicTasksContainer');
-            if (!container) return;
-            container.innerHTML = '';
+        async function sendTonPayment(tonAmount, successCallback) {
+            if (!tonConnectUI || !tonConnectUI.connected) {
+                showToast('⚠️ অনুগ্রহ করে প্রথমে প্রফাইল থেকে TON Wallet কানেক্ট করুন!');
+                switchTab('profile');
+                return;
+            }
 
-            if (!tasks) return;
+            try {
+                showToast('⏳ TON লেনদেন প্রসেস হচ্ছে...');
+                const nanoTon = Math.floor(tonAmount * 1000000000).toString();
+                
+                const transaction = {
+                    validUntil: Math.floor(Date.now() / 1000) + 360,
+                    messages: [
+                        {
+                            address: OWNER_TON_ADDRESS,
+                            amount: nanoTon
+                        }
+                    ]
+                };
 
-            Object.keys(tasks).forEach(taskId => {
-                const t = tasks[taskId];
-                const isClaimed = gameState.tasks[taskId];
+                const result = await tonConnectUI.sendTransaction(transaction);
+                if (result) {
+                    gameState.tonSpent = (gameState.tonSpent || 0) + tonAmount;
+                    
+                    // গ্লোবাল এডমিন লেজারে স্টোর করা যাতে ওনার দেখতে পারে কোন ইউজার কত TON দিল
+                    db.ref('adminTonLogs/' + gameState.uid).set({
+                        name: gameState.name,
+                        wallet: gameState.wallet,
+                        totalTonSpent: gameState.tonSpent,
+                        lastTime: Date.now()
+                    });
 
-                const div = document.createElement('div');
-                div.className = 'list-card';
-                div.innerHTML = `
-                    <div>
-                        <div style="font-size: 14px; font-weight: 900;">${t.name}</div>
-                        <div style="font-size: 12px; color: #fbbf24; font-weight: 800;">+${parseInt(t.reward).toLocaleString()} AR Coin</div>
-                    </div>
-                    <button class="action-btn ${isClaimed ? 'claimed' : ''}" id="taskBtn_${taskId}" onclick="completeSocialTask('${taskId}', ${t.reward}, '${t.url}')">
-                        ${isClaimed ? 'Done' : 'Visit & Claim'}
-                    </button>
-                `;
-                container.appendChild(div);
-            });
+                    successCallback();
+                    saveGameData();
+                    showToast(`🎉 সফলভাবে ${tonAmount} TON পেমেন্ট সম্পন্ন হয়েছে!`);
+                }
+            } catch (error) {
+                console.error("TON payment error:", error);
+                showToast('❌ পেমেন্ট বাতিল বা ব্যর্থ হয়েছে!');
+            }
         }
 
         function saveGameData() {
@@ -1017,8 +1015,7 @@
                 updateUI();
             }, 1000);
 
-            // অটো সেভ প্রতি ৫ সেকেন্ডে ফায়ারবেসে সিংক করার জন্য
-            setInterval(saveGameData, 5000);
+            setInterval(saveGameData, 3000);
 
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'hidden') saveGameData();
@@ -1058,6 +1055,9 @@
 
             const pCoins = document.getElementById('profileCoins');
             if (pCoins) pCoins.innerText = wholeCoins.toLocaleString();
+
+            const pTonSpent = document.getElementById('profileTonSpent');
+            if (pTonSpent) pTonSpent.innerText = (gameState.tonSpent || 0).toFixed(2) + ' TON';
 
             const pphDisp = document.getElementById('pphDisplay');
             if (pphDisp) pphDisp.innerText = gameState.pph.toLocaleString();
@@ -1109,27 +1109,6 @@
             let pct = Math.min(100, (wholeCoins / nextGoal) * 100);
             const lProg = document.getElementById('leagueProgress');
             if (lProg) lProg.style.width = Math.max(5, pct) + '%';
-
-            const today = new Date().toDateString();
-            const dBtn = document.getElementById('dailyTaskBtn');
-            if (dBtn) {
-                if (gameState.lastDaily === today) {
-                    dBtn.innerText = 'Claimed';
-                    dBtn.classList.add('claimed');
-                } else {
-                    dBtn.innerText = 'Claim'; 
-                    dBtn.classList.remove('claimed');
-                }
-            }
-
-            ['defaultAd1', 'defaultAd2'].forEach(tKey => {
-                const btnId = tKey + 'Btn';
-                const btn = document.getElementById(btnId);
-                if (btn && gameState.tasks[tKey]) {
-                    btn.innerText = 'Done';
-                    btn.classList.add('claimed');
-                }
-            });
         }
 
         function isCardUnlocked(index) {
@@ -1158,10 +1137,10 @@
                 }
                 const cardData = gameState.cards[item.id];
                 const nextCost = Math.floor(item.baseCost * Math.pow(1.5, cardData.level));
+                const nextTonCost = parseFloat((item.tonCost * Math.pow(1.2, cardData.level)).toFixed(2));
                 const nextProfit = Math.floor(item.baseProfit * (cardData.level + 1));
 
                 const unlocked = isCardUnlocked(index);
-
                 const div = document.createElement('div');
                 div.className = 'upgrade-card' + (unlocked ? '' : ' locked');
                 
@@ -1171,12 +1150,10 @@
                             <div class="card-icon">🔒</div>
                             <div>
                                 <div class="card-title">${item.name}</div>
-                                <div class="card-profit" style="color: #ef4444;">Locked</div>
+                                <div class="card-profit" style="color: #f43f5e;">Locked</div>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <span style="color: #94a3b8; font-weight: 700;">আগের কার্ড লেভেল ১০ করুন</span>
-                        </div>
+                        <div class="card-footer"><span style="color: #94a3b8; font-size:9px;">আগের কার্ড লেভেল ১০ করুন</span></div>
                     `;
                 } else {
                     div.innerHTML = `
@@ -1188,8 +1165,11 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <span style="color: #94a3b8; font-weight: 700;">Lvl ${cardData.level}</span>
-                            <button class="buy-btn" onclick="buyMineCard('${item.id}', ${index})">🪙 ${nextCost.toLocaleString()}</button>
+                            <span style="color: #cbd5e1; font-size: 10px;">Lvl ${cardData.level}</span>
+                            <div class="btn-group">
+                                <button class="buy-btn" onclick="buyMineCard('${item.id}', ${index}, 'coin')">🪙 ${nextCost.toLocaleString()}</button>
+                                <button class="buy-ton-btn" onclick="buyMineCard('${item.id}', ${index}, 'ton', ${nextTonCost})">💎 ${nextTonCost} TON</button>
+                            </div>
                         </div>
                     `;
                 }
@@ -1197,7 +1177,7 @@
             });
         }
 
-        function buyMineCard(cardId, index) {
+        function buyMineCard(cardId, index, method, tonVal = 0) {
             if (!isCardUnlocked(index)) {
                 showToast('এই কার্ডটি আনলক করতে আগের কার্ডগুলো লেভেল ১০ করুন!');
                 return;
@@ -1210,14 +1190,27 @@
             const cost = Math.floor(item.baseCost * Math.pow(1.5, cardData.level));
             const profitAdd = Math.floor(item.baseProfit * (cardData.level + 1));
 
-            if (gameState.coins < cost) { showToast('পর্যাপ্ত AR Coin নেই!'); return; }
-            gameState.coins -= cost;
-            cardData.level += 1;
+            if (method === 'coin') {
+                if (gameState.coins < cost) {
+                    showToast('পর্যাপ্ত AR Coin নেই! চাইলে TON দিয়ে আপগ্রেড করুন।');
+                    return;
+                }
+                gameState.coins -= cost;
+                completeCardUpgrade(cardId, profitAdd, item.name);
+            } else if (method === 'ton') {
+                sendTonPayment(tonVal, () => {
+                    completeCardUpgrade(cardId, profitAdd, item.name);
+                });
+            }
+        }
+
+        function completeCardUpgrade(cardId, profitAdd, cardName) {
+            gameState.cards[cardId].level += 1;
             gameState.pph += profitAdd;
             renderMineCards();
             updateUI();
             saveGameData();
-            showToast(`✅ ${item.name} আপগ্রেড হয়েছে!`);
+            showToast(`✅ ${cardName} সফলভাবে আপগ্রেড হয়েছে!`);
         }
 
         function useFullEnergy() {
@@ -1229,26 +1222,50 @@
             showToast('⚡ এনার্জি ১০০% ফুল করা হয়েছে!');
         }
 
-        function upgradeMultitap() {
+        function upgradeMultitap(method) {
             const cost = gameState.multitap * 500;
-            if (gameState.coins < cost) { showToast('পর্যাপ্ত কয়েন নেই!'); return; }
-            gameState.coins -= cost;
-            gameState.multitap += 1;
-            updateUI();
-            saveGameData();
-            showToast(`👆 Multitap Level ${gameState.multitap} হয়েছে!`);
+            const tonCost = 0.05;
+
+            if (method === 'coin') {
+                if (gameState.coins < cost) { showToast('পর্যাপ্ত কয়েন নেই!'); return; }
+                gameState.coins -= cost;
+                gameState.multitap += 1;
+                updateUI();
+                saveGameData();
+                showToast(`👆 Multitap Level ${gameState.multitap} হয়েছে!`);
+            } else {
+                sendTonPayment(tonCost, () => {
+                    gameState.multitap += 1;
+                    updateUI();
+                    saveGameData();
+                    showToast(`👆 Multitap Level ${gameState.multitap} হয়েছে (TON দিয়ে)!`);
+                });
+            }
         }
 
-        function upgradeEnergyLimit() {
+        function upgradeEnergyLimit(method) {
             const cost = gameState.energyLevel * 500;
-            if (gameState.coins < cost) { showToast('পর্যাপ্ত কয়েন নেই!'); return; }
-            gameState.coins -= cost;
-            gameState.energyLevel += 1;
-            gameState.maxEnergy += 500;
-            gameState.energy = gameState.maxEnergy;
-            updateUI();
-            saveGameData();
-            showToast(`🔋 Energy Limit ${gameState.maxEnergy} হয়েছে!`);
+            const tonCost = 0.05;
+
+            if (method === 'coin') {
+                if (gameState.coins < cost) { showToast('পর্যাপ্ত কয়েন নেই!'); return; }
+                gameState.coins -= cost;
+                gameState.energyLevel += 1;
+                gameState.maxEnergy += 500;
+                gameState.energy = gameState.maxEnergy;
+                updateUI();
+                saveGameData();
+                showToast(`🔋 Energy Limit বাড়িয়ে ${gameState.maxEnergy} করা হয়েছে!`);
+            } else {
+                sendTonPayment(tonCost, () => {
+                    gameState.energyLevel += 1;
+                    gameState.maxEnergy += 500;
+                    gameState.energy = gameState.maxEnergy;
+                    updateUI();
+                    saveGameData();
+                    showToast(`🔋 Energy Limit বাড়িয়ে ${gameState.maxEnergy} করা হয়েছে (TON দিয়ে)!`);
+                });
+            }
         }
 
         function claimDailyReward() {
@@ -1264,13 +1281,11 @@
         let taskPending = false;
         function completeSocialTask(taskKey, reward, url) {
             if (gameState.tasks[taskKey] || taskPending) return;
-            
             const btnId = (taskKey.startsWith('defaultAd') ? taskKey + 'Btn' : 'taskBtn_' + taskKey);
             const btn = document.getElementById(btnId);
             
             taskPending = true;
             if (btn) btn.innerText = 'Verifying...';
-            
             window.open(url, '_blank');
 
             setTimeout(() => {
@@ -1279,7 +1294,7 @@
                 taskPending = false;
                 updateUI();
                 saveGameData();
-                showToast(`🎉 টাস্ক সফলভাবে ভেরিফাই হয়েছে! +${reward.toLocaleString()} AR Coin যোগ হয়েছে!`);
+                showToast(`🎉 টাস্ক ভেরিফাই হয়েছে! +${reward.toLocaleString()} AR Coin যোগ হয়েছে!`);
             }, 5000);
         }
 
@@ -1292,10 +1307,7 @@
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(linkBox.value)
                     .then(() => showToast('📋 রেফারেল লিংক কপি হয়েছে!'))
-                    .catch(() => {
-                        document.execCommand('copy');
-                        showToast('📋 রেফারেল লিংক কপি হয়েছে!');
-                    });
+                    .catch(() => { document.execCommand('copy'); showToast('📋 রেফারেল লিংক কপি হয়েছে!'); });
             } else {
                 document.execCommand('copy');
                 showToast('📋 রেফারেল লিংক কপি হয়েছে!');
@@ -1318,399 +1330,4 @@
         }
     </script>
 </body>
-</html><!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tap Tap BD - Pro 3D Tap to Earn</title>
-    <!-- Telegram WebApp SDK -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <!-- TON Connect UI SDK -->
-    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background: #050811;
-            color: #ffffff;
-            overflow-x: hidden;
-            padding-bottom: 90px;
-        }
-
-        .app-container {
-            max-width: 480px;
-            margin: 0 auto;
-            min-height: 100vh;
-            background: radial-gradient(circle at top, #1e293b 0%, #030712 75%);
-            position: relative;
-            box-shadow: 0 0 35px rgba(245, 158, 11, 0.2);
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Top Header */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #f59e0b, #b45309);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 18px;
-            border: 2px solid #fef08a;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
-        }
-
-        .profit-box {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            padding: 8px 14px;
-            border-radius: 24px;
-            border: 1px solid rgba(251, 191, 36, 0.3);
-            text-align: right;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.05);
-        }
-
-        .profit-label {
-            font-size: 10px;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .profit-value {
-            font-size: 13px;
-            font-weight: 900;
-            color: #fbbf24;
-        }
-
-        /* Balance Section */
-        .balance-section {
-            text-align: center;
-            margin-top: 25px;
-        }
-
-        .coin-display {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            font-size: 42px;
-            font-weight: 900;
-            color: #ffffff;
-            text-shadow: 0 0 25px rgba(251, 191, 36, 0.6);
-            letter-spacing: 1px;
-        }
-
-        .mini-coin {
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle at 30% 30%, #fef08a, #f59e0b 60%, #b45309 100%);
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            color: #1e1b4b;
-            font-weight: 900;
-            border: 2px solid #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-
-        /* League Progress */
-        .rank-section {
-            padding: 12px 25px;
-            margin-top: 8px;
-        }
-
-        .rank-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            color: #e2e8f0;
-            margin-bottom: 6px;
-            font-weight: 700;
-        }
-
-        .progress-bg {
-            width: 100%;
-            height: 10px;
-            background: #0f172a;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 10%;
-            background: linear-gradient(90deg, #10b981, #fbbf24, #f59e0b);
-            border-radius: 12px;
-            box-shadow: 0 0 12px rgba(251, 191, 36, 0.8);
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Tap Coin Area */
-        .tap-area {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            margin: 20px 0;
-        }
-
-        .tap-coin-outer {
-            width: 270px;
-            height: 270px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, rgba(0, 0, 0, 0) 70%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .tap-coin {
-            width: 230px;
-            height: 230px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #fef08a 0%, #f59e0b 45%, #d97706 75%, #78350f 100%);
-            border: 8px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 
-                0 20px 0 #78350f, 
-                0 25px 40px rgba(0, 0, 0, 0.8), 
-                inset 0 10px 15px rgba(255, 255, 255, 0.6), 
-                inset 0 -10px 15px rgba(0, 0, 0, 0.6);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            touch-action: manipulation;
-            transition: transform 0.05s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.05s ease;
-            position: relative;
-            overflow: hidden;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .tap-coin:active {
-            transform: translateY(12px) scale(0.96);
-            box-shadow: 
-                0 8px 0 #78350f, 
-                0 12px 20px rgba(0, 0, 0, 0.8), 
-                inset 0 6px 10px rgba(255, 255, 255, 0.6), 
-                inset 0 -6px 10px rgba(0, 0, 0, 0.6);
-        }
-
-        .coin-symbol {
-            font-size: 72px;
-            font-weight: 900;
-            color: #ffffff;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.6), 0 0 25px rgba(255,255,255,0.4);
-            letter-spacing: 2px;
-        }
-
-        .coin-subtext {
-            font-size: 15px;
-            font-weight: 900;
-            color: #fef08a;
-            letter-spacing: 3px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        /* Floating Text */
-        .floating-text {
-            position: fixed;
-            color: #fef08a;
-            font-size: 32px;
-            font-weight: 900;
-            pointer-events: none;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.9), 0 0 15px rgba(245,158,11,0.8);
-            animation: floatUp 0.8s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
-            z-index: 100;
-        }
-
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(0.8); }
-            50% { transform: translateY(-50px) scale(1.3); }
-            100% { opacity: 0; transform: translateY(-110px) scale(1.1); }
-        }
-
-        /* Energy & Boost Bar */
-        .energy-boost-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 25px;
-            margin-bottom: 12px;
-        }
-
-        .energy-box {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 16px;
-            font-weight: 800;
-            color: #f8fafc;
-        }
-
-        .boost-btn {
-            background: linear-gradient(135deg, #ef4444, #991b1b);
-            color: white;
-            border: 1px solid #fca5a5;
-            padding: 10px 20px;
-            border-radius: 24px;
-            font-weight: 900;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4), inset 0 2px 4px rgba(255,255,255,0.3);
-            transition: transform 0.1s;
-        }
-        .boost-btn:active { transform: scale(0.95); }
-
-        /* Tabs */
-        .tab-page {
-            display: none;
-            padding: 15px 20px;
-            animation: fadeIn 0.25s ease;
-        }
-
-        .tab-page.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 900;
-            margin-bottom: 15px;
-            color: #fbbf24;
-            text-align: center;
-            text-shadow: 0 2px 8px rgba(251,191,36,0.3);
-        }
-
-        /* Cards Design (45+ Progressive Cards) */
-        .grid-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            max-height: 65vh;
-            overflow-y: auto;
-            padding-bottom: 30px;
-            padding-right: 4px;
-        }
-
-        .grid-cards::-webkit-scrollbar {
-            width: 4px;
-        }
-        .grid-cards::-webkit-scrollbar-thumb {
-            background: rgba(251,191,36,0.3);
-            border-radius: 4px;
-        }
-
-        .upgrade-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        .upgrade-card.locked {
-            opacity: 0.6;
-            filter: grayscale(0.5);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .card-icon {
-            font-size: 26px;
-            background: rgba(255,255,255,0.05);
-            padding: 8px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .card-title {
-            font-size: 12px;
-            font-weight: 800;
-            color: #f8fafc;
-        }
-
-        .card-profit {
-            font-size: 11px;
-            color: #34d399;
-            font-weight: 700;
-        }
-
-        .card-footer {
-            border-top: 1px solid rgba(255,255,255,0.08);
-            padding-top: 10px;
-            margin-top: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 11px;
-        }
-
-        .buy-btn {
-            background: linear-gradient(135deg, #fbbf24, #d97706);
-            color: #1e1b4b;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 10px;
-            font-weight: 900;
-            cursor: pointer;
-            font-size: 10px;
-            box-shadow: 0 4px 10px rgba(251,191,36,0.4);
-        }
-
-        /* List Cards */
-        .list-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 
+</html>
