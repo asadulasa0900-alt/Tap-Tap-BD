@@ -208,13 +208,13 @@
             </div>
         </div>
 
-        <!-- সেকশন ২: ডেইলি কম্বো সেটআপ -->
+        <!-- সেকশন ২: ডেইলি কম্বো সেটআপ (১৬০ কার্ডের গেমের জন্য) -->
         <div class="section-box">
             <h2>🎁 আজকের ডেইলি কম্বো কার্ড সেট করুন (Daily Combo)</h2>
             <div class="form-group">
-                <input type="text" id="comboCard1" placeholder="১ম কার্ড আইডি (যেমন: card3)">
-                <input type="text" id="comboCard2" placeholder="২য় কার্ড আইডি (যেমন: card12)">
-                <input type="text" id="comboCard3" placeholder="৩য় কার্ড আইডি (যেমন: card25)">
+                <input type="text" id="comboCard1" placeholder="১ম কার্ড আইডি (যেমন: card5)">
+                <input type="text" id="comboCard2" placeholder="২য় কার্ড আইডি (যেমন: card55)">
+                <input type="text" id="comboCard3" placeholder="৩য় কার্ড আইডি (যেমন: card140)">
                 <button onclick="updateDailyCombo()">ডেইলি কম্বো সেভ করুন</button>
             </div>
             <div id="currentComboStatus" style="font-size: 13px; color: #34d399; margin-top: 5px;">বর্তমান কম্বো: লোড হচ্ছে...</div>
@@ -394,7 +394,7 @@
             let totalCoins = 0;
             let connectedWallets = 0;
             let tbody = '';
-            let serialNo = 1; // সিরিয়াল কাউন্টার
+            let serialNo = 1;
 
             db.ref('adminTonLogs').once('value', tonSnap => {
                 const tonLogs = tonSnap.val() || {};
