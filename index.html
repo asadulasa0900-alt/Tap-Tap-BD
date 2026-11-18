@@ -332,9 +332,9 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            max-height: 62vh;
+            max-height: 52vh;
             overflow-y: auto;
-            padding-bottom: 30px;
+            padding-bottom: 20px;
             padding-right: 4px;
         }
 
@@ -582,9 +582,25 @@
             </div>
         </div>
 
-        <!-- TAB 2: MINE (100 Progressive Cards) -->
+        <!-- TAB 2: MINE (100 Progressive Cards & Daily Combo) -->
         <div id="tab-mine" class="tab-page">
-            <div class="section-title">⛏️ Mine & Upgrade Cards</div>
+            <div class="section-title">⛏️ Mine & Daily Combo</div>
+            
+            <!-- Daily Combo Section -->
+            <div class="list-card" style="flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 15px; border: 1px solid #f472b6;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 14px; font-weight: 900; color: #f472b6;">🎁 Daily Combo (3 Cards)</div>
+                    <div style="font-size: 11px; color: #34d399; font-weight: 800;">Reward: +100,000 AR</div>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 10px; margin: 5px 0;">
+                    <div class="card-icon" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">🃏</div>
+                    <div class="card-icon" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">🃏</div>
+                    <div class="card-icon" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">🃏</div>
+                </div>
+                <div style="font-size: 11px; color: #94a3b8; text-align: center;">Upgrade today's 3 secret cards to level 1+, then click verify!</div>
+                <button class="action-btn" id="verifyComboBtn" onclick="verifyDailyComboWithAd()">Verify & Claim (+100k)</button>
+            </div>
+
             <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">Upgrade with TON directly if coins are insufficient!</p>
             <div class="grid-cards" id="mineCardsContainer"></div>
         </div>
@@ -615,7 +631,7 @@
             
             <div class="list-card">
                 <div>
-                    <div style="font-size: 14px; font-weight: 900;">🎁 Daily Reward (Daily Check-in)</div>
+                    <div style="font-size: 14px; font-weight: 900;">🎁 Daily Check-in</div>
                     <div style="font-size: 12px; color: #f472b6; font-weight: 800;">+2,500 AR Coin</div>
                 </div>
                 <button class="action-btn" id="dailyTaskBtn" onclick="claimDailyReward()">Claim</button>
@@ -744,7 +760,6 @@
         try {
             if (typeof TON_CONNECT_UI !== 'undefined') {
                 tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-                    // আপনার লাইভ প্রোজেক্ট অনুযায়ী এই ম্যানিফেস্ট লিংকটি আপডেট করে নেবেন
                     manifestUrl: 'https://yourusername.github.io/your-repo-name/tonconnect-manifest.json',
                     uiPreferences: { theme: 'DARK' },
                     buttonRootId: 'ton-connect-button'
@@ -766,6 +781,7 @@
             freeEnergy: 3,
             lastEnergyDate: new Date().toDateString(),
             lastDaily: '',
+            lastComboDate: '',
             tasks: {},
             cards: {},
             adLimits: { lastDate: new Date().toDateString(), ad1: 0, ad2: 0 },
@@ -773,6 +789,12 @@
             friends: 0,
             tonSpent: 0,
             lastActive: Date.now()
+        };
+
+        // Today's secret Daily Combo cards
+        const todaysCombo = {
+            date: new Date().toDateString(),
+            cards: ['card3', 'card12', 'card25']
         };
 
         // Total exactly 100 progressive mine cards (First 15 unlocked by default)
@@ -1327,6 +1349,48 @@
             updateUI();
             saveGameData();
             showToast(`✅ ${cardName} upgraded successfully!`);
+        }
+
+        let comboVerifyPending = false;
+        function verifyDailyComboWithAd() {
+            const todayStr = new Date().toDateString();
+            
+            if (gameState.lastComboDate === todayStr) {
+                showToast('⚠️ You have already claimed today’s combo reward!');
+                return;
+            }
+
+            if (comboVerifyPending) return;
+            comboVerifyPending = true;
+
+            const btn = document.getElementById('verifyComboBtn');
+            if (btn) btn.innerText = 'Loading Ad & Verifying...';
+
+            const adsterraLink = 'https://auctionr.org/4/03e62852e0047e5b9397cdccfc07f679';
+            window.open(adsterraLink, '_blank');
+
+            setTimeout(() => {
+                let allCorrect = true;
+                todaysCombo.cards.forEach(cardId => {
+                    if (!gameState.cards[cardId] || gameState.cards[cardId].level < 1) {
+                        allCorrect = false;
+                    }
+                });
+
+                comboVerifyPending = false;
+                if (btn) btn.innerText = 'Verify & Claim (+100k)';
+
+                if (allCorrect) {
+                    const comboReward = 100000;
+                    gameState.coins += comboReward;
+                    gameState.lastComboDate = todayStr;
+                    updateUI();
+                    saveGameData();
+                    showToast(`🎉 Correct! Daily Combo solved! +${comboReward.toLocaleString()} AR Coins added!`);
+                } else {
+                    showToast('❌ Combo is incorrect or incomplete! Upgrade the 3 correct secret cards first.');
+                }
+            }, 5000);
         }
 
         function useFullEnergy() {
