@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tap Tap BD - Secure Admin Panel</title>
+    <title>Tap Tap BD - Master Admin Control Panel</title>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
     <style>
         * {
@@ -14,331 +15,270 @@
             margin: 0;
             padding: 0;
             font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #ffffff;
+            user-select: none;
         }
 
         body {
             background: #030712;
+            color: #ffffff;
             padding: 20px;
         }
 
         .admin-container {
-            max-width: 600px;
+            max-width: 1200px;
             margin: 0 auto;
-            background: radial-gradient(circle at top, #1e1b4b 0%, #090d16 60%, #030712 100%);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);
         }
 
-        .admin-header {
-            text-align: center;
-            font-size: 22px;
-            font-weight: 900;
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+            padding: 20px 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        header h1 {
+            font-size: 24px;
             color: #f472b6;
-            margin-bottom: 20px;
-            text-shadow: 0 0 15px rgba(244,114,182,0.5);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #0f172a;
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        .stat-card h3 {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 26px;
+            font-weight: 900;
+            color: #34d399;
         }
 
         .section-box {
-            background: linear-gradient(145deg, #1e1b4b, #0f172a);
-            border: 1px solid rgba(139, 92, 246, 0.25);
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 900;
-            color: #38bdf8;
-            margin-bottom: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 6px;
-        }
-
-        input, button {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        input {
             background: #0f172a;
-            border: 1px solid #8b5cf6;
-            color: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            margin-bottom: 25px;
         }
 
-        input::placeholder { color: #64748b; }
-
-        .action-btn {
-            background: linear-gradient(135deg, #10b981, #047857);
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-            font-weight: 900;
-        }
-        .action-btn:active { transform: scale(0.98); }
-
-        .danger-btn {
-            background: linear-gradient(135deg, #ef4444, #b91c1c);
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-            font-weight: 900;
+        .section-box h2 {
+            font-size: 18px;
+            color: #f472b6;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
         }
 
-        .info-text {
-            font-size: 13px;
-            color: #cbd5e1;
-            margin-bottom: 6px;
+        .form-group {
             display: flex;
-            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
+
+        input, select, textarea {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 16px;
+            background: #030712;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            color: #fff;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:hover { opacity: 0.9; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            overflow-x: auto;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-size: 13px;
+        }
+
+        th { color: #93c5fd; background: rgba(30, 27, 75, 0.5); }
+        tr:hover { background: rgba(255,255,255,0.02); }
+
+        .btn-action {
+            padding: 6px 12px;
+            font-size: 11px;
+            border-radius: 6px;
+            margin-right: 5px;
+        }
+
+        .btn-danger { background: #ef4444; }
+        .btn-success { background: #10b981; }
 
         #toast {
             position: fixed;
             top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: rgba(15, 23, 42, 0.95);
+            right: 20px;
+            background: #1e1b4b;
             color: #f472b6;
-            border: 1px solid rgba(244, 114, 182, 0.6);
+            border: 1px solid #f472b6;
             padding: 12px 20px;
-            border-radius: 16px;
-            font-size: 13px;
+            border-radius: 10px;
             font-weight: 800;
-            z-index: 10000;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            opacity: 0;
-            text-align: center;
+            display: none;
+            z-index: 9999;
         }
-        #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     </style>
 </head>
 <body>
 
-    <div id="toast"></div>
+    <div id="toast">Notification</div>
 
     <div class="admin-container">
-        <div class="admin-header">🛠️ Tap Tap BD Admin Panel</div>
+        <header>
+            <h1>🛠️ Tap Tap BD - Master Admin Panel</h1>
+            <div id="adminStatus" style="font-size: 13px; color: #34d399; font-weight: 700;">Connected to Firebase</div>
+        </header>
 
-        <!-- SECTION 1: USER COIN & GIFT MANAGER -->
-        <div class="section-box">
-            <div class="section-title">👥 User Coin & Gift Manager</div>
-            <input type="text" id="adminSearchUid" placeholder="ইউজারের UID দিন (যেমন: TG_12345678)">
-            <button class="action-btn" onclick="fetchUserInfoForAdmin()">🔍 ইউজার খুঁজুন</button>
-
-            <div id="adminUserResultBox" style="display:none; margin-top: 10px; background: #090d16; padding: 12px; border-radius: 12px; border: 1px solid rgba(139,92,246,0.3);">
-                <div class="info-text"><span>ইউজার নাম:</span> <strong id="admUsrName" style="color: #38bdf8;">-</strong></div>
-                <div class="info-text"><span>বর্তমান কয়েন:</span> <strong id="admUsrCoins" style="color: #34d399;">0</strong></div>
-                
-                <input type="number" id="adminBonusAmount" placeholder="পরিমাণ (যেমন: 5000 বা -1000)" style="margin-top: 8px;">
-                <div style="display: flex; gap: 8px;">
-                    <button class="action-btn" onclick="adminUpdateCoins('add')">🎁 গিফট / যোগ করুন</button>
-                    <button class="danger-btn" onclick="adminUpdateCoins('sub')">❌ কেটে নিন</button>
-                </div>
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Registered Users</h3>
+                <div class="value" id="totalUsersCount">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Wallets Connected</h3>
+                <div class="value" id="totalWalletsCount" style="color: #60a5fa;">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total TON Collected</h3>
+                <div class="value" id="totalTonCollected" style="color: #38bdf8;">0.00 TON</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Coins Mined</h3>
+                <div class="value" id="totalCoinsMined">0</div>
             </div>
         </div>
 
-        <!-- SECTION 2: CREATE MINE CARD WITH IMAGE UPLOAD -->
+        <!-- Section 1: Customize Tap Coin Image (Direct File Upload) -->
         <div class="section-box">
-            <div class="section-title">⛏️ নতুন মাইন কার্ড তৈরি ও ছবি আপলোড</div>
-            <input type="text" id="newCardName" placeholder="কার্ডের নাম (যেমন: Bitcoin Rig)">
-            <input type="number" id="newCardCost" placeholder="বেস মূল্য (কয়েন)">
-            <input type="number" id="newCardProfit" placeholder="প্রফিট প্রতি ঘণ্টা">
-            
-            <div style="font-size: 12px; color: #94a3b8; margin-bottom: 5px;">কার্ডের ছবি সিলেক্ট করুন (ফাইল থেকে):</div>
-            <input type="file" id="newCardImageFile" accept="image/*" style="background: #0f172a; padding: 10px; border: 1px solid #8b5cf6;">
-            
-            <button class="action-btn" onclick="uploadAndCreateMineCard()">✨ কার্ড ও ছবি আপলোড করুন</button>
+            <h2>🪙 Customize Tap Coin Image (Direct Upload)</h2>
+            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 12px;">Upload a custom image/logo from your device to replace the tap coin icon instantly across user apps.</p>
+            <div class="form-group">
+                <input type="file" id="coinImageFile" accept="image/*">
+                <button onclick="uploadCustomCoinImage()">Upload & Apply Image</button>
+            </div>
+            <div id="currentCoinPreview" style="margin-top: 10px; font-size: 13px; color: #cbd5e1;">Current Image Status: <span style="color: #34d399;">Active</span></div>
         </div>
 
-        <!-- SECTION 3: TON SPENT & DEPOSIT LOGS -->
+        <!-- Section 2: Manage Social Media Tasks (YouTube, Facebook, Instagram) -->
         <div class="section-box">
-            <div class="section-title">💎 TON পেমেন্ট ও ডিপোজিট লগ</div>
-            <button class="action-btn" onclick="loadTonLogs()" style="margin-bottom: 10px;">🔄 লগ রিফ্রেশ করুন</button>
-            <div id="tonLogsContainer" style="font-size: 12px; color: #cbd5e1; max-height: 200px; overflow-y: auto;">কোনো লগ পাওয়া যায়নি।</div>
+            <h2>📱 Add Social Media Tasks (YouTube, Facebook, Instagram)</h2>
+            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 12px;">Publish tasks for users to visit social links and earn coins.</p>
+            <div class="form-group">
+                <select id="taskPlatform">
+                    <option value="YouTube">📺 YouTube Task</option>
+                    <option value="Facebook">👥 Facebook Task</option>
+                    <option value="Instagram">📸 Instagram Task</option>
+                </select>
+                <input type="text" id="taskTitle" placeholder="Task Title (e.g. Subscribe our channel)">
+                <input type="text" id="taskUrl" placeholder="Target Link (https://...)">
+                <input type="number" id="taskReward" placeholder="Reward Coins (e.g. 1000)">
+                <button onclick="createNewSocialTask()">Publish Task</button>
+            </div>
+            <h3>Active Social Tasks List</h3>
+            <div style="max-height: 250px; overflow-y: auto;">
+                <table id="socialTasksTable">
+                    <thead>
+                        <tr><th>Platform</th><th>Title</th><th>Reward</th><th>Action</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 3: Announcements & Posts Management -->
+        <div class="section-box">
+            <h2>📢 Manage Announcements & Posts</h2>
+            <div class="form-group">
+                <input type="text" id="postTitle" placeholder="Post Title">
+                <textarea id="postContent" placeholder="Write announcement or news here..." style="min-height: 80px;"></textarea>
+                <button onclick="createNewPost()">Publish Post</button>
+            </div>
+            <h3>Active Posts List</h3>
+            <div style="max-height: 250px; overflow-y: auto;">
+                <table id="postsTable">
+                    <thead>
+                        <tr><th>Title</th><th>Content</th><th>Action</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 4: User Management (Bonus, Deduct Coins, View Details) -->
+        <div class="section-box">
+            <h2>👥 User Control & Management</h2>
+            <div class="form-group">
+                <input type="text" id="targetUidInput" placeholder="Enter User UID (e.g., TG_12345678)">
+                <input type="number" id="targetAmountInput" placeholder="Amount of Coins (+ / -)">
+                <button class="btn-success" onclick="modifyUserCoins('add')">Add Bonus</button>
+                <button class="btn-danger" onclick="modifyUserCoins('deduct')">Deduct Coins</button>
+            </div>
+
+            <h3>All Users Data & TON Spent Logs</h3>
+            <div style="max-height: 350px; overflow-y: auto;">
+                <table id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>UID</th>
+                            <th>Name</th>
+                            <th>Coins</th>
+                            <th>TON Spent</th>
+                            <th>Wallet Address</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
-        // ফায়ারবেস কনফিগারেশন (আপনার মূল প্রজেক্ট কনফিগ)
         const firebaseConfig = {
             apiKey: "AIzaSyDTHuKdLhSJqQJTD9EF-m3s3lZJJXt0HcC0",
             authDomain: "tap-tap-4ea57.firebaseapp.com",
-            projectId: "tap-tap-4ea57",
-            storageBucket: "tap-tap-4ea57.firebasestorage.app",
-            messagingSenderId: "882721991361",
-            appId: "1:882721991361:web:84a62978016c87d0514240",
-            measurementId: "G-5F3ZCKRW6N"
-        };
-
-        try {
-            if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        } catch (e) { console.error("Firebase init error:", e); }
-        const db = firebase.database();
-
-        let toastTimer = null;
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            if (!toast) return;
-            toast.innerText = msg;
-            toast.classList.add('show');
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
-        }
-
-        let selectedTargetUid = '';
-
-        // ১. ইউজার সার্চ ফাংশন
-        function fetchUserInfoForAdmin() {
-            const uidInput = document.getElementById('adminSearchUid').value.trim();
-            if (!uidInput) {
-                showToast('⚠️ অনুগ্রহ করে সঠিক UID দিন!');
-                return;
-            }
-
-            db.ref('players/' + uidInput).once('value', snapshot => {
-                if (snapshot.exists()) {
-                    const userData = snapshot.val();
-                    selectedTargetUid = uidInput;
-                    
-                    document.getElementById('admUsrName').innerText = userData.name || 'Unknown User';
-                    document.getElementById('admUsrCoins').innerText = (userData.coins || 0).toLocaleString();
-                    document.getElementById('adminUserResultBox').style.display = 'block';
-                    showToast('✅ ইউজার খুঁজে পাওয়া গেছে!');
-                } else {
-                    showToast('❌ এই UID দিয়ে কোনো ইউজার নেই!');
-                    document.getElementById('adminUserResultBox').style.display = 'none';
-                }
-            });
-        }
-
-        // ২. কয়েন গিফট বা কেটে নেওয়ার ফাংশন
-        function adminUpdateCoins(actionType) {
-            if (!selectedTargetUid) return;
             
-            const amountVal = parseInt(document.getElementById('adminBonusAmount').value);
-            if (isNaN(amountVal) || amountVal <= 0) {
-                showToast('⚠️ সঠিক পরিমাণ কয়েন লিখুন!');
-                return;
-            }
-
-            const dbRef = db.ref('players/' + selectedTargetUid + '/coins');
-            
-            dbRef.transaction(currentCoins => {
-                let current = currentCoins || 0;
-                if (actionType === 'add') {
-                    return current + amountVal;
-                } else {
-                    return Math.max(0, current - amountVal);
-                }
-            }, (error, committed, snapshot) => {
-                if (error) {
-                    showToast('❌ আপডেট করতে সমস্যা হয়েছে!');
-                } else if (committed) {
-                    const updatedCoins = snapshot.val();
-                    document.getElementById('admUsrCoins').innerText = updatedCoins.toLocaleString();
-                    showToast(`✅ সফলভাবে কয়েন আপডেট করা হয়েছে!`);
-                    document.getElementById('adminBonusAmount').value = '';
-                }
-            });
-        }
-
-        // ৩. সরাসরি ছবি আপلود করে মাইন কার্ড তৈরি
-        async function uploadAndCreateMineCard() {
-            const cardName = document.getElementById('newCardName').value.trim();
-            const cardCost = parseInt(document.getElementById('newCardCost').value);
-            const cardProfit = parseInt(document.getElementById('newCardProfit').value);
-            const fileInput = document.getElementById('newCardImageFile');
-
-            if (!cardName || isNaN(cardCost) || isNaN(cardProfit)) {
-                showToast('⚠️ কার্ডের নাম, মূল্য ও প্রফিট পূরণ করুন!');
-                return;
-            }
-
-            if (!fileInput.files || fileInput.files.length === 0) {
-                showToast('⚠️ কার্ডের জন্য একটি ছবি সিলেক্ট করুন!');
-                return;
-            }
-
-            const file = fileInput.files[0];
-            showToast('⏳ ছবি আপলোড হচ্ছে...');
-
-            const formData = new FormData();
-            formData.append('image', file);
-
-            try {
-                const response = await fetch('https://api.imgbb.com/1/upload?key=6d207e02194a847aa9850a3f95d94a22', {
-                    method: 'POST',
-                    body: formData
-                });
-                const data = await response.json();
-
-                if (data && data.success) {
-                    const imageUrl = data.data.url;
-                    const cardId = 'custom_card_' + Date.now();
-
-                    db.ref('adminMineCards/' + cardId).set({
-                        id: cardId,
-                        name: cardName,
-                        baseCost: cardCost,
-                        baseProfit: cardProfit,
-                        iconUrl: imageUrl,
-                        tonCost: 0.1
-                    });
-
-                    showToast('✅ নতুন মাইন কার্ড সফলভাবে তৈরি হয়েছে!');
-                    document.getElementById('newCardName').value = '';
-                    document.getElementById('newCardCost').value = '';
-                    document.getElementById('newCardProfit').value = '';
-                    fileInput.value = '';
-                } else {
-                    showToast('❌ ছবি আপলোড ব্যর্থ হয়েছে!');
-                }
-            } catch (error) {
-                console.error("Card upload error:", error);
-                showToast('❌ নেটওয়ার্ক ত্রুটি ঘটেছে!');
-            }
-        }
-
-        // ৪. TON পেমেন্ট লগ লোড করা
-        function loadTonLogs() {
-            const container = document.getElementById('tonLogsContainer');
-            container.innerHTML = 'লোড হচ্ছে...';
-
-            db.ref('adminTonLogs').once('value', snapshot => {
-                container.innerHTML = '';
-                if (!snapshot.exists()) {
-                    container.innerHTML = 'কোনো TON পেমেন্ট লগ নেই।';
-                    return;
-                }
-
-                snapshot.forEach(childSnap => {
-                    const log = childSnap.val();
-                    const div = document.createElement('div');
-                    div.style.background = '#090d16';
-                    div.style.padding = '8px';
-                    div.style.marginBottom = '6px';
-                    div.style.borderRadius = '8px';
-                    div.style.border = '1px solid rgba(139,92,246,0.2)';
-                    div.innerHTML = `
-                        <div>ইউজার: <strong style="color: #38bdf8;">${log.name}</strong></div>
-                        <div>খরচ: <strong style="color: #34d399;">${log.totalTonSpent} TON</strong></div>
-                        <div style="font-size: 10px; color: #94a3b8; word-break: break-all;">ওয়ালেট: ${log.wallet}</div>
-                    `;
-                    container.appendChild(div);
-                });
-            });
-        }
-    </script>
-</body>
-</html>
