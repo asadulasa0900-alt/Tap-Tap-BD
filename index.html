@@ -327,7 +327,7 @@
             text-shadow: 0 2px 10px rgba(244,114,182,0.4);
         }
 
-        /* Mine Category Navigation Buttons (4 Categories for 160 Cards) */
+        /* Mine Category Navigation Buttons */
         .mine-category-nav {
             display: flex;
             gap: 6px;
@@ -649,7 +649,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: MINE (160 Cards with 0.01 TON Start Cost) -->
+        <!-- TAB 2: MINE (160 Cards) -->
         <div id="tab-mine" class="tab-page">
             <div class="section-title">⛏️ Mine & Daily Combo (160 Cards)</div>
             
@@ -666,7 +666,7 @@
                 <button class="action-btn" id="verifyComboBtn" onclick="verifyDailyComboWithAd()">Verify & Claim (+50k)</button>
             </div>
 
-            <!-- Category Navigation Tabs (4 Categories: 40 cards each = 160 cards total) -->
+            <!-- Category Navigation Tabs (4 Categories: 40 cards each) -->
             <div class="mine-category-nav">
                 <button class="mine-cat-btn active" id="cat-btn-markets" onclick="switchMineCategory('markets')">📊 Markets (1-40)</button>
                 <button class="mine-cat-btn" id="cat-btn-web3" onclick="switchMineCategory('web3')">🌐 Web3 & Apps (41-80)</button>
@@ -872,14 +872,14 @@
             lastActive: Date.now()
         };
 
-        const todaysCombo = {
+        // Admin Combo Settings will override this if active in Firebase
+        let todaysCombo = {
             date: new Date().toDateString(),
             cards: ['card5', 'card55', 'card140']
         };
 
-        // Exactly 160 Mine Cards divided into 4 Distinct Categories (40 cards each) with 0.01 TON base cost
+        // 160 Mine Cards (40 each category) with 0.01 TON start cost
         const mineCardList = [
-            // Category 1: Markets (Cards 1 to 40)
             ...Array.from({length: 40}, (_, i) => ({
                 id: `card${i + 1}`,
                 name: `Market Asset ${i + 1}`,
@@ -889,7 +889,6 @@
                 baseProfit: 200 + (i * 220),
                 tonCost: 0.01
             })),
-            // Category 2: Web3 & Apps (Cards 41 to 80)
             ...Array.from({length: 40}, (_, i) => ({
                 id: `card${i + 41}`,
                 name: `Web3 App ${i + 41}`,
@@ -899,7 +898,6 @@
                 baseProfit: 10000 + (i * 550),
                 tonCost: 0.01
             })),
-            // Category 3: AI & Nodes (Cards 81 to 120)
             ...Array.from({length: 40}, (_, i) => ({
                 id: `card${i + 81}`,
                 name: `AI & Node ${i + 81}`,
@@ -909,7 +907,6 @@
                 baseProfit: 28000 + (i * 850),
                 tonCost: 0.01
             })),
-            // Category 4: Layers & L2 (Cards 121 to 160)
             ...Array.from({length: 40}, (_, i) => ({
                 id: `card${i + 121}`,
                 name: `Layer Protocol ${i + 121}`,
@@ -981,6 +978,7 @@
                     initGameLoops();
                     listenRealtimeUpdates();
                     fetchLeaderboard();
+                    fetchAdminSettings();
                 });
 
             } catch (e) {
@@ -1020,7 +1018,7 @@
                         }
                     }
                 } else {
-                    saveGameData();
+                    saveGameDataInstant();
                 }
                 renderMineCards();
                 updateUI();
@@ -1033,6 +1031,22 @@
             });
         }
 
+        function fetchAdminSettings() {
+            db.ref('dailyComboSettings').once('value', snap => {
+                const val = snap.val();
+                if (val && val.cards) { todaysCombo = val; }
+            });
+            db.ref('appSettings/customCoinImgUrl').once('value', snap => {
+                const imgUrl = snap.val();
+                if (imgUrl) {
+                    const coinSym = document.getElementById('tapCoinSymbol');
+                    if (coinSym) {
+                        coinSym.innerHTML = `<img src="${imgUrl}" style="width:100px; height:100px; object-fit:contain; border-radius:50%;">`;
+                    }
+                }
+            });
+        }
+
         function checkAndResetDailyAdLimits() {
             const todayStr = new Date().toDateString();
             if (!gameState.adLimits) {
@@ -1042,7 +1056,7 @@
                 gameState.adLimits.lastDate = todayStr;
                 gameState.adLimits.ad1 = 0;
                 gameState.adLimits.ad2 = 0;
-                saveGameData();
+                saveGameDataInstant();
             }
         }
 
@@ -1056,6 +1070,17 @@
                     db.ref('players/' + gameState.uid + '/pendingRefBonus').set(0);
                     showToast(`🎁 Referral bonus +${bonus.toLocaleString()} AR Coin added!`);
                     updateUI();
+                }
+            });
+
+            // Listen if Admin modified coins directly from admin panel
+            db.ref('players/' + gameState.uid + '/coins').on('value', snap => {
+                if (snap.exists()) {
+                    const cloudCoins = snap.val();
+                    if (Math.abs(cloudCoins - gameState.coins) > 500) {
+                        gameState.coins = cloudCoins;
+                        updateUI();
+                    }
                 }
             });
 
@@ -1111,13 +1136,13 @@
                         gameState.wallet = rawAddress;
                         const statusEl = document.getElementById('connectedWalletStatus');
                         if (statusEl) statusEl.innerText = 'Connected Wallet: ' + rawAddress.slice(0, 6) + '...' + rawAddress.slice(-4);
-                        saveGameData();
+                        saveGameDataInstant();
                         showToast('💎 TON Wallet connected successfully!');
                     } else {
                         gameState.wallet = '';
                         const statusEl = document.getElementById('connectedWalletStatus');
                         if (statusEl) statusEl.innerText = 'Wallet not connected';
-                        saveGameData();
+                        saveGameDataInstant();
                     }
                 });
             } catch (e) { console.log("TON status error:", e); }
@@ -1156,7 +1181,7 @@
                     });
 
                     successCallback();
-                    saveGameData();
+                    saveGameDataInstant();
                     showToast(`🎉 Successfully paid ${tonAmount} TON!`);
                 }
             } catch (error) {
@@ -1165,11 +1190,14 @@
             }
         }
 
-        function saveGameData() {
+        // Safe Instant Firebase Saving Function
+        function saveGameDataInstant() {
             gameState.lastActive = Date.now();
             if (gameState.uid) {
                 const { friends, pendingRefBonus, ...safeData } = gameState;
-                db.ref('players/' + gameState.uid).set(safeData);
+                db.ref('players/' + gameState.uid).set(safeData).catch(err => {
+                    console.error("Save error:", err);
+                });
             }
         }
 
@@ -1196,6 +1224,7 @@
             if (loopsStarted) return;
             loopsStarted = true;
 
+            // 1 Second loop for energy & pph
             setInterval(() => {
                 checkAndResetDailyAdLimits();
                 const today = new Date().toDateString();
@@ -1212,12 +1241,13 @@
                 updateUI();
             }, 1000);
 
-            setInterval(saveGameData, 3000);
+            // Auto-save to Firebase every 3 seconds safely
+            setInterval(saveGameDataInstant, 3000);
 
             document.addEventListener('visibilitychange', () => {
-                if (document.visibilityState === 'hidden') saveGameData();
+                if (document.visibilityState === 'hidden') saveGameDataInstant();
             });
-            window.addEventListener('beforeunload', saveGameData);
+            window.addEventListener('beforeunload', saveGameDataInstant);
         }
 
         const tapCoin = document.getElementById('mainTapCoin');
@@ -1326,11 +1356,6 @@
             if (lProg) lProg.style.width = Math.max(5, pct) + '%';
         }
 
-        function isCardUnlocked(index) {
-            return true;
-        }
-
-        // Progressive Cost: Low start, soaring up to Billions/Trillions past Lvl 70-80
         function calculateCardCost(baseCost, level) {
             let multiplier = 1.35;
             if (level >= 70) multiplier = 2.2;
@@ -1358,7 +1383,6 @@
                 const cardData = gameState.cards[item.id];
                 
                 const nextCost = calculateCardCost(item.baseCost, cardData.level);
-                // TON starts from 0.01 and scales progressively up to max 12 TON
                 const nextTonCost = Math.min(12.0, parseFloat((item.tonCost * Math.pow(1.12, cardData.level)).toFixed(2)));
                 const nextProfit = calculateCardProfit(item.baseProfit, cardData.level);
 
@@ -1412,7 +1436,7 @@
             gameState.pph += profitAdd;
             renderMineCards();
             updateUI();
-            saveGameData();
+            saveGameDataInstant();
             showToast(`✅ ${cardName} upgraded to Lvl ${gameState.cards[cardId].level}!`);
         }
 
@@ -1436,7 +1460,8 @@
 
             setTimeout(() => {
                 let allCorrect = true;
-                todaysCombo.cards.forEach(cardId => {
+                const activeComboCards = todaysCombo.cards || ['card5', 'card55', 'card140'];
+                activeComboCards.forEach(cardId => {
                     if (!gameState.cards[cardId] || gameState.cards[cardId].level < 1) {
                         allCorrect = false;
                     }
@@ -1450,10 +1475,10 @@
                     gameState.coins += comboReward;
                     gameState.lastComboDate = todayStr;
                     updateUI();
-                    saveGameData();
+                    saveGameDataInstant();
                     showToast(`🎉 Correct! Daily Combo solved! +${comboReward.toLocaleString()} AR Coins added!`);
                 } else {
-                    showToast('❌ Combo is incorrect or incomplete! Upgrade the 3 correct secret cards first.');
+                    showToast('❌ Combo is incorrect or incomplete! Upgrade the 3 correct secret cards set by Admin first.');
                 }
             }, 5000);
         }
@@ -1463,7 +1488,7 @@
             gameState.freeEnergy -= 1;
             gameState.energy = gameState.maxEnergy;
             updateUI();
-            saveGameData();
+            saveGameDataInstant();
             showToast('⚡ Energy refilled to 100%!');
         }
 
@@ -1476,13 +1501,13 @@
                 gameState.coins -= cost;
                 gameState.multitap += 1;
                 updateUI();
-                saveGameData();
+                saveGameDataInstant();
                 showToast(`👆 Multitap upgraded to Level ${gameState.multitap}!`);
             } else {
                 sendTonPayment(tonCost, () => {
                     gameState.multitap += 1;
                     updateUI();
-                    saveGameData();
+                    saveGameDataInstant();
                     showToast(`👆 Multitap upgraded to Level ${gameState.multitap} (via TON)!`);
                 });
             }
@@ -1499,7 +1524,7 @@
                 gameState.maxEnergy += 500;
                 gameState.energy = gameState.maxEnergy;
                 updateUI();
-                saveGameData();
+                saveGameDataInstant();
                 showToast(`🔋 Energy limit increased to ${gameState.maxEnergy}!`);
             } else {
                 sendTonPayment(tonCost, () => {
@@ -1507,7 +1532,7 @@
                     gameState.maxEnergy += 500;
                     gameState.energy = gameState.maxEnergy;
                     updateUI();
-                    saveGameData();
+                    saveGameDataInstant();
                     showToast(`🔋 Energy limit increased to ${gameState.maxEnergy} (via TON)!`);
                 });
             }
@@ -1519,7 +1544,7 @@
             gameState.lastDaily = today;
             gameState.coins += 2500;
             updateUI();
-            saveGameData();
+            saveGameDataInstant();
             showToast('🎁 Daily bonus +2,500 AR Coin added!');
         }
 
@@ -1553,7 +1578,7 @@
 
                 if (btn) btn.innerText = 'Watch';
                 updateUI();
-                saveGameData();
+                saveGameDataInstant();
                 showToast(`🎉 Success! +${rewardAmount.toLocaleString()} AR Coin added!`);
             }, 5000);
         }
