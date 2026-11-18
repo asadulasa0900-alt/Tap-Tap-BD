@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tap Tap BD - Master Admin Control Panel</title>
+    <title>ট্যাপ ট্যাপ বিডি - মাস্টার অ্যাডমিন প্যানেল</title>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -165,110 +165,135 @@
 </head>
 <body>
 
-    <div id="toast">Notification</div>
+    <div id="toast">নোটিফিকেশন</div>
 
     <div class="admin-container">
         <header>
-            <h1>🛠️ Tap Tap BD - Master Admin Panel</h1>
-            <div id="adminStatus" style="font-size: 13px; color: #34d399; font-weight: 700;">Connected to Firebase</div>
+            <h1>🛠️ ট্যাপ ট্যাপ বিডি - মাস্টার অ্যাডমিন প্যানেল</h1>
+            <div id="adminStatus" style="font-size: 13px; color: #34d399; font-weight: 700;">ফায়ারবেসের সাথে যুক্ত আছে</div>
         </header>
 
-        <!-- Stats Overview -->
+        <!-- পরিসংখ্যান ওভারভিউ -->
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>Total Registered Users</h3>
-                <div class="value" id="totalUsersCount">0</div>
+                <h3>মোট রেজিস্টার্ড ইউজার</h3>
+                <div class="value" id="totalUsersCount">০</div>
             </div>
             <div class="stat-card">
-                <h3>Wallets Connected</h3>
-                <div class="value" id="totalWalletsCount" style="color: #60a5fa;">0</div>
+                <h3>ওয়ালেট কানেক্ট করেছে</h3>
+                <div class="value" id="totalWalletsCount" style="color: #60a5fa;">০</div>
             </div>
             <div class="stat-card">
-                <h3>Total TON Collected</h3>
-                <div class="value" id="totalTonCollected" style="color: #38bdf8;">0.00 TON</div>
+                <h3>মোট টোন সংগ্রহ (TON)</h3>
+                <div class="value" id="totalTonCollected" style="color: #38bdf8;">০.০০ TON</div>
             </div>
             <div class="stat-card">
-                <h3>Total Coins Mined</h3>
-                <div class="value" id="totalCoinsMined">0</div>
+                <h3>মোট মাইন করা কয়েন</h3>
+                <div class="value" id="totalCoinsMined">০</div>
             </div>
         </div>
 
-        <!-- Section 1: Customize Tap Coin Image (Direct File Upload) -->
+        <!-- সেকশন ১: টেলিগ্রাম চ্যানেলে পোস্ট পাঠানোর অপশন -->
         <div class="section-box">
-            <h2>🪙 Customize Tap Coin Image (Direct Upload)</h2>
-            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 12px;">Upload a custom image/logo from your device to replace the tap coin icon instantly across user apps.</p>
+            <h2>📢 টেলিগ্রাম চ্যানেলে সরাসরি পোস্ট পাঠান</h2>
+            <div class="form-group">
+                <input type="text" id="tgBotToken" placeholder="Telegram Bot Token">
+                <input type="text" id="tgChatId" placeholder="Channel Chat ID (যেমন: @channel)">
+                <button onclick="saveTelegramConfig()" style="background: #0ea5e9;">সেটিংস সেভ করুন</button>
+            </div>
+            <div class="form-group" style="flex-direction: column; gap: 10px;">
+                <input type="text" id="tgPostTitle" placeholder="পোস্টের শিরোনাম বা বিষয়">
+                <textarea id="tgPostMessage" placeholder="টেলিগ্রাম চ্যানেলে পাঠানোর জন্য মূল বার্তা লিখুন..." style="min-height: 90px;"></textarea>
+                <button onclick="sendPostToTelegram()" style="background: #10b981;">সরাসরি টেলিগ্রামে পোস্ট পাঠান</button>
+            </div>
+        </div>
+
+        <!-- সেকশন ২: ডেইলি কম্বো সেটআপ -->
+        <div class="section-box">
+            <h2>🎁 আজকের ডেইলি কম্বো কার্ড সেট করুন (Daily Combo)</h2>
+            <div class="form-group">
+                <input type="text" id="comboCard1" placeholder="১ম কার্ড আইডি (যেমন: card3)">
+                <input type="text" id="comboCard2" placeholder="২য় কার্ড আইডি (যেমন: card12)">
+                <input type="text" id="comboCard3" placeholder="৩য় কার্ড আইডি (যেমন: card25)">
+                <button onclick="updateDailyCombo()">ডেইলি কম্বো সেভ করুন</button>
+            </div>
+            <div id="currentComboStatus" style="font-size: 13px; color: #34d399; margin-top: 5px;">বর্তমান কম্বো: লোড হচ্ছে...</div>
+        </div>
+
+        <!-- সেকশন ৩: ট্যাপ কয়েন ইমেজ কাস্টমাইজার -->
+        <div class="section-box">
+            <h2>🪙 ট্যাপ কয়েন ছবি পরিবর্তন করুন (ফাইল আপলোড)</h2>
             <div class="form-group">
                 <input type="file" id="coinImageFile" accept="image/*">
-                <button onclick="uploadCustomCoinImage()">Upload & Apply Image</button>
+                <button onclick="uploadCustomCoinImage()">ছবি আপলোড ও এপ্লাই করুন</button>
             </div>
-            <div id="currentCoinPreview" style="margin-top: 10px; font-size: 13px; color: #cbd5e1;">Current Image Status: <span style="color: #34d399;">Active</span></div>
         </div>
 
-        <!-- Section 2: Manage Social Media Tasks (YouTube, Facebook, Instagram) -->
+        <!-- সেকশন ৪: সোশ্যাল মিডিয়া টাস্ক ম্যানেজমেন্ট -->
         <div class="section-box">
-            <h2>📱 Add Social Media Tasks (YouTube, Facebook, Instagram)</h2>
-            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 12px;">Publish tasks for users to visit social links and earn coins.</p>
+            <h2>📱 সোশ্যাল মিডিয়া টাস্ক দিন (ইউটিউব, ফেসবুক, ইনস্টাগ্রাম)</h2>
             <div class="form-group">
                 <select id="taskPlatform">
-                    <option value="YouTube">📺 YouTube Task</option>
-                    <option value="Facebook">👥 Facebook Task</option>
-                    <option value="Instagram">📸 Instagram Task</option>
+                    <option value="YouTube">📺 ইউটিউব টাস্ক</option>
+                    <option value="Facebook">👥 ফেসবুক টাস্ক</option>
+                    <option value="Instagram">📸 ইনস্টাগ্রাম টাস্ক</option>
                 </select>
-                <input type="text" id="taskTitle" placeholder="Task Title (e.g. Subscribe our channel)">
-                <input type="text" id="taskUrl" placeholder="Target Link (https://...)">
-                <input type="number" id="taskReward" placeholder="Reward Coins (e.g. 1000)">
-                <button onclick="createNewSocialTask()">Publish Task</button>
+                <input type="text" id="taskTitle" placeholder="টাস্কের নাম">
+                <input type="text" id="taskUrl" placeholder="লিংক (https://...)">
+                <input type="number" id="taskReward" placeholder="রিওয়ার্ড কয়েন">
+                <button onclick="createNewSocialTask()">টাস্ক পাবলিশ করুন</button>
             </div>
-            <h3>Active Social Tasks List</h3>
-            <div style="max-height: 250px; overflow-y: auto;">
+            <h3>অ্যাক্টিভ টাস্কের তালিকা</h3>
+            <div style="max-height: 220px; overflow-y: auto;">
                 <table id="socialTasksTable">
                     <thead>
-                        <tr><th>Platform</th><th>Title</th><th>Reward</th><th>Action</th></tr>
+                        <tr><th>প্লাটফর্ম</th><th>শিরোনাম</th><th>রিওয়ার্ড</th><th>অ্যাকশন</th></tr>
                     </thead>
                     <tbody></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Section 3: Announcements & Posts Management -->
+        <!-- সেকশন ৫: অ্যাপের অভ্যন্তরে ঘোষণা বা পোস্ট ম্যানেজমেন্ট -->
         <div class="section-box">
-            <h2>📢 Manage Announcements & Posts</h2>
+            <h2>📢 অ্যাপের নোটিশ বোর্ড বা পোস্ট তৈরি করুন</h2>
             <div class="form-group">
-                <input type="text" id="postTitle" placeholder="Post Title">
-                <textarea id="postContent" placeholder="Write announcement or news here..." style="min-height: 80px;"></textarea>
-                <button onclick="createNewPost()">Publish Post</button>
+                <input type="text" id="postTitle" placeholder="পোস্টের শিরোনাম">
+                <textarea id="postContent" placeholder="এখানে বিস্তারিত ঘোষণা লিখুন..." style="min-height: 80px;"></textarea>
+                <button onclick="createNewPost()">পোস্ট পাবলিশ করুন</button>
             </div>
-            <h3>Active Posts List</h3>
-            <div style="max-height: 250px; overflow-y: auto;">
+            <h3>সকল পোস্টের তালিকা</h3>
+            <div style="max-height: 220px; overflow-y: auto;">
                 <table id="postsTable">
                     <thead>
-                        <tr><th>Title</th><th>Content</th><th>Action</th></tr>
+                        <tr><th>শিরোনাম</th><th>বিবরণ</th><th>অ্যাকশন</th></tr>
                     </thead>
                     <tbody></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Section 4: User Management (Bonus, Deduct Coins, View Details) -->
+        <!-- সেকশন ৬: ইউজার কন্ট্রোল ও সিরিয়াল লিস্ট -->
         <div class="section-box">
-            <h2>👥 User Control & Management</h2>
+            <h2>👥 সকল ইউজারের তালিকা ও ব্যালেন্স কন্ট্রোল (সিরিয়াল অনুযায়ী)</h2>
             <div class="form-group">
-                <input type="text" id="targetUidInput" placeholder="Enter User UID (e.g., TG_12345678)">
-                <input type="number" id="targetAmountInput" placeholder="Amount of Coins (+ / -)">
-                <button class="btn-success" onclick="modifyUserCoins('add')">Add Bonus</button>
-                <button class="btn-danger" onclick="modifyUserCoins('deduct')">Deduct Coins</button>
+                <input type="text" id="targetUidInput" placeholder="ইউজারের UID দিন (যেমন: TG_12345678)">
+                <input type="number" id="targetAmountInput" placeholder="কয়েনের পরিমাণ (+ / -)">
+                <button class="btn-success" onclick="modifyUserCoins('add')">বোনাস যোগ করুন</button>
+                <button class="btn-danger" onclick="modifyUserCoins('deduct')">কয়েন কেটে নিন</button>
             </div>
 
-            <h3>All Users Data & TON Spent Logs</h3>
-            <div style="max-height: 350px; overflow-y: auto;">
+            <h3>ইউজারদের সিরিয়াল লিস্ট ও ডাটা</h3>
+            <div style="max-height: 400px; overflow-y: auto;">
                 <table id="usersTable">
                     <thead>
                         <tr>
+                            <th>ক্রমিক নং</th>
                             <th>UID</th>
-                            <th>Name</th>
-                            <th>Coins</th>
-                            <th>TON Spent</th>
-                            <th>Wallet Address</th>
+                            <th>নাম</th>
+                            <th>কয়েন</th>
+                            <th>খরচ করা TON</th>
+                            <th>ওয়ালেট অ্যাড্রেস</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -281,4 +306,291 @@
         const firebaseConfig = {
             apiKey: "AIzaSyDTHuKdLhSJqQJTD9EF-m3s3lZJJXt0HcC0",
             authDomain: "tap-tap-4ea57.firebaseapp.com",
-            
+            projectId: "tap-tap-4ea57",
+            storageBucket: "tap-tap-4ea57.firebasestorage.app",
+            messagingSenderId: "882721991361",
+            appId: "1:882721991361:web:84a62978016c87d0514240",
+            measurementId: "G-5F3ZCKRW6N"
+        };
+
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        const db = firebase.database();
+        const storage = firebase.storage();
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
+
+        function saveTelegramConfig() {
+            const token = document.getElementById('tgBotToken').value.trim();
+            const chatId = document.getElementById('tgChatId').value.trim();
+            if (!token || !chatId) {
+                showToast('⚠️ বোট টোকেন এবং চ্যাট আইডি উভয়ই লিখুন!');
+                return;
+            }
+            db.ref('telegramSettings').set({ token, chatId }).then(() => {
+                showToast('✅ টেলিগ্রাম সেটিংস সফলভাবে সেভ হয়েছে!');
+            });
+        }
+
+        db.ref('telegramSettings').once('value', snap => {
+            const val = snap.val();
+            if (val) {
+                if (val.token) document.getElementById('tgBotToken').value = val.token;
+                if (val.chatId) document.getElementById('tgChatId').value = val.chatId;
+            }
+        });
+
+        function sendPostToTelegram() {
+            const title = document.getElementById('tgPostTitle').value.trim();
+            const message = document.getElementById('tgPostMessage').value.trim();
+            const token = document.getElementById('tgBotToken').value.trim();
+            const chatId = document.getElementById('tgChatId').value.trim();
+
+            if (!title || !message || !token || !chatId) {
+                showToast('⚠️ শিরোনাম, মেসেজ, বোট টোকেন ও চ্যাট আইডি পূরণ করা আবশ্যক!');
+                return;
+            }
+
+            const fullText = `<b>📢 ${title}</b>\n\n${message}`;
+            const apiURL = `https://api.telegram.org/bot${token}/sendMessage`;
+
+            showToast('⏳ টেলিগ্রামে পোস্ট পাঠানো হচ্ছে...');
+
+            fetch(apiURL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: fullText,
+                    parse_mode: 'HTML'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.ok) {
+                    showToast('🎉 সফলভাবে টেলিগ্রাম চ্যানেলে পোস্ট চলে গেছে!');
+                    document.getElementById('tgPostTitle').value = '';
+                    document.getElementById('tgPostMessage').value = '';
+                } else {
+                    showToast('❌ টেলিগ্রাম পোস্ট পাঠাতে ব্যর্থ: ' + (data.description || ''));
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('❌ নেটওয়ার্ক বা এপিআই ত্রুটি!');
+            });
+        }
+
+        // সিরিয়াল নম্বর সহ ইউজার ও টোন ডাটা লোড
+        db.ref('players').on('value', snapshot => {
+            const data = snapshot.val() || {};
+            const usersKeys = Object.keys(data);
+            document.getElementById('totalUsersCount').innerText = usersKeys.length;
+
+            let totalCoins = 0;
+            let connectedWallets = 0;
+            let tbody = '';
+            let serialNo = 1; // সিরিয়াল কাউন্টার
+
+            db.ref('adminTonLogs').once('value', tonSnap => {
+                const tonLogs = tonSnap.val() || {};
+                let totalTon = 0;
+                Object.values(tonLogs).forEach(log => {
+                    totalTon += (log.totalTonSpent || 0);
+                });
+                document.getElementById('totalTonCollected').innerText = totalTon.toFixed(2) + ' TON';
+
+                usersKeys.forEach(uid => {
+                    const user = data[uid];
+                    totalCoins += (user.coins || 0);
+                    if (user.wallet && user.wallet.length > 5) connectedWallets++;
+                    const userTon = tonLogs[uid]?.totalTonSpent || 0;
+
+                    tbody += `
+                        <tr>
+                            <td style="font-weight:900; color:#f472b6;">#${serialNo++}</td>
+                            <td><code>${uid}</code></td>
+                            <td>${user.name || 'ইউজার'}</td>
+                            <td>${Math.floor(user.coins || 0).toLocaleString()}</td>
+                            <td style="color:#38bdf8;">${userTon.toFixed(2)} TON</td>
+                            <td style="word-break:break-all; font-size:11px; color:#94a3b8;">${user.wallet || 'কানেক্ট করা নেই'}</td>
+                        </tr>
+                    `;
+                });
+
+                document.getElementById('totalWalletsCount').innerText = connectedWallets;
+                document.getElementById('totalCoinsMined').innerText = Math.floor(totalCoins).toLocaleString();
+                document.getElementById('usersTable').querySelector('tbody').innerHTML = tbody;
+            });
+        });
+
+        function updateDailyCombo() {
+            const c1 = document.getElementById('comboCard1').value.trim();
+            const c2 = document.getElementById('comboCard2').value.trim();
+            const c3 = document.getElementById('comboCard3').value.trim();
+
+            if (!c1 || !c2 || !c3) {
+                showToast('⚠️ অনুগ্রহ করে তিনটি কার্ডের আইডিই লিখুন!');
+                return;
+            }
+
+            db.ref('dailyComboSettings').set({
+                cards: [c1, c2, c3],
+                date: new Date().toDateString()
+            }).then(() => {
+                showToast('🎉 আজকের ডেইলি কম্বো সফলভাবে আপডেট হয়েছে!');
+            });
+        }
+
+        db.ref('dailyComboSettings').on('value', snap => {
+            const val = snap.val();
+            if (val && val.cards) {
+                document.getElementById('currentComboStatus').innerText = `বর্তমান কম্বো কার্ডসমূহ: ${val.cards.join(', ')}`;
+            }
+        });
+
+        function uploadCustomCoinImage() {
+            const fileInput = document.getElementById('coinImageFile');
+            if (fileInput.files.length === 0) {
+                showToast('⚠️ প্রথমে একটি ছবি সিলেক্ট করুন!');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            showToast('⏳ ছবি আপলোড হচ্ছে...');
+
+            const storageRef = storage.ref('app_assets/custom_tap_coin.png');
+            storageRef.put(file).then(snapshot => {
+                snapshot.ref.getDownloadURL().then(downloadURL => {
+                    db.ref('appSettings/customCoinImgUrl').set(downloadURL);
+                    showToast('🎉 কয়েনের ছবি সফলভাবে পরিবর্তন করা হয়েছে!');
+                });
+            }).catch(error => {
+                console.error("Upload error:", error);
+                showToast('❌ ছবি আপলোড ব্যর্থ হয়েছে!');
+            });
+        }
+
+        function createNewSocialTask() {
+            const platform = document.getElementById('taskPlatform').value;
+            const title = document.getElementById('taskTitle').value.trim();
+            const url = document.getElementById('taskUrl').value.trim();
+            const reward = parseInt(document.getElementById('taskReward').value);
+
+            if (!title || !url || isNaN(reward)) {
+                showToast('⚠️ সকল ঘর সঠিকভাবে পূরণ করুন!');
+                return;
+            }
+
+            const newTaskRef = db.ref('socialTasks').push();
+            newTaskRef.set({
+                platform: platform,
+                title: title,
+                url: url,
+                reward: reward,
+                timestamp: Date.now()
+            }).then(() => {
+                document.getElementById('taskTitle').value = '';
+                document.getElementById('taskUrl').value = '';
+                document.getElementById('taskReward').value = '';
+                showToast('📱 সোশ্যাল টাস্ক পাবলিশ করা হয়েছে!');
+            });
+        }
+
+        db.ref('socialTasks').on('value', snapshot => {
+            const tasks = snapshot.val() || {};
+            let html = '';
+            Object.keys(tasks).forEach(taskId => {
+                const task = tasks[taskId];
+                html += `
+                    <tr>
+                        <td><strong>${task.platform}</strong></td>
+                        <td>${task.title}</td>
+                        <td style="color:#34d399;">+${task.reward.toLocaleString()} AR</td>
+                        <td><button class="btn-action btn-danger" onclick="deleteSocialTask('${taskId}')">ডিলিট</button></td>
+                    </tr>
+                `;
+            });
+            document.getElementById('socialTasksTable').querySelector('tbody').innerHTML = html;
+        });
+
+        function deleteSocialTask(taskId) {
+            db.ref('socialTasks/' + taskId).remove().then(() => {
+                showToast('🗑️ টাস্ক ডিলিট করা হয়েছে!');
+            });
+        }
+
+        function createNewPost() {
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+            if (!title || !content) {
+                showToast('⚠️ শিরোনাম এবং বিবরণ উভয়ই লিখুন!');
+                return;
+            }
+
+            const newPostRef = db.ref('posts').push();
+            newPostRef.set({
+                title: title,
+                content: content,
+                timestamp: Date.now()
+            }).then(() => {
+                document.getElementById('postTitle').value = '';
+                document.getElementById('postContent').value = '';
+                showToast('📢 পোস্ট সফলভাবে পাবলিশ হয়েছে!');
+            });
+        }
+
+        db.ref('posts').on('value', snapshot => {
+            const posts = snapshot.val() || {};
+            let html = '';
+            Object.keys(posts).forEach(postId => {
+                const post = posts[postId];
+                html += `
+                    <tr>
+                        <td><strong>${post.title}</strong></td>
+                        <td>${post.content}</td>
+                        <td><button class="btn-action btn-danger" onclick="deletePost('${postId}')">ডিলিট</button></td>
+                    </tr>
+                `;
+            });
+            document.getElementById('postsTable').querySelector('tbody').innerHTML = html;
+        });
+
+        function deletePost(postId) {
+            db.ref('posts/' + postId).remove().then(() => {
+                showToast('🗑️ পোস্ট ডিলিট করা হয়েছে!');
+            });
+        }
+
+        function modifyUserCoins(action) {
+            const uid = document.getElementById('targetUidInput').value.trim();
+            const amount = parseFloat(document.getElementById('targetAmountInput').value);
+
+            if (!uid || isNaN(amount)) {
+                showToast('⚠️ সঠিক UID এবং কয়েনের পরিমাণ লিখুন!');
+                return;
+            }
+
+            db.ref('players/' + uid + '/coins').once('value', snap => {
+                if (!snap.exists()) {
+                    showToast('❌ এই UID এর কোনো ইউজার ডাটাবেজে পাওয়া যায়নি!');
+                    return;
+                }
+
+                let currentCoins = snap.val() || 0;
+                let newCoins = action === 'add' ? currentCoins + amount : Math.max(0, currentCoins - amount);
+
+                db.ref('players/' + uid + '/coins').set(newCoins).then(() => {
+                    showToast(`✅ ইউজারের কয়েন সফলভাবে ${action === 'add' ? 'যোগ করা হয়েছে' : 'কেটে নেওয়া হয়েছে'}!`);
+                    document.getElementById('targetUidInput').value = '';
+                    document.getElementById('targetAmountInput').value = '';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
