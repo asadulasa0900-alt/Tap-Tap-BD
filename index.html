@@ -689,7 +689,7 @@
         <!-- TAB 4: FRIENDS -->
         <div id="tab-friends" class="tab-page">
             <div class="section-title">👥 Invite Friends!</div>
-            <p style="text-align: center; font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">For every successful referral, you and your friend will get <strong style="color: #f472b6;">+1,000 AR Coin</strong>!</p>
+            <p style="text-align: center; font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">For every successful referral, you and your friend will get <strong style="color: #f472b6;">+10,000 AR Coin</strong>!</p>
             
             <div class="list-card" style="flex-direction: column; align-items: stretch; gap: 10px;">
                 <div style="font-size: 12px; color: #94a3b8;">Your Unique Referral Link:</div>
@@ -961,7 +961,7 @@
                 localStorage.setItem('ar_uid', gameState.uid);
                 localStorage.setItem('ar_name', gameState.name);
 
-                // Load from LocalStorage first to secure balance
+                // Load from LocalStorage first for instant render
                 const savedStateJson = localStorage.getItem('ar_gamestate_' + gameState.uid);
                 if (savedStateJson) {
                     try {
@@ -972,22 +972,32 @@
                     } catch(e) { console.log("Local parse error", e); }
                 }
 
+                // --- রেফারেল লিংক ট্র্যাক এবং ১০,০০০ টোকেন বোনাস লজিক ---
                 const urlParams = new URLSearchParams(window.location.search);
                 const refParam = urlParams.get('ref') || urlParams.get('start');
-                if (refParam) { localStorage.setItem('ar_pending_ref', refParam); }
+                
+                if (refParam && !localStorage.getItem('ar_referred_status')) {
+                    localStorage.setItem('ar_pending_ref', refParam);
+                    localStorage.setItem('ar_referred_status', 'processed');
+                }
 
                 const refBy = localStorage.getItem('ar_pending_ref');
                 if (refBy && refBy !== gameState.uid) {
-                    gameState.coins += 1000;
+                    // নতুন ইউজারকে ১০,০০০ টোকেন বোনাস দেওয়া
+                    gameState.coins += 10000;
+                    
+                    // ইনভাইটকারীর ফায়ারবেস অ্যাকাউন্টে ১০,০০০ কয়েন ও রেফার কাউন্ট যোগ করা
                     db.ref('players/' + refBy + '/friends').transaction(c => (c || 0) + 1);
-                    db.ref('players/' + refBy + '/pendingRefBonus').transaction(c => (c || 0) + 1000);
+                    db.ref('players/' + refBy + '/pendingRefBonus').transaction(c => (c || 0) + 10000);
+                    
                     localStorage.removeItem('ar_pending_ref');
                 }
+                // ----------------------------------------------------
 
                 renderMineCards();
                 updateUI();
 
-                // Load Cloud Data & Listen for Real-time Admin Bonus Updates
+                // Load Cloud Data & Listen for Real-time Admin/Referral Bonuses
                 loadCloudGameData(() => {
                     initGameLoops();
                     listenRealtimeUpdates();
@@ -1005,8 +1015,8 @@
             db.ref('players/' + gameState.uid).once('value', snapshot => {
                 const cloudData = snapshot.val();
                 if (cloudData) {
-                    if (cloudData.coins && cloudData.coins > gameState.coins) {
-                        gameState.coins = cloudData.coins;
+                    if (cloudData.coins !== undefined && Number(cloudData.coins) > gameState.coins) {
+                        gameState.coins = Number(cloudData.coins);
                     }
                     if (cloudData.pph && cloudData.pph > gameState.pph) {
                         gameState.pph = cloudData.pph;
@@ -1034,15 +1044,13 @@
             });
         }
 
-        // --- REAL-TIME LISTENER FOR ADMIN PANEL COIN BONUSES ---
+        // --- REAL-TIME LISTENER FOR ADMIN PANEL COIN GIFTS & REFERRALS ---
         function listenRealtimeUpdates() {
             if (!gameState.uid) return;
 
-            // Live listener for direct coin updates from Admin Panel
             db.ref('players/' + gameState.uid + '/coins').on('value', snap => {
                 if (snap.exists()) {
                     const cloudCoins = Number(snap.val()) || 0;
-                    // If admin added coins and cloud coin is greater or different, sync immediately
                     if (cloudCoins !== gameState.coins) {
                         let diff = cloudCoins - gameState.coins;
                         gameState.coins = cloudCoins;
