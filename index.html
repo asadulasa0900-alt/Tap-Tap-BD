@@ -872,7 +872,6 @@
             lastActive: Date.now()
         };
 
-        // Admin Combo Settings will override this if active in Firebase
         let todaysCombo = {
             date: new Date().toDateString(),
             cards: ['card5', 'card55', 'card140']
@@ -962,6 +961,19 @@
                 localStorage.setItem('ar_uid', gameState.uid);
                 localStorage.setItem('ar_name', gameState.name);
 
+                // Load from LocalStorage immediately to prevent any flicker or zero balance
+                const localCoins = localStorage.getItem('ar_coins_' + gameState.uid);
+                const localPph = localStorage.getItem('ar_pph_' + gameState.uid);
+                const localCards = localStorage.getItem('ar_cards_' + gameState.uid);
+                const localEnergy = localStorage.getItem('ar_energy_' + gameState.uid);
+
+                if (localCoins !== null) gameState.coins = parseFloat(localCoins);
+                if (localPph !== null) gameState.pph = parseFloat(localPph);
+                if (localCards !== null) {
+                    try { gameState.cards = JSON.parse(localCards); } catch(e){}
+                }
+                if (localEnergy !== null) gameState.energy = parseFloat(localEnergy);
+
                 const urlParams = new URLSearchParams(window.location.search);
                 const refParam = urlParams.get('ref') || urlParams.get('start');
                 if (refParam) { localStorage.setItem('ar_pending_ref', refParam); }
@@ -974,6 +986,7 @@
                     localStorage.removeItem('ar_pending_ref');
                 }
 
+                // Load Cloud Data once, only if local storage was empty
                 loadCloudGameData(() => {
                     initGameLoops();
                     listenRealtimeUpdates();
@@ -991,12 +1004,24 @@
             db.ref('players/' + gameState.uid).once('value', snapshot => {
                 const cloudData = snapshot.val();
                 if (cloudData) {
+                    // Only merge if cloud coins are higher or local is 0
+                    if (cloudData.coins > gameState.coins) {
+                        gameState.coins = cloudData.coins;
+                    }
+                    if (cloudData.pph > gameState.pph) {
+                        gameState.pph = cloudData.pph;
+                    }
+                    if (cloudData.cards && Object.keys(cloudData.cards).length > 0) {
+                        gameState.cards = { ...cloudData.cards, ...gameState.cards };
+                    }
                     gameState = {
                         ...gameState,
                         ...cloudData,
-                        tasks: cloudData.tasks || {},
-                        cards: cloudData.cards || {},
-                        adLimits: cloudData.adLimits || { lastDate: new Date().toDateString(), ad1: 0, ad2: 0 }
+                        tasks: { ...cloudData.tasks, ...gameState.tasks },
+                        cards: gameState.cards,
+                        coins: gameState.coins,
+                        pph: gameState.pph,
+                        adLimits: cloudData.adLimits || gameState.adLimits
                     };
 
                     checkAndResetDailyAdLimits();
@@ -1070,17 +1095,6 @@
                     db.ref('players/' + gameState.uid + '/pendingRefBonus').set(0);
                     showToast(`🎁 Referral bonus +${bonus.toLocaleString()} AR Coin added!`);
                     updateUI();
-                }
-            });
-
-            // Listen if Admin modified coins directly from admin panel
-            db.ref('players/' + gameState.uid + '/coins').on('value', snap => {
-                if (snap.exists()) {
-                    const cloudCoins = snap.val();
-                    if (Math.abs(cloudCoins - gameState.coins) > 500) {
-                        gameState.coins = cloudCoins;
-                        updateUI();
-                    }
                 }
             });
 
@@ -1190,13 +1204,19 @@
             }
         }
 
-        // Safe Instant Firebase Saving Function
+        // Secure LocalStorage + Firebase Instant Save
         function saveGameDataInstant() {
             gameState.lastActive = Date.now();
             if (gameState.uid) {
+                // Save locally first to guarantee persistence on refresh
+                localStorage.setItem('ar_coins_' + gameState.uid, gameState.coins);
+                localStorage.setItem('ar_pph_' + gameState.uid, gameState.pph);
+                localStorage.setItem('ar_cards_' + gameState.uid, JSON.stringify(gameState.cards));
+                localStorage.setItem('ar_energy_' + gameState.uid, gameState.energy);
+
                 const { friends, pendingRefBonus, ...safeData } = gameState;
                 db.ref('players/' + gameState.uid).set(safeData).catch(err => {
-                    console.error("Save error:", err);
+                    console.error("Firebase save error:", err);
                 });
             }
         }
@@ -1224,7 +1244,7 @@
             if (loopsStarted) return;
             loopsStarted = true;
 
-            // 1 Second loop for energy & pph
+            // 1 Second loop for energy, pph and local saving
             setInterval(() => {
                 checkAndResetDailyAdLimits();
                 const today = new Date().toDateString();
@@ -1261,6 +1281,7 @@
                 if (navigator.vibrate) navigator.vibrate(15);
                 showFloatingText(e.clientX, e.clientY, '+' + gameState.multitap);
                 updateUI();
+                saveGameDataInstant(); // Immediate save on tap
             });
         }
 
