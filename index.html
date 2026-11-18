@@ -587,7 +587,7 @@
             </div>
         </div>
 
-        <!-- TAB 4: EARN (Adsterra & Tasks) -->
+        <!-- TAB 4: EARN (Adsterra & Tasks with Daily Limits) -->
         <div id="tab-earn" class="tab-page">
             <div class="section-title">💰 Earn More Coins</div>
             
@@ -599,20 +599,22 @@
                 <button class="action-btn" id="dailyTaskBtn" onclick="claimDailyReward()">Claim</button>
             </div>
 
+            <!-- Ad 1 (Daily Limit: 5 times) -->
             <div class="list-card">
                 <div>
-                    <div style="font-size: 14px; font-weight: 900;">📺 বিজ্ঞাপন দেখে কয়েন অর্জন করুন (Ad 1)</div>
-                    <div style="font-size: 12px; color: #f472b6; font-weight: 800;">+1,500 AR Coin</div>
+                    <div style="font-size: 14px; font-weight: 900;">📺 বিজ্ঞাপন ১ (Watch Ad)</div>
+                    <div style="font-size: 11px; color: #f472b6; font-weight: 800;">+1,500 AR | বাকি: <span id="ad1Count">5</span>/5 বার</div>
                 </div>
-                <button class="action-btn" id="defaultAd1Btn" onclick="completeSocialTask('defaultAd1', 1500, 'https://auctionr.org/4/03e62852e0047e5b9397cdccfc07f679')">Watch Ad</button>
+                <button class="action-btn" id="watchAd1Btn" onclick="watchLimitAd('ad1', 'https://auctionr.org/4/03e62852e0047e5b9397cdccfc07f679', 1500, 5)">Watch</button>
             </div>
 
+            <!-- Ad 2 (Daily Limit: 5 times) -->
             <div class="list-card">
                 <div>
-                    <div style="font-size: 14px; font-weight: 900;">📺 বিজ্ঞাপন দেখে কয়েন অর্জন করুন (Ad 2)</div>
-                    <div style="font-size: 12px; color: #f472b6; font-weight: 800;">+1,500 AR Coin</div>
+                    <div style="font-size: 14px; font-weight: 900;">📺 বিজ্ঞাপন ২ (Watch Ad)</div>
+                    <div style="font-size: 11px; color: #f472b6; font-weight: 800;">+1,500 AR | বাকি: <span id="ad2Count">5</span>/5 বার</div>
                 </div>
-                <button class="action-btn" id="defaultAd2Btn" onclick="completeSocialTask('defaultAd2', 1500, 'https://auctionr.org/4/9a5c7b554d5eb6baf0f960b61bcfc927')">Watch Ad</button>
+                <button class="action-btn" id="watchAd2Btn" onclick="watchLimitAd('ad2', 'https://auctionr.org/4/9a5c7b554d5eb6baf0f960b61bcfc927', 1500, 5)">Watch</button>
             </div>
 
             <div id="dynamicTasksContainer"></div>
@@ -743,6 +745,7 @@
             lastDaily: '',
             tasks: {},
             cards: {},
+            adLimits: { lastDate: new Date().toDateString(), ad1: 0, ad2: 0 },
             wallet: '',
             friends: 0,
             tonSpent: 0,
@@ -843,7 +846,6 @@
                     localStorage.removeItem('ar_pending_ref');
                 }
 
-                // ফায়ারবেস থেকে ডাটা নিশ্চিতভাবে লোড করার পর গেম লুপ শুরু হবে
                 loadCloudGameData(() => {
                     initGameLoops();
                     listenRealtimeUpdates();
@@ -863,8 +865,11 @@
                         ...gameState,
                         ...cloudData,
                         tasks: cloudData.tasks || {},
-                        cards: cloudData.cards || {}
+                        cards: cloudData.cards || {},
+                        adLimits: cloudData.adLimits || { lastDate: new Date().toDateString(), ad1: 0, ad2: 0 }
                     };
+
+                    checkAndResetDailyAdLimits();
 
                     const today = new Date().toDateString();
                     if (gameState.lastEnergyDate !== today) {
@@ -894,6 +899,19 @@
                 updateUI();
                 if (callback) callback();
             });
+        }
+
+        function checkAndResetDailyAdLimits() {
+            const todayStr = new Date().toDateString();
+            if (!gameState.adLimits) {
+                gameState.adLimits = { lastDate: todayStr, ad1: 0, ad2: 0 };
+            }
+            if (gameState.adLimits.lastDate !== todayStr) {
+                gameState.adLimits.lastDate = todayStr;
+                gameState.adLimits.ad1 = 0;
+                gameState.adLimits.ad2 = 0;
+                saveGameData();
+            }
         }
 
         function listenRealtimeUpdates() {
@@ -1008,6 +1026,7 @@
             loopsStarted = true;
 
             setInterval(() => {
+                checkAndResetDailyAdLimits();
                 const today = new Date().toDateString();
                 if (gameState.lastEnergyDate !== today) {
                     gameState.freeEnergy = 3;
@@ -1022,7 +1041,6 @@
                 updateUI();
             }, 1000);
 
-            // অটো সেভ প্রতি ৩ সেকেন্ডে
             setInterval(saveGameData, 3000);
 
             document.addEventListener('visibilitychange', () => {
@@ -1056,6 +1074,7 @@
         }
 
         function updateUI() {
+            checkAndResetDailyAdLimits();
             const wholeCoins = Math.floor(gameState.coins);
             
             const cBal = document.getElementById('coinBalance');
@@ -1097,6 +1116,16 @@
             let completedTasksCount = Object.keys(gameState.tasks || {}).length;
             const pTasksCount = document.getElementById('profileTasksCount');
             if (pTasksCount) pTasksCount.innerText = completedTasksCount + ' টি';
+
+            // Ad Counter updates
+            if (gameState.adLimits) {
+                const ad1Rem = 5 - (gameState.adLimits.ad1 || 0);
+                const ad2Rem = 5 - (gameState.adLimits.ad2 || 0);
+                const c1 = document.getElementById('ad1Count');
+                const c2 = document.getElementById('ad2Count');
+                if (c1) c1.innerText = Math.max(0, ad1Rem);
+                if (c2) c2.innerText = Math.max(0, ad2Rem);
+            }
 
             let league = "Bronze", lvl = 1, nextGoal = 5000;
             if (wholeCoins >= 1000000) { league = "Grandmaster"; lvl = 10; nextGoal = 10000000; }
@@ -1286,23 +1315,39 @@
             showToast('🎁 ডেইলি বোনাস +2,500 AR Coin যোগ হয়েছে!');
         }
 
-        let taskPending = false;
-        function completeSocialTask(taskKey, reward, url) {
-            if (gameState.tasks[taskKey] || taskPending) return;
-            const btnId = (taskKey.startsWith('defaultAd') ? taskKey + 'Btn' : 'taskBtn_' + taskKey);
+        // Limit-based Ad Watching System (5 times limit each, auto reset daily)
+        let adTaskPending = false;
+        function watchLimitAd(adKey, url, rewardAmount, maxLimit) {
+            checkAndResetDailyAdLimits();
+
+            if (!gameState.adLimits) {
+                gameState.adLimits = { lastDate: new Date().toDateString(), ad1: 0, ad2: 0 };
+            }
+
+            let currentViews = gameState.adLimits[adKey] || 0;
+            if (currentViews >= maxLimit) {
+                showToast('⚠️ আজকের মতো এই অ্য়াডের লিমিট শেষ! আগামীকাল আবার দেখতে পাবেন।');
+                return;
+            }
+
+            if (adTaskPending) return;
+            adTaskPending = true;
+
+            const btnId = (adKey === 'ad1' ? 'watchAd1Btn' : 'watchAd2Btn');
             const btn = document.getElementById(btnId);
-            
-            taskPending = true;
             if (btn) btn.innerText = 'Verifying...';
+
             window.open(url, '_blank');
 
             setTimeout(() => {
-                gameState.tasks[taskKey] = true;
-                gameState.coins += reward;
-                taskPending = false;
+                gameState.adLimits[adKey] = (gameState.adLimits[adKey] || 0) + 1;
+                gameState.coins += rewardAmount;
+                adTaskPending = false;
+
+                if (btn) btn.innerText = 'Watch';
                 updateUI();
                 saveGameData();
-                showToast(`🎉 টাস্ক ভেরিফাই হয়েছে! +${reward.toLocaleString()} AR Coin যোগ হয়েছে!`);
+                showToast(`🎉 সফল! +${rewardAmount.toLocaleString()} AR Coin যোগ হয়েছে!`);
             }, 5000);
         }
 
