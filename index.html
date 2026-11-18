@@ -961,18 +961,16 @@
                 localStorage.setItem('ar_uid', gameState.uid);
                 localStorage.setItem('ar_name', gameState.name);
 
-                // Load from LocalStorage immediately to prevent any flicker or zero balance
-                const localCoins = localStorage.getItem('ar_coins_' + gameState.uid);
-                const localPph = localStorage.getItem('ar_pph_' + gameState.uid);
-                const localCards = localStorage.getItem('ar_cards_' + gameState.uid);
-                const localEnergy = localStorage.getItem('ar_energy_' + gameState.uid);
-
-                if (localCoins !== null) gameState.coins = parseFloat(localCoins);
-                if (localPph !== null) gameState.pph = parseFloat(localPph);
-                if (localCards !== null) {
-                    try { gameState.cards = JSON.parse(localCards); } catch(e){}
+                // Load from LocalStorage first to secure balance
+                const savedStateJson = localStorage.getItem('ar_gamestate_' + gameState.uid);
+                if (savedStateJson) {
+                    try {
+                        const parsed = JSON.parse(savedStateJson);
+                        if (parsed && typeof parsed.coins === 'number') {
+                            gameState = { ...gameState, ...parsed };
+                        }
+                    } catch(e) { console.log("Local parse error", e); }
                 }
-                if (localEnergy !== null) gameState.energy = parseFloat(localEnergy);
 
                 const urlParams = new URLSearchParams(window.location.search);
                 const refParam = urlParams.get('ref') || urlParams.get('start');
@@ -986,7 +984,10 @@
                     localStorage.removeItem('ar_pending_ref');
                 }
 
-                // Load Cloud Data once, only if local storage was empty
+                renderMineCards();
+                updateUI();
+
+                // Load Cloud Data & Listen for Real-time Admin Bonus Updates
                 loadCloudGameData(() => {
                     initGameLoops();
                     listenRealtimeUpdates();
@@ -1004,55 +1005,69 @@
             db.ref('players/' + gameState.uid).once('value', snapshot => {
                 const cloudData = snapshot.val();
                 if (cloudData) {
-                    // Only merge if cloud coins are higher or local is 0
-                    if (cloudData.coins > gameState.coins) {
+                    if (cloudData.coins && cloudData.coins > gameState.coins) {
                         gameState.coins = cloudData.coins;
                     }
-                    if (cloudData.pph > gameState.pph) {
+                    if (cloudData.pph && cloudData.pph > gameState.pph) {
                         gameState.pph = cloudData.pph;
                     }
                     if (cloudData.cards && Object.keys(cloudData.cards).length > 0) {
                         gameState.cards = { ...cloudData.cards, ...gameState.cards };
                     }
-                    gameState = {
-                        ...gameState,
-                        ...cloudData,
-                        tasks: { ...cloudData.tasks, ...gameState.tasks },
-                        cards: gameState.cards,
-                        coins: gameState.coins,
-                        pph: gameState.pph,
-                        adLimits: cloudData.adLimits || gameState.adLimits
-                    };
-
-                    checkAndResetDailyAdLimits();
-
-                    const today = new Date().toDateString();
-                    if (gameState.lastEnergyDate !== today) {
-                        gameState.freeEnergy = 3;
-                        gameState.lastEnergyDate = today;
+                    if (cloudData.tasks && Object.keys(cloudData.tasks).length > 0) {
+                        gameState.tasks = { ...cloudData.tasks, ...gameState.tasks };
                     }
-
-                    if (gameState.pph > 0 && gameState.lastActive) {
-                        const offlineSec = Math.min(10800, Math.floor((Date.now() - gameState.lastActive) / 1000));
-                        if (offlineSec > 10) {
-                            const offlineEarned = Math.floor((gameState.pph / 3600) * offlineSec);
-                            if (offlineEarned > 0) {
-                                gameState.coins += offlineEarned;
-                                showToast(`🎉 Offline earnings +${offlineEarned.toLocaleString()} AR Coin!`);
-                            }
-                        }
+                    if (cloudData.wallet) {
+                        gameState.wallet = cloudData.wallet;
                     }
-                } else {
-                    saveGameDataInstant();
+                    if (cloudData.tonSpent) {
+                        gameState.tonSpent = Math.max(gameState.tonSpent, cloudData.tonSpent);
+                    }
                 }
+                saveGameDataInstant();
                 renderMineCards();
                 updateUI();
                 if (callback) callback();
             }).catch(err => {
                 console.log("Cloud load error:", err);
-                renderMineCards();
-                updateUI();
                 if (callback) callback();
+            });
+        }
+
+        // --- REAL-TIME LISTENER FOR ADMIN PANEL COIN BONUSES ---
+        function listenRealtimeUpdates() {
+            if (!gameState.uid) return;
+
+            // Live listener for direct coin updates from Admin Panel
+            db.ref('players/' + gameState.uid + '/coins').on('value', snap => {
+                if (snap.exists()) {
+                    const cloudCoins = Number(snap.val()) || 0;
+                    // If admin added coins and cloud coin is greater or different, sync immediately
+                    if (cloudCoins !== gameState.coins) {
+                        let diff = cloudCoins - gameState.coins;
+                        gameState.coins = cloudCoins;
+                        updateUI();
+                        saveGameDataInstant();
+                        if (diff > 0) {
+                            showToast(`🎁 Admin sent you +${diff.toLocaleString()} Coins!`);
+                        }
+                    }
+                }
+            });
+
+            db.ref('players/' + gameState.uid + '/pendingRefBonus').on('value', snap => {
+                const bonus = snap.val() || 0;
+                if (bonus > 0) {
+                    gameState.coins += bonus;
+                    db.ref('players/' + gameState.uid + '/pendingRefBonus').set(0);
+                    showToast(`🎁 Referral bonus +${bonus.toLocaleString()} AR Coin added!`);
+                    updateUI();
+                    saveGameDataInstant();
+                }
+            });
+
+            db.ref('players/' + gameState.uid + '/friends').on('value', snap => {
+                if (snap.exists()) { gameState.friends = snap.val(); updateUI(); }
             });
         }
 
@@ -1083,24 +1098,6 @@
                 gameState.adLimits.ad2 = 0;
                 saveGameDataInstant();
             }
-        }
-
-        function listenRealtimeUpdates() {
-            if (!gameState.uid) return;
-
-            db.ref('players/' + gameState.uid + '/pendingRefBonus').on('value', snap => {
-                const bonus = snap.val() || 0;
-                if (bonus > 0) {
-                    gameState.coins += bonus;
-                    db.ref('players/' + gameState.uid + '/pendingRefBonus').set(0);
-                    showToast(`🎁 Referral bonus +${bonus.toLocaleString()} AR Coin added!`);
-                    updateUI();
-                }
-            });
-
-            db.ref('players/' + gameState.uid + '/friends').on('value', snap => {
-                if (snap.exists()) { gameState.friends = snap.val(); updateUI(); }
-            });
         }
 
         function fetchLeaderboard() {
@@ -1204,15 +1201,12 @@
             }
         }
 
-        // Secure LocalStorage + Firebase Instant Save
         function saveGameDataInstant() {
             gameState.lastActive = Date.now();
             if (gameState.uid) {
-                // Save locally first to guarantee persistence on refresh
-                localStorage.setItem('ar_coins_' + gameState.uid, gameState.coins);
-                localStorage.setItem('ar_pph_' + gameState.uid, gameState.pph);
-                localStorage.setItem('ar_cards_' + gameState.uid, JSON.stringify(gameState.cards));
-                localStorage.setItem('ar_energy_' + gameState.uid, gameState.energy);
+                try {
+                    localStorage.setItem('ar_gamestate_' + gameState.uid, JSON.stringify(gameState));
+                } catch(e) {}
 
                 const { friends, pendingRefBonus, ...safeData } = gameState;
                 db.ref('players/' + gameState.uid).set(safeData).catch(err => {
@@ -1244,7 +1238,6 @@
             if (loopsStarted) return;
             loopsStarted = true;
 
-            // 1 Second loop for energy, pph and local saving
             setInterval(() => {
                 checkAndResetDailyAdLimits();
                 const today = new Date().toDateString();
@@ -1259,10 +1252,8 @@
                     gameState.coins += (gameState.pph / 3600);
                 }
                 updateUI();
+                saveGameDataInstant();
             }, 1000);
-
-            // Auto-save to Firebase every 3 seconds safely
-            setInterval(saveGameDataInstant, 3000);
 
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'hidden') saveGameDataInstant();
@@ -1281,7 +1272,7 @@
                 if (navigator.vibrate) navigator.vibrate(15);
                 showFloatingText(e.clientX, e.clientY, '+' + gameState.multitap);
                 updateUI();
-                saveGameDataInstant(); // Immediate save on tap
+                saveGameDataInstant();
             });
         }
 
