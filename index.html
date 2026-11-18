@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -305,7 +305,7 @@
             text-shadow: 0 2px 10px rgba(244,114,182,0.4);
         }
 
-        /* Cards Design (45+ Progressive Cards) */
+        /* Cards Design (85 Progressive Cards) */
         .grid-cards {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -560,30 +560,30 @@
             </div>
         </div>
 
-        <!-- TAB 2: MINE (45+ Progressive Cards) -->
+        <!-- TAB 2: MINE (85 Progressive Cards) -->
         <div id="tab-mine" class="tab-page">
             <div class="section-title">⛏️ Mine & Upgrade Cards</div>
-            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">কয়েন শেষ হলে TON দিয়েও সরাসরি আপগ্রেড করতে পারবেন!</p>
+            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">Upgrade with TON directly if coins are insufficient!</p>
             <div class="grid-cards" id="mineCardsContainer"></div>
         </div>
 
         <!-- TAB 3: FRIENDS (Referral System) -->
         <div id="tab-friends" class="tab-page">
             <div class="section-title">👥 Invite Friends!</div>
-            <p style="text-align: center; font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">প্রতিটি সফল রেফারে আপনি এবং আপনার বন্ধু পাবেন <strong style="color: #f472b6;">+1,000 AR Coin</strong>!</p>
+            <p style="text-align: center; font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">For every successful referral, you and your friend will get <strong style="color: #f472b6;">+1,000 AR Coin</strong>!</p>
             
             <div class="list-card" style="flex-direction: column; align-items: stretch; gap: 10px;">
-                <div style="font-size: 12px; color: #94a3b8;">আপনার ইউনিক রেফারেল লিংক:</div>
+                <div style="font-size: 12px; color: #94a3b8;">Your Unique Referral Link:</div>
                 <input type="text" id="refLinkBox" readonly style="padding: 12px; background: #0f172a; border: 1px solid #8b5cf6; color: #f472b6; border-radius: 12px; font-size: 12px; font-weight: 700; width: 100%;">
-                <button class="action-btn" onclick="copyRefLink()">📋 লিংক কপি করুন</button>
+                <button class="action-btn" onclick="copyRefLink()">📋 Copy Link</button>
             </div>
 
             <div class="list-card">
                 <div>
-                    <div style="font-size: 14px; font-weight: 900;">মোট রেফারেল বন্ধু</div>
-                    <div style="font-size: 11px; color: #94a3b8;">রেফার বোনাস অটোমেটিক যুক্ত হয়</div>
+                    <div style="font-size: 14px; font-weight: 900;">Total Referred Friends</div>
+                    <div style="font-size: 11px; color: #94a3b8;">Referral bonus is added automatically</div>
                 </div>
-                <div style="font-size: 18px; font-weight: 900; color: #34d399;"><span id="totalFriendsCount">0</span> জন</div>
+                <div style="font-size: 18px; font-weight: 900; color: #34d399;"><span id="totalFriendsCount">0</span> Users</div>
             </div>
         </div>
 
@@ -593,7 +593,7 @@
             
             <div class="list-card">
                 <div>
-                    <div style="font-size: 14px; font-weight: 900;">🎁 ডেইলি রিওয়ার্ড (Daily Check-in)</div>
+                    <div style="font-size: 14px; font-weight: 900;">🎁 Daily Reward (Daily Check-in)</div>
                     <div style="font-size: 12px; color: #f472b6; font-weight: 800;">+2,500 AR Coin</div>
                 </div>
                 <button class="action-btn" id="dailyTaskBtn" onclick="claimDailyReward()">Claim</button>
@@ -602,8 +602,8 @@
             <!-- Ad 1 (Daily Limit: 5 times) -->
             <div class="list-card">
                 <div>
-                    <div style="font-size: 14px; font-weight: 900;">📺 বিজ্ঞাপন ১ (Watch Ad)</div>
-                    <div style="font-size: 11px; color: #f472b6; font-weight: 800;">+1,500 AR | বাকি: <span id="ad1Count">5</span>/5 বার</div>
+                    <div style="font-size: 14px; font-weight: 900;">📺 Watch Advertisement 1</div>
+                    <div style="font-size: 11px; color: #f472b6; font-weight: 800;">+1,500 AR | Remaining: <span id="ad1Count">5</span>/5 times</div>
                 </div>
                 <button class="action-btn" id="watchAd1Btn" onclick="watchLimitAd('ad1', 'https://auctionr.org/4/03e62852e0047e5b9397cdccfc07f679', 1500, 5)">Watch</button>
             </div>
@@ -611,8 +611,8 @@
             <!-- Ad 2 (Daily Limit: 5 times) -->
             <div class="list-card">
                 <div>
-                    <div style="font-size: 14px; font-weight: 900;">📺 বিজ্ঞাপন ২ (Watch Ad)</div>
-                    <div style="font-size: 11px; color: #f472b6; font-weight: 800;">+1,500 AR | বাকি: <span id="ad2Count">5</span>/5 বার</div>
+                    <div style="font-size: 14px; font-weight: 900;">📺 Watch Advertisement 2</div>
+                    <div style="font-size: 11px; color: #f472b6; font-weight: 800;">+1,500 AR | Remaining: <span id="ad2Count">5</span>/5 times</div>
                 </div>
                 <button class="action-btn" id="watchAd2Btn" onclick="watchLimitAd('ad2', 'https://auctionr.org/4/9a5c7b554d5eb6baf0f960b61bcfc927', 1500, 5)">Watch</button>
             </div>
@@ -625,20 +625,20 @@
             <div class="section-title">👤 User Profile & Data</div>
 
             <div class="list-card" style="flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 15px;">
-                <div style="font-size: 14px; font-weight: 900; color: #f472b6; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;">📋 একাউন্ট বিবরণী</div>
-                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>নাম:</span> <strong id="profileName">Loading...</strong></div>
-                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>ইউনিক UID:</span> <strong id="profileUid" style="color: #60a5fa;">Loading...</strong></div>
-                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>মোট কয়েন:</span> <strong id="profileCoins" style="color: #34d399;">0</strong></div>
-                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>খরচ করা মোট TON:</span> <strong id="profileTonSpent" style="color: #38bdf8;">0.00 TON</strong></div>
-                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>সম্পন্ন টাস্ক:</span> <strong id="profileTasksCount" style="color: #f472b6;">0 টি</strong></div>
+                <div style="font-size: 14px; font-weight: 900; color: #f472b6; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;">📋 Account Information</div>
+                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>Name:</span> <strong id="profileName">Loading...</strong></div>
+                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>Unique UID:</span> <strong id="profileUid" style="color: #60a5fa;">Loading...</strong></div>
+                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>Total Coins:</span> <strong id="profileCoins" style="color: #34d399;">0</strong></div>
+                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>Total TON Spent:</span> <strong id="profileTonSpent" style="color: #38bdf8;">0.00 TON</strong></div>
+                <div style="font-size: 13px; display: flex; justify-content: space-between;"><span>Completed Tasks:</span> <strong id="profileTasksCount" style="color: #f472b6;">0 Items</strong></div>
             </div>
 
             <div class="section-title" style="margin-top: 20px;">🚀 Boosters & Energy</div>
 
             <div class="list-card">
                 <div>
-                    <div style="font-size: 14px; font-weight: 900;">⚡ Full Energy (ফ্রি)</div>
-                    <div style="font-size: 11px; color: #94a3b8;">দৈনিক ৩ বার এনার্জি ফুল করুন (<span id="freeEnergyLeft">3</span>/3)</div>
+                    <div style="font-size: 14px; font-weight: 900;">⚡ Full Energy (Free)</div>
+                    <div style="font-size: 11px; color: #94a3b8;">Refill energy 3 times daily (<span id="freeEnergyLeft">3</span>/3)</div>
                 </div>
                 <button class="action-btn" onclick="useFullEnergy()">Use</button>
             </div>
@@ -646,10 +646,10 @@
             <div class="list-card">
                 <div>
                     <div style="font-size: 14px; font-weight: 900;">👆 Multitap (Level <span id="multitapLvl">1</span>)</div>
-                    <div style="font-size: 11px; color: #f472b6; font-weight: 800;">খরচ: <span id="multitapCost">500</span> 🪙 অথবা <strong>0.05 TON</strong></div>
+                    <div style="font-size: 11px; color: #f472b6; font-weight: 800;">Cost: <span id="multitapCost">500</span> 🪙 or <strong>0.05 TON</strong></div>
                 </div>
                 <div style="display: flex; gap: 6px;">
-                    <button class="buy-btn" onclick="upgradeMultitap('coin')">🪙 কয়েন</button>
+                    <button class="buy-btn" onclick="upgradeMultitap('coin')">🪙 Coins</button>
                     <button class="buy-ton-btn" onclick="upgradeMultitap('ton')">💎 0.05 TON</button>
                 </div>
             </div>
@@ -657,19 +657,19 @@
             <div class="list-card">
                 <div>
                     <div style="font-size: 14px; font-weight: 900;">🔋 Energy Limit (Level <span id="energyLvl">1</span>)</div>
-                    <div style="font-size: 11px; color: #f472b6; font-weight: 800;">খরচ: <span id="energyCost">500</span> 🪙 অথবা <strong>0.05 TON</strong></div>
+                    <div style="font-size: 11px; color: #f472b6; font-weight: 800;">Cost: <span id="energyCost">500</span> 🪙 or <strong>0.05 TON</strong></div>
                 </div>
                 <div style="display: flex; gap: 6px;">
-                    <button class="buy-btn" onclick="upgradeEnergyLimit('coin')">🪙 কয়েন</button>
+                    <button class="buy-btn" onclick="upgradeEnergyLimit('coin')">🪙 Coins</button>
                     <button class="buy-ton-btn" onclick="upgradeEnergyLimit('ton')">💎 0.05 TON</button>
                 </div>
             </div>
 
             <div class="section-title" style="margin-top: 25px;">💎 Telegram TON Wallet</div>
             <div class="list-card" style="flex-direction: column; align-items: stretch; gap: 12px; text-align: center;">
-                <div style="font-size: 13px; color: #cbd5e1; font-weight: 700;">আপনার পেমেন্ট রিসিভার অ্যাড্রেস: <br><code style="font-size:10px; color:#38bdf8; word-break:break-all;">UQB8uiksaC2YbFEMNJfNXkmNG3pBBiLHw3RfS74f2ubamhBf</code></div>
+                <div style="font-size: 13px; color: #cbd5e1; font-weight: 700;">Receiver Address: <br><code style="font-size:10px; color:#38bdf8; word-break:break-all;">UQB8uiksaC2YbFEMNJfNXkmNG3pBBiLHw3RfS74f2ubamhBf</code></div>
                 <div id="ton-connect-button" style="display: flex; justify-content: center; margin: 10px 0;"></div>
-                <div id="connectedWalletStatus" style="font-size: 12px; color: #34d399; font-weight: 700; word-break: break-all;">ওয়ালেট সংযুক্ত হয়নি</div>
+                <div id="connectedWalletStatus" style="font-size: 12px; color: #34d399; font-weight: 700; word-break: break-all;">Wallet not connected</div>
             </div>
         </div>
 
@@ -752,6 +752,7 @@
             lastActive: Date.now()
         };
 
+        // Total 85 progressive mine cards (First 15 unlocked by default)
         const mineCardList = [
             { id: 'card1', name: 'Fan Tokens', icon: '🎟️', baseCost: 200, baseProfit: 100, tonCost: 0.01 },
             { id: 'card2', name: 'Staking Pool', icon: '🏦', baseCost: 500, baseProfit: 250, tonCost: 0.02 },
@@ -797,7 +798,47 @@
             { id: 'card42', name: 'RedPill AI', icon: '💊', baseCost: 5500000000, baseProfit: 2700000000, tonCost: 2500.0 },
             { id: 'card43', name: 'CyberConnect', icon: '🛡️', baseCost: 7500000000, baseProfit: 3700000000, tonCost: 3300.0 },
             { id: 'card44', name: 'ZeroK Knowledge', icon: '🔒', baseCost: 10000000000, baseProfit: 5000000000, tonCost: 4300.0 },
-            { id: 'card45', name: 'LayerZero Bridge', icon: '🌉', baseCost: 15000000000, baseProfit: 7500000000, tonCost: 5500.0 }
+            { id: 'card45', name: 'LayerZero Bridge', icon: '🌉', baseCost: 15000000000, baseProfit: 7500000000, tonCost: 5500.0 },
+            { id: 'card46', name: 'Solana Node', icon: '🟣', baseCost: 20000000000, baseProfit: 10000000000, tonCost: 7000.0 },
+            { id: 'card47', name: 'Polygon Validator', icon: '🔷', baseCost: 27000000000, baseProfit: 13500000000, tonCost: 9000.0 },
+            { id: 'card48', name: 'Arbitrum Rollup', icon: '🔵', baseCost: 35000000000, baseProfit: 17500000000, tonCost: 11500.0 },
+            { id: 'card49', name: 'Optimism Gateway', icon: '🔴', baseCost: 45000000000, baseProfit: 22500000000, tonCost: 14500.0 },
+            { id: 'card50', name: 'Avalanche Subnet', icon: '🔺', baseCost: 60000000000, baseProfit: 30000000000, tonCost: 18000.0 },
+            { id: 'card51', name: 'Sui Network', icon: '💧', baseCost: 80000000000, baseProfit: 40000000000, tonCost: 22000.0 },
+            { id: 'card52', name: 'Aptos Move', icon: '⬛', baseCost: 105000000000, baseProfit: 52500000000, tonCost: 27000.0 },
+            { id: 'card53', name: 'Cosmos Hub', icon: '⚛️', baseCost: 135000000000, baseProfit: 67500000000, tonCost: 33000.0 },
+            { id: 'card54', name: 'Near Protocol', icon: '🌐', baseCost: 170000000000, baseProfit: 85000000000, tonCost: 40000.0 },
+            { id: 'card55', name: 'Injective Protocol', icon: '🚀', baseCost: 210000000000, baseProfit: 105000000000, tonCost: 48000.0 },
+            { id: 'card56', name: 'Chainlink Oracle', icon: '🔗', baseCost: 260000000000, baseProfit: 130000000000, tonCost: 58000.0 },
+            { id: 'card57', name: 'Uniswap Liquidity', icon: '🦄', baseCost: 320000000000, baseProfit: 160000000000, tonCost: 70000.0 },
+            { id: 'card58', name: 'Aave Lending', icon: '👻', baseCost: 390000000000, baseProfit: 195000000000, tonCost: 84000.0 },
+            { id: 'card59', name: 'MakerDAO Vault', icon: '🏛️', baseCost: 470000000000, baseProfit: 235000000000, tonCost: 100000.0 },
+            { id: 'card60', name: 'Curve Finance', icon: '🔄', baseCost: 560000000000, baseProfit: 280000000000, tonCost: 120000.0 },
+            { id: 'card61', name: 'Lido Staking', icon: '🌊', baseCost: 660000000000, baseProfit: 330000000000, tonCost: 145000.0 },
+            { id: 'card62', name: 'EigenLayer Restake', icon: '⚡', baseCost: 780000000000, baseProfit: 390000000000, tonCost: 175000.0 },
+            { id: 'card63', name: 'Celestia DA', icon: '🌌', baseCost: 920000000000, baseProfit: 460000000000, tonCost: 210000.0 },
+            { id: 'card64', name: 'Base Network', icon: '🔵', baseCost: 1100000000000, baseProfit: 550000000000, tonCost: 250000.0 },
+            { id: 'card65', name: 'ZKsync Era', icon: '🔐', baseCost: 1300000000000, baseProfit: 650000000000, tonCost: 300000.0 },
+            { id: 'card66', name: 'Scroll ZkEVM', icon: '📜', baseCost: 1550000000000, baseProfit: 775000000000, tonCost: 360000.0 },
+            { id: 'card67', name: 'Linea Network', icon: '🟩', baseCost: 1850000000000, baseProfit: 925000000000, tonCost: 430000.0 },
+            { id: 'card68', name: 'Mantle Core', icon: '🟢', baseCost: 2200000000000, baseProfit: 1100000000000, tonCost: 510000.0 },
+            { id: 'card69', name: 'Blast Yield', icon: '🟡', baseCost: 2600000000000, baseProfit: 1300000000000, tonCost: 600000.0 },
+            { id: 'card70', name: 'Mode Network', icon: '🔷', baseCost: 3100000000000, baseProfit: 1550000000000, tonCost: 710000.0 },
+            { id: 'card71', name: 'Manta Pacific', icon: '🌊', baseCost: 3700000000000, baseProfit: 1850000000000, tonCost: 840000.0 },
+            { id: 'card72', name: 'Starknet Pro', icon: '⭐', baseCost: 4400000000000, baseProfit: 2200000000000, tonCost: 1000000.0 },
+            { id: 'card73', name: 'Fantom Sonic', icon: '👻', baseCost: 5200000000000, baseProfit: 2600000000000, tonCost: 1200000.0 },
+            { id: 'card74', name: 'Gnosis Safe', icon: '🛡️', baseCost: 6100000000000, baseProfit: 3050000000000, tonCost: 1420000.0 },
+            { id: 'card75', name: 'Kava EVM', icon: '🚀', baseCost: 7200000000000, baseProfit: 3600000000000, tonCost: 1680000.0 },
+            { id: 'card76', name: 'Telos Zero', icon: '⚡', baseCost: 8500000000000, baseProfit: 4250000000000, tonCost: 1980000.0 },
+            { id: 'card77', name: 'Filecoin Storage', icon: '💾', baseCost: 10000000000000, baseProfit: 5000000000000, tonCost: 2350000.0 },
+            { id: 'card78', name: 'Arweave Node', icon: '📦', baseCost: 11800000000000, baseProfit: 5900000000000, tonCost: 2780000.0 },
+            { id: 'card79', name: 'Render Network', icon: '🎨', baseCost: 14000000000000, baseProfit: 7000000000000, tonCost: 3300000.0 },
+            { id: 'card80', name: 'Akash Cloud', icon: '☁️', baseCost: 16500000000000, baseProfit: 8250000000000, tonCost: 3900000.0 },
+            { id: 'card81', name: 'Theta Edge', icon: '📺', baseCost: 19500000000000, baseProfit: 9750000000000, tonCost: 4600000.0 },
+            { id: 'card82', name: 'Hélium Hotspot', icon: '📡', baseCost: 23000000000000, baseProfit: 11500000000000, tonCost: 5400000.0 },
+            { id: 'card83', name: 'GRT Indexer', icon: '🔍', baseCost: 27000000000000, baseProfit: 13500000000000, tonCost: 6300000.0 },
+            { id: 'card84', name: 'Pyth Oracle', icon: '🔮', baseCost: 32000000000000, baseProfit: 16000000000000, tonCost: 7400000.0 },
+            { id: 'card85', name: 'Quantum Citadel', icon: '🏛️', baseCost: 38000000000000, baseProfit: 19000000000000, tonCost: 8700000.0 }
         ];
 
         let toastTimer = null;
@@ -883,7 +924,7 @@
                             const offlineEarned = Math.floor((gameState.pph / 3600) * offlineSec);
                             if (offlineEarned > 0) {
                                 gameState.coins += offlineEarned;
-                                showToast(`🎉 অফলাইনে +${offlineEarned.toLocaleString()} AR Coin আয় হয়েছে!`);
+                                showToast(`🎉 Offline earnings +${offlineEarned.toLocaleString()} AR Coin!`);
                             }
                         }
                     }
@@ -922,7 +963,7 @@
                 if (bonus > 0) {
                     gameState.coins += bonus;
                     db.ref('players/' + gameState.uid + '/pendingRefBonus').set(0);
-                    showToast(`🎁 রেফার বোনাস +${bonus.toLocaleString()} AR Coin যোগ হয়েছে!`);
+                    showToast(`🎁 Referral bonus +${bonus.toLocaleString()} AR Coin added!`);
                     updateUI();
                 }
             });
@@ -939,13 +980,13 @@
                         const rawAddress = wallet.account.address;
                         gameState.wallet = rawAddress;
                         const statusEl = document.getElementById('connectedWalletStatus');
-                        if (statusEl) statusEl.innerText = 'সংযুক্ত ওয়ালেট: ' + rawAddress.slice(0, 6) + '...' + rawAddress.slice(-4);
+                        if (statusEl) statusEl.innerText = 'Connected Wallet: ' + rawAddress.slice(0, 6) + '...' + rawAddress.slice(-4);
                         saveGameData();
-                        showToast('💎 টন ওয়ালেট সফলভাবে সংযুক্ত হয়েছে!');
+                        showToast('💎 TON Wallet connected successfully!');
                     } else {
                         gameState.wallet = '';
                         const statusEl = document.getElementById('connectedWalletStatus');
-                        if (statusEl) statusEl.innerText = 'ওয়ালেট সংযুক্ত হয়নি';
+                        if (statusEl) statusEl.innerText = 'Wallet not connected';
                         saveGameData();
                     }
                 });
@@ -954,13 +995,13 @@
 
         async function sendTonPayment(tonAmount, successCallback) {
             if (!tonConnectUI || !tonConnectUI.connected) {
-                showToast('⚠️ অনুগ্রহ করে প্রথমে প্রফাইল থেকে TON Wallet কানেক্ট করুন!');
+                showToast('⚠️ Please connect your TON Wallet from profile first!');
                 switchTab('profile');
                 return;
             }
 
             try {
-                showToast('⏳ TON লেনদেন প্রসেস হচ্ছে...');
+                showToast('⏳ Processing TON transaction...');
                 const nanoTon = Math.floor(tonAmount * 1000000000).toString();
                 
                 const transaction = {
@@ -986,11 +1027,11 @@
 
                     successCallback();
                     saveGameData();
-                    showToast(`🎉 সফলভাবে ${tonAmount} TON পেমেন্ট সম্পন্ন হয়েছে!`);
+                    showToast(`🎉 Successfully paid ${tonAmount} TON!`);
                 }
             } catch (error) {
                 console.error("TON payment error:", error);
-                showToast('❌ পেমেন্ট বাতিল বা ব্যর্থ হয়েছে!');
+                showToast('❌ Payment cancelled or failed!');
             }
         }
 
@@ -1115,9 +1156,8 @@
 
             let completedTasksCount = Object.keys(gameState.tasks || {}).length;
             const pTasksCount = document.getElementById('profileTasksCount');
-            if (pTasksCount) pTasksCount.innerText = completedTasksCount + ' টি';
+            if (pTasksCount) pTasksCount.innerText = completedTasksCount + ' Items';
 
-            // Ad Counter updates
             if (gameState.adLimits) {
                 const ad1Rem = 5 - (gameState.adLimits.ad1 || 0);
                 const ad2Rem = 5 - (gameState.adLimits.ad2 || 0);
@@ -1148,12 +1188,13 @@
             if (lProg) lProg.style.width = Math.max(5, pct) + '%';
         }
 
+        // First 15 cards (index 0 to 14) are unlocked by default
         function isCardUnlocked(index) {
-            if (index < 10) return true;
-            let prevBatchStart = Math.floor((index - 10) / 5) * 5 + 10 - 5;
+            if (index < 15) return true;
+            let prevBatchStart = Math.floor((index - 15) / 5) * 5 + 15 - 5;
             let prevBatchEnd = prevBatchStart + 5;
-            let checkStart = index <= 14 ? 0 : prevBatchStart;
-            let checkEnd = index <= 14 ? 10 : prevBatchEnd;
+            let checkStart = index <= 19 ? 0 : prevBatchStart;
+            let checkEnd = index <= 19 ? 15 : prevBatchEnd;
 
             for (let i = checkStart; i < checkEnd; i++) {
                 let cardId = mineCardList[i].id;
@@ -1190,7 +1231,7 @@
                                 <div class="card-profit" style="color: #f43f5e;">Locked</div>
                             </div>
                         </div>
-                        <div class="card-footer"><span style="color: #94a3b8; font-size:9px;">আগের কার্ড লেভেল ১০ করুন</span></div>
+                        <div class="card-footer"><span style="color: #94a3b8; font-size:9px;">Upgrade previous cards to level 10</span></div>
                     `;
                 } else {
                     div.innerHTML = `
@@ -1216,7 +1257,7 @@
 
         function buyMineCard(cardId, index, method, tonVal = 0) {
             if (!isCardUnlocked(index)) {
-                showToast('এই কার্ডটি আনলক করতে আগের কার্ডগুলো লেভেল ১০ করুন!');
+                showToast('Upgrade previous cards to level 10 to unlock this card!');
                 return;
             }
 
@@ -1229,7 +1270,7 @@
 
             if (method === 'coin') {
                 if (gameState.coins < cost) {
-                    showToast('পর্যাপ্ত AR Coin নেই! চাইলে TON দিয়ে আপগ্রেড করুন।');
+                    showToast('Insufficient AR Coins! You can upgrade with TON instead.');
                     return;
                 }
                 gameState.coins -= cost;
@@ -1247,16 +1288,16 @@
             renderMineCards();
             updateUI();
             saveGameData();
-            showToast(`✅ ${cardName} সফলভাবে আপগ্রেড হয়েছে!`);
+            showToast(`✅ ${cardName} upgraded successfully!`);
         }
 
         function useFullEnergy() {
-            if (gameState.freeEnergy <= 0) { showToast('আজকের ফ্রি এনার্জি শেষ!'); return; }
+            if (gameState.freeEnergy <= 0) { showToast('Daily free energy limit reached!'); return; }
             gameState.freeEnergy -= 1;
             gameState.energy = gameState.maxEnergy;
             updateUI();
             saveGameData();
-            showToast('⚡ এনার্জি ১০০% ফুল করা হয়েছে!');
+            showToast('⚡ Energy refilled to 100%!');
         }
 
         function upgradeMultitap(method) {
@@ -1264,18 +1305,18 @@
             const tonCost = 0.05;
 
             if (method === 'coin') {
-                if (gameState.coins < cost) { showToast('পর্যাপ্ত কয়েন নেই!'); return; }
+                if (gameState.coins < cost) { showToast('Insufficient coins!'); return; }
                 gameState.coins -= cost;
                 gameState.multitap += 1;
                 updateUI();
                 saveGameData();
-                showToast(`👆 Multitap Level ${gameState.multitap} হয়েছে!`);
+                showToast(`👆 Multitap upgraded to Level ${gameState.multitap}!`);
             } else {
                 sendTonPayment(tonCost, () => {
                     gameState.multitap += 1;
                     updateUI();
                     saveGameData();
-                    showToast(`👆 Multitap Level ${gameState.multitap} হয়েছে (TON দিয়ে)!`);
+                    showToast(`👆 Multitap upgraded to Level ${gameState.multitap} (via TON)!`);
                 });
             }
         }
@@ -1285,14 +1326,14 @@
             const tonCost = 0.05;
 
             if (method === 'coin') {
-                if (gameState.coins < cost) { showToast('পর্যাপ্ত কয়েন নেই!'); return; }
+                if (gameState.coins < cost) { showToast('Insufficient coins!'); return; }
                 gameState.coins -= cost;
                 gameState.energyLevel += 1;
                 gameState.maxEnergy += 500;
                 gameState.energy = gameState.maxEnergy;
                 updateUI();
                 saveGameData();
-                showToast(`🔋 Energy Limit বাড়িয়ে ${gameState.maxEnergy} করা হয়েছে!`);
+                showToast(`🔋 Energy limit increased to ${gameState.maxEnergy}!`);
             } else {
                 sendTonPayment(tonCost, () => {
                     gameState.energyLevel += 1;
@@ -1300,7 +1341,7 @@
                     gameState.energy = gameState.maxEnergy;
                     updateUI();
                     saveGameData();
-                    showToast(`🔋 Energy Limit বাড়িয়ে ${gameState.maxEnergy} করা হয়েছে (TON দিয়ে)!`);
+                    showToast(`🔋 Energy limit increased to ${gameState.maxEnergy} (via TON)!`);
                 });
             }
         }
@@ -1312,10 +1353,9 @@
             gameState.coins += 2500;
             updateUI();
             saveGameData();
-            showToast('🎁 ডেইলি বোনাস +2,500 AR Coin যোগ হয়েছে!');
+            showToast('🎁 Daily bonus +2,500 AR Coin added!');
         }
 
-        // Limit-based Ad Watching System (5 times limit each, auto reset daily)
         let adTaskPending = false;
         function watchLimitAd(adKey, url, rewardAmount, maxLimit) {
             checkAndResetDailyAdLimits();
@@ -1326,7 +1366,7 @@
 
             let currentViews = gameState.adLimits[adKey] || 0;
             if (currentViews >= maxLimit) {
-                showToast('⚠️ আজকের মতো এই অ্য়াডের লিমিট শেষ! আগামীকাল আবার দেখতে পাবেন।');
+                showToast('⚠️ Daily limit for this ad has been reached! Try again tomorrow.');
                 return;
             }
 
@@ -1347,7 +1387,7 @@
                 if (btn) btn.innerText = 'Watch';
                 updateUI();
                 saveGameData();
-                showToast(`🎉 সফল! +${rewardAmount.toLocaleString()} AR Coin যোগ হয়েছে!`);
+                showToast(`🎉 Success! +${rewardAmount.toLocaleString()} AR Coin added!`);
             }, 5000);
         }
 
@@ -1359,11 +1399,11 @@
             
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(linkBox.value)
-                    .then(() => showToast('📋 রেফারেল লিংক কপি হয়েছে!'))
-                    .catch(() => { document.execCommand('copy'); showToast('📋 রেফারেল লিংক কপি হয়েছে!'); });
+                    .then(() => showToast('📋 Referral link copied!'))
+                    .catch(() => { document.execCommand('copy'); showToast('📋 Referral link copied!'); });
             } else {
                 document.execCommand('copy');
-                showToast('📋 রেফারেল লিংক কপি হয়েছে!');
+                showToast('📋 Referral link copied!');
             }
         }
 
