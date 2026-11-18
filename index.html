@@ -163,7 +163,7 @@
             transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Tap Coin Area */
+        /* 5D Premium HD Tap Coin Area */
         .tap-area {
             flex: 1;
             display: flex;
@@ -174,27 +174,34 @@
         }
 
         .tap-coin-outer {
-            width: 260px;
-            height: 260px;
+            width: 280px;
+            height: 280px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, rgba(236, 72, 153, 0.1) 50%, rgba(0, 0, 0, 0) 75%);
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.45) 0%, rgba(139, 92, 246, 0.25) 45%, rgba(0, 0, 0, 0) 75%);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            box-shadow: 0 0 60px rgba(168, 85, 247, 0.4);
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.03); filter: brightness(1.2); }
         }
 
         .tap-coin {
-            width: 220px;
-            height: 220px;
+            width: 230px;
+            height: 230px;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #f472b6 0%, #a855f7 40%, #6366f1 75%, #312e81 100%);
+            background: radial-gradient(circle at 30% 30%, #ff758c 0%, #ff7eb3 25%, #7928ca 65%, #2e1065 100%);
             border: 8px solid rgba(255, 255, 255, 0.95);
             box-shadow: 
-                0 18px 0 #312e81, 
-                0 25px 45px rgba(139, 92, 246, 0.6), 
-                inset 0 10px 15px rgba(255, 255, 255, 0.6), 
-                inset 0 -10px 15px rgba(0, 0, 0, 0.7);
+                0 22px 0 #1e1b4b, 
+                0 35px 60px rgba(139, 92, 246, 0.8), 
+                inset 0 15px 25px rgba(255, 255, 255, 0.8), 
+                inset 0 -15px 25px rgba(0, 0, 0, 0.9);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -206,29 +213,44 @@
             overflow: hidden;
         }
 
+        .tap-coin::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: -40%;
+            width: 180%;
+            height: 180%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.05) 50%, transparent 50%);
+            transform: rotate(25deg);
+            pointer-events: none;
+        }
+
         .tap-coin:active {
-            transform: translateY(10px) scale(0.96);
+            transform: translateY(12px) scale(0.94);
             box-shadow: 
-                0 6px 0 #312e81, 
-                0 12px 25px rgba(139, 92, 246, 0.6), 
-                inset 0 6px 10px rgba(255, 255, 255, 0.6), 
-                inset 0 -6px 10px rgba(0, 0, 0, 0.7);
+                0 8px 0 #1e1b4b, 
+                0 18px 35px rgba(139, 92, 246, 0.8), 
+                inset 0 8px 15px rgba(255, 255, 255, 0.8), 
+                inset 0 -8px 15px rgba(0, 0, 0, 0.9);
         }
 
         .coin-symbol {
-            font-size: 64px;
+            font-size: 70px;
             font-weight: 900;
             color: #ffffff;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.7), 0 0 25px rgba(244,114,182,0.8);
+            text-shadow: 0 5px 20px rgba(0,0,0,0.9), 0 0 35px rgba(244,114,182,1);
             letter-spacing: 2px;
+            z-index: 2;
         }
 
         .coin-subtext {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 900;
             color: #fbcfe8;
-            letter-spacing: 3px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            letter-spacing: 5px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+            margin-top: -5px;
+            z-index: 2;
         }
 
         /* Floating Text */
@@ -305,7 +327,7 @@
             text-shadow: 0 2px 10px rgba(244,114,182,0.4);
         }
 
-        /* Cards Design (85 Progressive Cards) */
+        /* Cards Design (100 Progressive Cards) */
         .grid-cards {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -540,7 +562,7 @@
                 </div>
             </div>
 
-            <!-- 3D Tap Coin -->
+            <!-- 5D Premium HD Tap Coin -->
             <div class="tap-area" id="tapArea">
                 <div class="tap-coin-outer">
                     <div class="tap-coin" id="mainTapCoin">
@@ -560,7 +582,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: MINE (85 Progressive Cards) -->
+        <!-- TAB 2: MINE (100 Progressive Cards) -->
         <div id="tab-mine" class="tab-page">
             <div class="section-title">⛏️ Mine & Upgrade Cards</div>
             <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">Upgrade with TON directly if coins are insufficient!</p>
@@ -752,7 +774,7 @@
             lastActive: Date.now()
         };
 
-        // Total 85 progressive mine cards (First 15 unlocked by default)
+        // Total exactly 100 progressive mine cards (First 15 unlocked by default)
         const mineCardList = [
             { id: 'card1', name: 'Fan Tokens', icon: '🎟️', baseCost: 200, baseProfit: 100, tonCost: 0.01 },
             { id: 'card2', name: 'Staking Pool', icon: '🏦', baseCost: 500, baseProfit: 250, tonCost: 0.02 },
@@ -838,7 +860,22 @@
             { id: 'card82', name: 'Hélium Hotspot', icon: '📡', baseCost: 23000000000000, baseProfit: 11500000000000, tonCost: 5400000.0 },
             { id: 'card83', name: 'GRT Indexer', icon: '🔍', baseCost: 27000000000000, baseProfit: 13500000000000, tonCost: 6300000.0 },
             { id: 'card84', name: 'Pyth Oracle', icon: '🔮', baseCost: 32000000000000, baseProfit: 16000000000000, tonCost: 7400000.0 },
-            { id: 'card85', name: 'Quantum Citadel', icon: '🏛️', baseCost: 38000000000000, baseProfit: 19000000000000, tonCost: 8700000.0 }
+            { id: 'card85', name: 'Quantum Citadel', icon: '🏛️', baseCost: 38000000000000, baseProfit: 19000000000000, tonCost: 8700000.0 },
+            { id: 'card86', name: 'Polygon 2.0', icon: '🟣', baseCost: 45000000000000, baseProfit: 22500000000000, tonCost: 10200000.0 },
+            { id: 'card87', name: 'Arbitrum Orbit', icon: '🌐', baseCost: 53000000000000, baseProfit: 26500000000000, tonCost: 12000000.0 },
+            { id: 'card88', name: 'Optimism Superchain', icon: '🔴', baseCost: 62000000000000, baseProfit: 31000000000000, tonCost: 14000000.0 },
+            { id: 'card89', name: 'Berachain Liquidity', icon: '🐻', baseCost: 72000000000000, baseProfit: 36000000000000, tonCost: 16300000.0 },
+            { id: 'card90', name: 'Monad Parallel EVM', icon: '⚡', baseCost: 84000000000000, baseProfit: 42000000000000, tonCost: 19000000.0 },
+            { id: 'card91', name: 'Taiko ZkRollup', icon: '🥁', baseCost: 98000000000000, baseProfit: 49000000000000, tonCost: 22100000.0 },
+            { id: 'card92', name: 'Fuel Modular', icon: '⛽', baseCost: 114000000000000, baseProfit: 57000000000000, tonCost: 25600000.0 },
+            { id: 'card93', name: 'ZetaChain Omnichain', icon: '🌐', baseCost: 132000000000000, baseProfit: 66000000000000, tonCost: 29600000.0 },
+            { id: 'card94', name: 'Mina ZeroKnowledge', icon: '🛡️', baseCost: 153000000000000, baseProfit: 76500000000000, tonCost: 34200000.0 },
+            { id: 'card95', name: 'Aleo Privacy', icon: '🔒', baseCost: 177000000000000, baseProfit: 88500000000000, tonCost: 39500000.0 },
+            { id: 'card96', name: 'Cardano Hydra', icon: '🔷', baseCost: 205000000000000, baseProfit: 102500000000000, tonCost: 45600000.0 },
+            { id: 'card97', name: 'Polkadot Parachain', icon: '🟣', baseCost: 237000000000000, baseProfit: 118500000000000, tonCost: 52700000.0 },
+            { id: 'card98', name: 'Avalanche L1', icon: '🔺', baseCost: 274000000000000, baseProfit: 137000000000000, tonCost: 60900000.0 },
+            { id: 'card99', name: 'Solana Firedancer', icon: '🚀', baseCost: 316000000000000, baseProfit: 158000000000000, tonCost: 70300000.0 },
+            { id: 'card100', name: 'Nexus HyperScale', icon: '🌐', baseCost: 365000000000000, baseProfit: 182500000000000, tonCost: 81100000.0 }
         ];
 
         let toastTimer = null;
