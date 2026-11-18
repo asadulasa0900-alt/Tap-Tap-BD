@@ -327,12 +327,42 @@
             text-shadow: 0 2px 10px rgba(244,114,182,0.4);
         }
 
-        /* Cards Design (All 100 Cards - Unlimited Upgrade) */
+        /* Mine Category Navigation Buttons (4 Categories for 100 Cards) */
+        .mine-category-nav {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        .mine-category-nav::-webkit-scrollbar { display: none; }
+
+        .mine-cat-btn {
+            background: rgba(15, 23, 42, 0.9);
+            color: #94a3b8;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 7px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .mine-cat-btn.active {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: #ffffff;
+            border-color: #f472b6;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Cards Design */
         .grid-cards {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            max-height: 52vh;
+            max-height: 48vh;
             overflow-y: auto;
             padding-bottom: 20px;
             padding-right: 4px;
@@ -406,6 +436,9 @@
             font-size: 9px;
             box-shadow: 0 3px 10px rgba(236, 72, 153, 0.4);
             text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .buy-ton-btn {
@@ -616,25 +649,31 @@
             </div>
         </div>
 
-        <!-- TAB 2: MINE (100 Cards - Unlimited Level Up) -->
+        <!-- TAB 2: MINE (Exact 100 Cards Divided into 4 Categories) -->
         <div id="tab-mine" class="tab-page">
-            <div class="section-title">⛏️ Mine & Daily Combo</div>
+            <div class="section-title">⛏️ Mine & Daily Combo (100 Cards)</div>
             
-            <div class="list-card" style="flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 15px; border: 1px solid #f472b6;">
+            <div class="list-card" style="flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 12px; border: 1px solid #f472b6;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="font-size: 14px; font-weight: 900; color: #f472b6;">🎁 Daily Combo (3 Cards)</div>
-                    <div style="font-size: 11px; color: #34d399; font-weight: 800;">Reward: +100,000 AR</div>
+                    <div style="font-size: 11px; color: #34d399; font-weight: 800;">Reward: +50,000 AR</div>
                 </div>
-                <div style="display: flex; justify-content: center; gap: 10px; margin: 5px 0;">
-                    <div class="card-icon" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">🃏</div>
-                    <div class="card-icon" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">🃏</div>
-                    <div class="card-icon" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">🃏</div>
+                <div style="display: flex; justify-content: center; gap: 10px; margin: 3px 0;">
+                    <div class="card-icon" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">🃏</div>
+                    <div class="card-icon" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">🃏</div>
+                    <div class="card-icon" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">🃏</div>
                 </div>
-                <div style="font-size: 11px; color: #94a3b8; text-align: center;">Upgrade today's 3 secret cards to level 1+, then click verify!</div>
-                <button class="action-btn" id="verifyComboBtn" onclick="verifyDailyComboWithAd()">Verify & Claim (+100k)</button>
+                <button class="action-btn" id="verifyComboBtn" onclick="verifyDailyComboWithAd()">Verify & Claim (+50k)</button>
             </div>
 
-            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">All cards have <strong>unlimited levels</strong> (50+, 100+)! Upgrade with coins or TON.</p>
+            <!-- Category Navigation Tabs (4 Categories: 25 cards each = 100 cards total) -->
+            <div class="mine-category-nav">
+                <button class="mine-cat-btn active" id="cat-btn-markets" onclick="switchMineCategory('markets')">📊 Markets (1-25)</button>
+                <button class="mine-cat-btn" id="cat-btn-web3" onclick="switchMineCategory('web3')">🌐 Web3 & Apps (26-50)</button>
+                <button class="mine-cat-btn" id="cat-btn-ai" onclick="switchMineCategory('ai')">💻 AI & Nodes (51-75)</button>
+                <button class="mine-cat-btn" id="cat-btn-layers" onclick="switchMineCategory('layers')">⚡ Layers & L2 (76-100)</button>
+            </div>
+
             <div class="grid-cards" id="mineCardsContainer"></div>
         </div>
 
@@ -835,112 +874,62 @@
 
         const todaysCombo = {
             date: new Date().toDateString(),
-            cards: ['card3', 'card12', 'card25']
+            cards: ['card3', 'card35', 'card80']
         };
 
-        // All 100 Progressive Mine Cards (Unlimited Level Up System)
+        // Exactly 100 Mine Cards divided into 4 Distinct Categories (25 cards each)
         const mineCardList = [
-            { id: 'card1', name: 'Fan Tokens', icon: '🎟️', baseCost: 200, baseProfit: 100, tonCost: 0.01 },
-            { id: 'card2', name: 'Staking Pool', icon: '🏦', baseCost: 500, baseProfit: 250, tonCost: 0.02 },
-            { id: 'card3', name: 'BTC Pairs', icon: '📈', baseCost: 1200, baseProfit: 600, tonCost: 0.03 },
-            { id: 'card4', name: 'Web3 License', icon: '🌐', baseCost: 3000, baseProfit: 1500, tonCost: 0.05 },
-            { id: 'card5', name: 'AI Node Rig', icon: '💻', baseCost: 7500, baseProfit: 3800, tonCost: 0.08 },
-            { id: 'card6', name: 'Quantum Miner', icon: '⚡', baseCost: 15000, baseProfit: 7500, tonCost: 0.12 },
-            { id: 'card7', name: 'TON Blockchain', icon: '💎', baseCost: 25000, baseProfit: 12000, tonCost: 0.18 },
-            { id: 'card8', name: 'Telegram Mini App', icon: '📱', baseCost: 40000, baseProfit: 19000, tonCost: 0.25 },
-            { id: 'card9', name: 'Hamster Combo', icon: '🐹', baseCost: 60000, baseProfit: 28000, tonCost: 0.35 },
-            { id: 'card10', name: 'Blum Crypto', icon: '🌸', baseCost: 90000, baseProfit: 42000, tonCost: 0.5 },
-            { id: 'card11', name: 'Dogs Farming', icon: '🐶', baseCost: 130000, baseProfit: 60000, tonCost: 0.7 },
-            { id: 'card12', name: 'CATI Staking', icon: '🐱', baseCost: 180000, baseProfit: 85000, tonCost: 1.0 },
-            { id: 'card13', name: 'Major Bot', icon: '⭐', baseCost: 250000, baseProfit: 115000, tonCost: 1.4 },
-            { id: 'card14', name: 'X Empire', icon: '👑', baseCost: 350000, baseProfit: 160000, tonCost: 1.9 },
-            { id: 'card15', name: 'Memefi Bot', icon: '🥊', baseCost: 500000, baseProfit: 225000, tonCost: 2.5 },
-            { id: 'card16', name: 'TapSwap Node', icon: '🔄', baseCost: 700000, baseProfit: 310000, tonCost: 3.2 },
-            { id: 'card17', name: 'PocketFi Bot', icon: '🚀', baseCost: 1000000, baseProfit: 450000, tonCost: 4.0 },
-            { id: 'card18', name: 'PixelVerse', icon: '👾', baseCost: 1500000, baseProfit: 680000, tonCost: 5.0 },
-            { id: 'card19', name: 'Yescoin Swipe', icon: '🟡', baseCost: 2200000, baseProfit: 980000, tonCost: 6.5 },
-            { id: 'card20', name: 'Rocky Rabbit', icon: '🐰', baseCost: 3200000, baseProfit: 1400000, tonCost: 8.5 },
-            { id: 'card21', name: 'City Holder', icon: '🏙️', baseCost: 4500000, baseProfit: 2000000, tonCost: 11.0 },
-            { id: 'card22', name: 'Booms Bot', icon: '💣', baseCost: 6500000, baseProfit: 2900000, tonCost: 14.0 },
-            { id: 'card23', name: 'Binance Listing', icon: '🟡', baseCost: 10000000, baseProfit: 4500000, tonCost: 18.0 },
-            { id: 'card24', name: 'Bybit Launchpool', icon: '🟣', baseCost: 15000000, baseProfit: 7000000, tonCost: 23.0 },
-            { id: 'card25', name: 'OKX Web3', icon: '🟢', baseCost: 22000000, baseProfit: 10000000, tonCost: 30.0 },
-            { id: 'card26', name: 'Bitget Wallet', icon: '🔵', baseCost: 30000000, baseProfit: 14000000, tonCost: 40.0 },
-            { id: 'card27', name: 'Gate.io Startup', icon: '⛵', baseCost: 42000000, baseProfit: 19000000, tonCost: 52.0 },
-            { id: 'card28', name: 'KuCoin Spotlight', icon: '🟨', baseCost: 58000000, baseProfit: 26000000, tonCost: 68.0 },
-            { id: 'card29', name: 'MEXC Kickstarter', icon: 'Ⓜ️', baseCost: 80000000, baseProfit: 36000000, tonCost: 88.0 },
-            { id: 'card30', name: 'Notcoin Tap', icon: '🪙', baseCost: 110000000, baseProfit: 50000000, tonCost: 115.0 },
-            { id: 'card31', name: 'Blum Video Bot', icon: '📺', baseCost: 150000000, baseProfit: 70000000, tonCost: 150.0 },
-            { id: 'card32', name: 'Hamster CEO', icon: '👔', baseCost: 200000000, baseProfit: 95000000, tonCost: 195.0 },
-            { id: 'card33', name: 'Catizen Club', icon: '🐾', baseCost: 280000000, baseProfit: 130000000, tonCost: 250.0 },
-            { id: 'card34', name: 'PAWS Community', icon: '🐾', baseCost: 380000000, baseProfit: 180000000, tonCost: 320.0 },
-            { id: 'card35', name: 'Blum Drop', icon: '💧', baseCost: 500000000, baseProfit: 240000000, tonCost: 400.0 },
-            { id: 'card36', name: 'TON Connect', icon: '🔗', baseCost: 700000000, baseProfit: 330000000, tonCost: 500.0 },
-            { id: 'card37', name: 'Telegram Premium', icon: '⭐', baseCost: 1000000000, baseProfit: 480000000, tonCost: 650.0 },
-            { id: 'card38', name: 'Fragment Username', icon: '🏷️', baseCost: 1400000000, baseProfit: 680000000, tonCost: 850.0 },
-            { id: 'card39', name: 'GetGems NFT', icon: '🖼️', baseCost: 2000000000, baseProfit: 950000000, tonCost: 1100.0 },
-            { id: 'card40', name: 'Ston.fi DEX', icon: '🦄', baseCost: 2800000000, baseProfit: 1350000000, tonCost: 1450.0 },
-            { id: 'card41', name: 'DeDust Pool', icon: '💧', baseCost: 4000000000, baseProfit: 1900000000, tonCost: 1900.0 },
-            { id: 'card42', name: 'RedPill AI', icon: '💊', baseCost: 5500000000, baseProfit: 2700000000, tonCost: 2500.0 },
-            { id: 'card43', name: 'CyberConnect', icon: '🛡️', baseCost: 7500000000, baseProfit: 3700000000, tonCost: 3300.0 },
-            { id: 'card44', name: 'ZeroK Knowledge', icon: '🔒', baseCost: 10000000000, baseProfit: 5000000000, tonCost: 4300.0 },
-            { id: 'card45', name: 'LayerZero Bridge', icon: '🌉', baseCost: 15000000000, baseProfit: 7500000000, tonCost: 5500.0 },
-            { id: 'card46', name: 'Solana Node', icon: '🟣', baseCost: 20000000000, baseProfit: 10000000000, tonCost: 7000.0 },
-            { id: 'card47', name: 'Polygon Validator', icon: '🔷', baseCost: 27000000000, baseProfit: 13500000000, tonCost: 9000.0 },
-            { id: 'card48', name: 'Arbitrum Rollup', icon: '🔵', baseCost: 35000000000, baseProfit: 17500000000, tonCost: 11500.0 },
-            { id: 'card49', name: 'Optimism Gateway', icon: '🔴', baseCost: 45000000000, baseProfit: 22500000000, tonCost: 14500.0 },
-            { id: 'card50', name: 'Avalanche Subnet', icon: '🔺', baseCost: 60000000000, baseProfit: 30000000000, tonCost: 18000.0 },
-            { id: 'card51', name: 'Sui Network', icon: '💧', baseCost: 80000000000, baseProfit: 40000000000, tonCost: 22000.0 },
-            { id: 'card52', name: 'Aptos Move', icon: '⬛', baseCost: 105000000000, baseProfit: 52500000000, tonCost: 27000.0 },
-            { id: 'card53', name: 'Cosmos Hub', icon: '⚛️', baseCost: 135000000000, baseProfit: 67500000000, tonCost: 33000.0 },
-            { id: 'card54', name: 'Near Protocol', icon: '🌐', baseCost: 170000000000, baseProfit: 85000000000, tonCost: 40000.0 },
-            { id: 'card55', name: 'Injective Protocol', icon: '🚀', baseCost: 210000000000, baseProfit: 105000000000, tonCost: 48000.0 },
-            { id: 'card56', name: 'Chainlink Oracle', icon: '🔗', baseCost: 260000000000, baseProfit: 130000000000, tonCost: 58000.0 },
-            { id: 'card57', name: 'Uniswap Liquidity', icon: '🦄', baseCost: 320000000000, baseProfit: 160000000000, tonCost: 70000.0 },
-            { id: 'card58', name: 'Aave Lending', icon: '👻', baseCost: 390000000000, baseProfit: 195000000000, tonCost: 84000.0 },
-            { id: 'card59', name: 'MakerDAO Vault', icon: '🏛️', baseCost: 470000000000, baseProfit: 235000000000, tonCost: 100000.0 },
-            { id: 'card60', name: 'Curve Finance', icon: '🔄', baseCost: 560000000000, baseProfit: 280000000000, tonCost: 120000.0 },
-            { id: 'card61', name: 'Lido Staking', icon: '🌊', baseCost: 660000000000, baseProfit: 330000000000, tonCost: 145000.0 },
-            { id: 'card62', name: 'EigenLayer Restake', icon: '⚡', baseCost: 780000000000, baseProfit: 390000000000, tonCost: 175000.0 },
-            { id: 'card63', name: 'Celestia DA', icon: '🌌', baseCost: 920000000000, baseProfit: 460000000000, tonCost: 210000.0 },
-            { id: 'card64', name: 'Base Network', icon: '🔵', baseCost: 1100000000000, baseProfit: 550000000000, tonCost: 250000.0 },
-            { id: 'card65', name: 'ZKsync Era', icon: '🔐', baseCost: 1300000000000, baseProfit: 650000000000, tonCost: 300000.0 },
-            { id: 'card66', name: 'Scroll ZkEVM', icon: '📜', baseCost: 1550000000000, baseProfit: 775000000000, tonCost: 360000.0 },
-            { id: 'card67', name: 'Linea Network', icon: '🟩', baseCost: 1850000000000, baseProfit: 925000000000, tonCost: 430000.0 },
-            { id: 'card68', name: 'Mantle Core', icon: '🟢', baseCost: 2200000000000, baseProfit: 1100000000000, tonCost: 510000.0 },
-            { id: 'card69', name: 'Blast Yield', icon: '🟡', baseCost: 2600000000000, baseProfit: 1300000000000, tonCost: 600000.0 },
-            { id: 'card70', name: 'Mode Network', icon: '🔷', baseCost: 3100000000000, baseProfit: 1550000000000, tonCost: 710000.0 },
-            { id: 'card71', name: 'Manta Pacific', icon: '🌊', baseCost: 3700000000000, baseProfit: 1850000000000, tonCost: 840000.0 },
-            { id: 'card72', name: 'Starknet Pro', icon: '⭐', baseCost: 4400000000000, baseProfit: 2200000000000, tonCost: 1000000.0 },
-            { id: 'card73', name: 'Fantom Sonic', icon: '👻', baseCost: 5200000000000, baseProfit: 2600000000000, tonCost: 1200000.0 },
-            { id: 'card74', name: 'Gnosis Safe', icon: '🛡️', baseCost: 6100000000000, baseProfit: 3050000000000, tonCost: 1420000.0 },
-            { id: 'card75', name: 'Kava EVM', icon: '🚀', baseCost: 7200000000000, baseProfit: 3600000000000, tonCost: 1680000.0 },
-            { id: 'card76', name: 'Telos Zero', icon: '⚡', baseCost: 8500000000000, baseProfit: 4250000000000, tonCost: 1980000.0 },
-            { id: 'card77', name: 'Filecoin Storage', icon: '💾', baseCost: 10000000000000, baseProfit: 5000000000000, tonCost: 2350000.0 },
-            { id: 'card78', name: 'Arweave Node', icon: '📦', baseCost: 11800000000000, baseProfit: 5900000000000, tonCost: 2780000.0 },
-            { id: 'card79', name: 'Render Network', icon: '🎨', baseCost: 14000000000000, baseProfit: 7000000000000, tonCost: 3300000.0 },
-            { id: 'card80', name: 'Akash Cloud', icon: '☁️', baseCost: 16500000000000, baseProfit: 8250000000000, tonCost: 3900000.0 },
-            { id: 'card81', name: 'Theta Edge', icon: '📺', baseCost: 19500000000000, baseProfit: 9750000000000, tonCost: 4600000.0 },
-            { id: 'card82', name: 'Hélium Hotspot', icon: '📡', baseCost: 23000000000000, baseProfit: 11500000000000, tonCost: 5400000.0 },
-            { id: 'card83', name: 'GRT Indexer', icon: '🔍', baseCost: 27000000000000, baseProfit: 13500000000000, tonCost: 6300000.0 },
-            { id: 'card84', name: 'Pyth Oracle', icon: '🔮', baseCost: 32000000000000, baseProfit: 16000000000000, tonCost: 7400000.0 },
-            { id: 'card85', name: 'Quantum Citadel', icon: '🏛️', baseCost: 38000000000000, baseProfit: 19000000000000, tonCost: 8700000.0 },
-            { id: 'card86', name: 'Polygon 2.0', icon: '🟣', baseCost: 45000000000000, baseProfit: 22500000000000, tonCost: 10200000.0 },
-            { id: 'card87', name: 'Arbitrum Orbit', icon: '🌐', baseCost: 53000000000000, baseProfit: 26500000000000, tonCost: 12000000.0 },
-            { id: 'card88', name: 'Optimism Superchain', icon: '🔴', baseCost: 62000000000000, baseProfit: 31000000000000, tonCost: 14000000.0 },
-            { id: 'card89', name: 'Berachain Liquidity', icon: '🐻', baseCost: 72000000000000, baseProfit: 36000000000000, tonCost: 16300000.0 },
-            { id: 'card90', name: 'Monad Parallel EVM', icon: '⚡', baseCost: 84000000000000, baseProfit: 42000000000000, tonCost: 19000000.0 },
-            { id: 'card91', name: 'Taiko ZkRollup', icon: '🥁', baseCost: 98000000000000, baseProfit: 49000000000000, tonCost: 22100000.0 },
-            { id: 'card92', name: 'Fuel Modular', icon: '⛽', baseCost: 114000000000000, baseProfit: 57000000000000, tonCost: 25600000.0 },
-            { id: 'card93', name: 'ZetaChain Omnichain', icon: '🌐', baseCost: 132000000000000, baseProfit: 66000000000000, tonCost: 29600000.0 },
-            { id: 'card94', name: 'Mina ZeroKnowledge', icon: '🛡️', baseCost: 153000000000000, baseProfit: 76500000000000, tonCost: 34200000.0 },
-            { id: 'card95', name: 'Aleo Privacy', icon: '🔒', baseCost: 177000000000000, baseProfit: 88500000000000, tonCost: 39500000.0 },
-            { id: 'card96', name: 'Cardano Hydra', icon: '🔷', baseCost: 205000000000000, baseProfit: 102500000000000, tonCost: 45600000.0 },
-            { id: 'card97', name: 'Polkadot Parachain', icon: '🟣', baseCost: 237000000000000, baseProfit: 118500000000000, tonCost: 52700000.0 },
-            { id: 'card98', name: 'Avalanche L1', icon: '🔺', baseCost: 274000000000000, baseProfit: 137000000000000, tonCost: 60900000.0 },
-            { id: 'card99', name: 'Solana Firedancer', icon: '🚀', baseCost: 316000000000000, baseProfit: 158000000000000, tonCost: 70300000.0 },
-            { id: 'card100', name: 'Nexus HyperScale', icon: '🌐', baseCost: 365000000000000, baseProfit: 182500000000000, tonCost: 81100000.0 }
+            // Category 1: Markets (Cards 1 to 25)
+            ...Array.from({length: 25}, (_, i) => ({
+                id: `card${i + 1}`,
+                name: `Market Asset ${i + 1}`,
+                category: 'markets',
+                icon: ['📈', '🪙', '💎', '🎟️', '🏦'][i % 5],
+                baseCost: 1000 + (i * 2000),
+                baseProfit: 200 + (i * 250),
+                tonCost: 1.0
+            })),
+            // Category 2: Web3 & Apps (Cards 26 to 50)
+            ...Array.from({length: 25}, (_, i) => ({
+                id: `card${i + 26}`,
+                name: `Web3 App ${i + 26}`,
+                category: 'web3',
+                icon: ['🌐', '📱', '🐹', '🌸', '🐶'][i % 5],
+                baseCost: 80000 + (i * 3500),
+                baseProfit: 10000 + (i * 600),
+                tonCost: 4.0
+            })),
+            // Category 3: AI & Nodes (Cards 51 to 75)
+            ...Array.from({length: 25}, (_, i) => ({
+                id: `card${i + 51}`,
+                name: `AI & Node ${i + 51}`,
+                category: 'ai',
+                icon: ['💻', '⚡', '🤖', '🔮', '📡'][i % 5],
+                baseCost: 200000 + (i * 5000),
+                baseProfit: 30000 + (i * 900),
+                tonCost: 8.0
+            })),
+            // Category 4: Layers & L2 (Cards 76 to 100)
+            ...Array.from({length: 25}, (_, i) => ({
+                id: `card${i + 76}`,
+                name: `Layer Protocol ${i + 76}`,
+                category: 'layers',
+                icon: ['🌉', '🟣', '🔵', '🔴', '🔺'][i % 5],
+                baseCost: 380000 + (i * 7000),
+                baseProfit: 55000 + (i * 1200),
+                tonCost: 12.0
+            }))
         ];
+
+        let currentMineCategory = 'markets';
+
+        function switchMineCategory(cat) {
+            currentMineCategory = cat;
+            document.querySelectorAll('.mine-cat-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('cat-btn-' + cat);
+            if (activeBtn) activeBtn.classList.add('active');
+            renderMineCards();
+        }
 
         let toastTimer = null;
         function showToast(msg) {
@@ -1075,7 +1064,6 @@
             });
         }
 
-        // Leaderboard Fetching Function (Top 100 Users)
         function fetchLeaderboard() {
             const lbContainer = document.getElementById('leaderboardContainer');
             if (!lbContainer) return;
@@ -1105,7 +1093,7 @@
                     item.innerHTML = `
                         <div class="lb-rank">${rankIcon}</div>
                         <div class="lb-name">${player.name || 'Player'}</div>
-                        <div class="lb-score">🪙 ${Math.floor(player.coins || 0).toLocaleString()}</div>
+                        <div class="lb-score">🪙 ${formatNumber(player.coins || 0)}</div>
                     `;
                     lbContainer.appendChild(item);
                 });
@@ -1256,12 +1244,20 @@
             setTimeout(() => el.remove(), 800);
         }
 
+        function formatNumber(num) {
+            if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
+            if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+            if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+            if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+            return Math.floor(num).toLocaleString();
+        }
+
         function updateUI() {
             checkAndResetDailyAdLimits();
             const wholeCoins = Math.floor(gameState.coins);
             
             const cBal = document.getElementById('coinBalance');
-            if (cBal) cBal.innerText = wholeCoins.toLocaleString();
+            if (cBal) cBal.innerText = formatNumber(wholeCoins);
 
             const pCoins = document.getElementById('profileCoins');
             if (pCoins) pCoins.innerText = wholeCoins.toLocaleString();
@@ -1270,7 +1266,7 @@
             if (pTonSpent) pTonSpent.innerText = (gameState.tonSpent || 0).toFixed(2) + ' TON';
 
             const pphDisp = document.getElementById('pphDisplay');
-            if (pphDisp) pphDisp.innerText = gameState.pph.toLocaleString();
+            if (pphDisp) pphDisp.innerText = formatNumber(gameState.pph);
 
             const cEnergy = document.getElementById('currentEnergy');
             if (cEnergy) cEnergy.innerText = Math.floor(gameState.energy);
@@ -1330,9 +1326,22 @@
             if (lProg) lProg.style.width = Math.max(5, pct) + '%';
         }
 
-        // Unlimited Card Level Up (No Lock, No Restraints - Up to Level 50, 100+)
         function isCardUnlocked(index) {
             return true;
+        }
+
+        // Progressive Cost: Low start, soaring up to Billions/Trillions past Lvl 70-80
+        function calculateCardCost(baseCost, level) {
+            let multiplier = 1.35;
+            if (level >= 70) multiplier = 2.2;
+            else if (level >= 40) multiplier = 1.65;
+            
+            let cost = baseCost * Math.pow(multiplier, level);
+            return Math.floor(cost);
+        }
+
+        function calculateCardProfit(baseProfit, level) {
+            return Math.floor(baseProfit * (level + 1) * Math.pow(1.15, level));
         }
 
         function renderMineCards() {
@@ -1340,14 +1349,17 @@
             if (!container) return;
             container.innerHTML = '';
 
-            mineCardList.forEach((item, index) => {
+            const filteredCards = mineCardList.filter(c => c.category === currentMineCategory);
+
+            filteredCards.forEach((item, index) => {
                 if (!gameState.cards[item.id]) {
                     gameState.cards[item.id] = { level: 0 };
                 }
                 const cardData = gameState.cards[item.id];
-                const nextCost = Math.floor(item.baseCost * Math.pow(1.4, cardData.level));
-                const nextTonCost = parseFloat((item.tonCost * Math.pow(1.15, cardData.level)).toFixed(2));
-                const nextProfit = Math.floor(item.baseProfit * (cardData.level + 1));
+                
+                const nextCost = calculateCardCost(item.baseCost, cardData.level);
+                const nextTonCost = Math.min(12.0, parseFloat((item.tonCost * Math.pow(1.08, cardData.level)).toFixed(2)));
+                const nextProfit = calculateCardProfit(item.baseProfit, cardData.level);
 
                 const div = document.createElement('div');
                 div.className = 'upgrade-card';
@@ -1357,14 +1369,14 @@
                         <div class="card-icon">${item.icon}</div>
                         <div>
                             <div class="card-title">${item.name}</div>
-                            <div class="card-profit">+${nextProfit}/hr</div>
+                            <div class="card-profit">+${formatNumber(nextProfit)}/hr</div>
                         </div>
                     </div>
                     <div class="card-footer">
                         <span style="color: #cbd5e1; font-size: 10px;">Lvl ${cardData.level} (Unlimited)</span>
                         <div class="btn-group">
-                            <button class="buy-btn" onclick="buyMineCard('${item.id}', ${index}, 'coin')">🪙 ${nextCost.toLocaleString()}</button>
-                            <button class="buy-ton-btn" onclick="buyMineCard('${item.id}', ${index}, 'ton', ${nextTonCost})">💎 ${nextTonCost} TON</button>
+                            <button class="buy-btn" onclick="buyMineCard('${item.id}', 'coin')">🪙 ${formatNumber(nextCost)}</button>
+                            <button class="buy-ton-btn" onclick="buyMineCard('${item.id}', 'ton', ${nextTonCost})">💎 ${nextTonCost} TON</button>
                         </div>
                     </div>
                 `;
@@ -1372,17 +1384,17 @@
             });
         }
 
-        function buyMineCard(cardId, index, method, tonVal = 0) {
+        function buyMineCard(cardId, method, tonVal = 0) {
             const item = mineCardList.find(c => c.id === cardId);
             if (!item) return;
 
             const cardData = gameState.cards[cardId];
-            const cost = Math.floor(item.baseCost * Math.pow(1.4, cardData.level));
-            const profitAdd = Math.floor(item.baseProfit * (cardData.level + 1));
+            const cost = calculateCardCost(item.baseCost, cardData.level);
+            const profitAdd = calculateCardProfit(item.baseProfit, cardData.level);
 
             if (method === 'coin') {
                 if (gameState.coins < cost) {
-                    showToast('Insufficient AR Coins! You can upgrade with TON instead.');
+                    showToast('Insufficient AR Coins! Upgrade with TON or earn more.');
                     return;
                 }
                 gameState.coins -= cost;
@@ -1430,10 +1442,10 @@
                 });
 
                 comboVerifyPending = false;
-                if (btn) btn.innerText = 'Verify & Claim (+100k)';
+                if (btn) btn.innerText = 'Verify & Claim (+50k)';
 
                 if (allCorrect) {
-                    const comboReward = 100000;
+                    const comboReward = 50000;
                     gameState.coins += comboReward;
                     gameState.lastComboDate = todayStr;
                     updateUI();
