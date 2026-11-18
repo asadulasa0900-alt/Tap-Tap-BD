@@ -327,7 +327,7 @@
             text-shadow: 0 2px 10px rgba(244,114,182,0.4);
         }
 
-        /* Cards Design (100 Progressive Cards) */
+        /* Cards Design (All 100 Cards - Unlimited Upgrade) */
         .grid-cards {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -352,8 +352,6 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.5);
             position: relative;
         }
-
-        .upgrade-card.locked { opacity: 0.55; filter: grayscale(0.5); }
 
         .card-header {
             display: flex;
@@ -449,11 +447,50 @@
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
         }
 
-        .action-btn.claimed {
-            background: #334155;
-            color: #94a3b8;
-            box-shadow: none;
-            cursor: default;
+        /* Leaderboard Styling */
+        .leaderboard-list {
+            max-height: 55vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-right: 4px;
+        }
+        .leaderboard-list::-webkit-scrollbar { width: 4px; }
+        .leaderboard-list::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.4); border-radius: 4px; }
+
+        .lb-item {
+            background: linear-gradient(145deg, #1e1b4b, #0f172a);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            border-radius: 12px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .lb-rank {
+            font-weight: 900;
+            font-size: 14px;
+            color: #f472b6;
+            width: 35px;
+        }
+
+        .lb-name {
+            flex: 1;
+            font-weight: 800;
+            font-size: 13px;
+            color: #f8fafc;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 10px;
+        }
+
+        .lb-score {
+            font-weight: 900;
+            font-size: 13px;
+            color: #34d399;
         }
 
         /* Bottom Navigation */
@@ -470,7 +507,7 @@
             border-radius: 24px;
             display: flex;
             justify-content: space-around;
-            padding: 8px 6px;
+            padding: 8px 4px;
             z-index: 999;
             box-shadow: 0 15px 35px rgba(0,0,0,0.9);
         }
@@ -482,10 +519,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 800;
             cursor: pointer;
-            padding: 8px 12px;
+            padding: 6px 8px;
             border-radius: 16px;
             transition: all 0.25s ease;
         }
@@ -497,7 +534,7 @@
             box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
         }
 
-        .nav-icon { font-size: 20px; margin-bottom: 3px; }
+        .nav-icon { font-size: 18px; margin-bottom: 2px; }
 
         /* Toast */
         #toast {
@@ -551,7 +588,6 @@
                 </div>
             </div>
 
-            <!-- League Progress -->
             <div class="rank-section">
                 <div class="rank-info">
                     <span id="currentLeagueName">Bronze ></span>
@@ -562,7 +598,6 @@
                 </div>
             </div>
 
-            <!-- 5D Premium HD Tap Coin -->
             <div class="tap-area" id="tapArea">
                 <div class="tap-coin-outer">
                     <div class="tap-coin" id="mainTapCoin">
@@ -572,7 +607,6 @@
                 </div>
             </div>
 
-            <!-- Energy & Boost Button -->
             <div class="energy-boost-bar">
                 <div class="energy-box">
                     <span>⚡</span>
@@ -582,11 +616,10 @@
             </div>
         </div>
 
-        <!-- TAB 2: MINE (100 Progressive Cards & Daily Combo) -->
+        <!-- TAB 2: MINE (100 Cards - Unlimited Level Up) -->
         <div id="tab-mine" class="tab-page">
             <div class="section-title">⛏️ Mine & Daily Combo</div>
             
-            <!-- Daily Combo Section -->
             <div class="list-card" style="flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 15px; border: 1px solid #f472b6;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="font-size: 14px; font-weight: 900; color: #f472b6;">🎁 Daily Combo (3 Cards)</div>
@@ -601,11 +634,20 @@
                 <button class="action-btn" id="verifyComboBtn" onclick="verifyDailyComboWithAd()">Verify & Claim (+100k)</button>
             </div>
 
-            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">Upgrade with TON directly if coins are insufficient!</p>
+            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">All cards have <strong>unlimited levels</strong> (50+, 100+)! Upgrade with coins or TON.</p>
             <div class="grid-cards" id="mineCardsContainer"></div>
         </div>
 
-        <!-- TAB 3: FRIENDS (Referral System) -->
+        <!-- TAB 3: LEADERBOARD -->
+        <div id="tab-leaderboard" class="tab-page">
+            <div class="section-title">🏆 Top 100 Miners</div>
+            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">Global ranking based on total coins earned.</p>
+            <div class="leaderboard-list" id="leaderboardContainer">
+                <div style="text-align: center; color: #94a3b8; padding: 20px;">Loading leaderboard...</div>
+            </div>
+        </div>
+
+        <!-- TAB 4: FRIENDS -->
         <div id="tab-friends" class="tab-page">
             <div class="section-title">👥 Invite Friends!</div>
             <p style="text-align: center; font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">For every successful referral, you and your friend will get <strong style="color: #f472b6;">+1,000 AR Coin</strong>!</p>
@@ -625,7 +667,7 @@
             </div>
         </div>
 
-        <!-- TAB 4: EARN (Adsterra & Tasks with Daily Limits) -->
+        <!-- TAB 5: EARN -->
         <div id="tab-earn" class="tab-page">
             <div class="section-title">💰 Earn More Coins</div>
             
@@ -637,7 +679,6 @@
                 <button class="action-btn" id="dailyTaskBtn" onclick="claimDailyReward()">Claim</button>
             </div>
 
-            <!-- Ad 1 (Daily Limit: 5 times) -->
             <div class="list-card">
                 <div>
                     <div style="font-size: 14px; font-weight: 900;">📺 Watch Advertisement 1</div>
@@ -646,7 +687,6 @@
                 <button class="action-btn" id="watchAd1Btn" onclick="watchLimitAd('ad1', 'https://auctionr.org/4/03e62852e0047e5b9397cdccfc07f679', 1500, 5)">Watch</button>
             </div>
 
-            <!-- Ad 2 (Daily Limit: 5 times) -->
             <div class="list-card">
                 <div>
                     <div style="font-size: 14px; font-weight: 900;">📺 Watch Advertisement 2</div>
@@ -654,11 +694,9 @@
                 </div>
                 <button class="action-btn" id="watchAd2Btn" onclick="watchLimitAd('ad2', 'https://auctionr.org/4/9a5c7b554d5eb6baf0f960b61bcfc927', 1500, 5)">Watch</button>
             </div>
-
-            <div id="dynamicTasksContainer"></div>
         </div>
 
-        <!-- TAB 5: PROFILE & WALLET -->
+        <!-- TAB 6: PROFILE & WALLET -->
         <div id="tab-profile" class="tab-page">
             <div class="section-title">👤 User Profile & Data</div>
 
@@ -721,6 +759,10 @@
                 <span class="nav-icon">⛏️</span>
                 <span>Mine</span>
             </button>
+            <button class="nav-btn" id="nav-leaderboard" onclick="switchTab('leaderboard')">
+                <span class="nav-icon">🏆</span>
+                <span>Leaderboard</span>
+            </button>
             <button class="nav-btn" id="nav-friends" onclick="switchTab('friends')">
                 <span class="nav-icon">👥</span>
                 <span>Friends</span>
@@ -760,7 +802,7 @@
         try {
             if (typeof TON_CONNECT_UI !== 'undefined') {
                 tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-                    manifestUrl: 'https://yourusername.github.io/your-repo-name/tonconnect-manifest.json',
+                    manifestUrl: 'https://asadulasa0900-alt.github.io/Tap-Tap-BD/tonconnect-manifest.json',
                     uiPreferences: { theme: 'DARK' },
                     buttonRootId: 'ton-connect-button'
                 });
@@ -791,13 +833,12 @@
             lastActive: Date.now()
         };
 
-        // Today's secret Daily Combo cards
         const todaysCombo = {
             date: new Date().toDateString(),
             cards: ['card3', 'card12', 'card25']
         };
 
-        // Total exactly 100 progressive mine cards (First 15 unlocked by default)
+        // All 100 Progressive Mine Cards (Unlimited Level Up System)
         const mineCardList = [
             { id: 'card1', name: 'Fan Tokens', icon: '🎟️', baseCost: 200, baseProfit: 100, tonCost: 0.01 },
             { id: 'card2', name: 'Staking Pool', icon: '🏦', baseCost: 500, baseProfit: 250, tonCost: 0.02 },
@@ -950,6 +991,7 @@
                 loadCloudGameData(() => {
                     initGameLoops();
                     listenRealtimeUpdates();
+                    fetchLeaderboard();
                 });
 
             } catch (e) {
@@ -1030,6 +1072,46 @@
 
             db.ref('players/' + gameState.uid + '/friends').on('value', snap => {
                 if (snap.exists()) { gameState.friends = snap.val(); updateUI(); }
+            });
+        }
+
+        // Leaderboard Fetching Function (Top 100 Users)
+        function fetchLeaderboard() {
+            const lbContainer = document.getElementById('leaderboardContainer');
+            if (!lbContainer) return;
+
+            db.ref('players').orderByChild('coins').limitToLast(100).once('value', snapshot => {
+                if (!snapshot.exists()) {
+                    lbContainer.innerHTML = `<div style="text-align: center; color: #94a3b8; padding: 20px;">No players found yet.</div>`;
+                    return;
+                }
+
+                let players = [];
+                snapshot.forEach(childSnap => {
+                    players.push(childSnap.val());
+                });
+
+                players.sort((a, b) => (b.coins || 0) - (a.coins || 0));
+
+                lbContainer.innerHTML = '';
+                players.forEach((player, index) => {
+                    let rankIcon = `#${index + 1}`;
+                    if (index === 0) rankIcon = '🥇';
+                    else if (index === 1) rankIcon = '🥈';
+                    else if (index === 2) rankIcon = '🥉';
+
+                    const item = document.createElement('div');
+                    item.className = 'lb-item';
+                    item.innerHTML = `
+                        <div class="lb-rank">${rankIcon}</div>
+                        <div class="lb-name">${player.name || 'Player'}</div>
+                        <div class="lb-score">🪙 ${Math.floor(player.coins || 0).toLocaleString()}</div>
+                    `;
+                    lbContainer.appendChild(item);
+                });
+            }).catch(err => {
+                console.error("Leaderboard load error:", err);
+                lbContainer.innerHTML = `<div style="text-align: center; color: #f43f5e; padding: 20px;">Failed to load leaderboard.</div>`;
             });
         }
 
@@ -1248,19 +1330,8 @@
             if (lProg) lProg.style.width = Math.max(5, pct) + '%';
         }
 
-        // First 15 cards (index 0 to 14) are unlocked by default
+        // Unlimited Card Level Up (No Lock, No Restraints - Up to Level 50, 100+)
         function isCardUnlocked(index) {
-            if (index < 15) return true;
-            let prevBatchStart = Math.floor((index - 15) / 5) * 5 + 15 - 5;
-            let prevBatchEnd = prevBatchStart + 5;
-            let checkStart = index <= 19 ? 0 : prevBatchStart;
-            let checkEnd = index <= 19 ? 15 : prevBatchEnd;
-
-            for (let i = checkStart; i < checkEnd; i++) {
-                let cardId = mineCardList[i].id;
-                let lvl = gameState.cards[cardId] ? gameState.cards[cardId].level : 0;
-                if (lvl < 10) return false;
-            }
             return true;
         }
 
@@ -1274,58 +1345,39 @@
                     gameState.cards[item.id] = { level: 0 };
                 }
                 const cardData = gameState.cards[item.id];
-                const nextCost = Math.floor(item.baseCost * Math.pow(1.5, cardData.level));
-                const nextTonCost = parseFloat((item.tonCost * Math.pow(1.2, cardData.level)).toFixed(2));
+                const nextCost = Math.floor(item.baseCost * Math.pow(1.4, cardData.level));
+                const nextTonCost = parseFloat((item.tonCost * Math.pow(1.15, cardData.level)).toFixed(2));
                 const nextProfit = Math.floor(item.baseProfit * (cardData.level + 1));
 
-                const unlocked = isCardUnlocked(index);
                 const div = document.createElement('div');
-                div.className = 'upgrade-card' + (unlocked ? '' : ' locked');
+                div.className = 'upgrade-card';
                 
-                if (!unlocked) {
-                    div.innerHTML = `
-                        <div class="card-header">
-                            <div class="card-icon">🔒</div>
-                            <div>
-                                <div class="card-title">${item.name}</div>
-                                <div class="card-profit" style="color: #f43f5e;">Locked</div>
-                            </div>
+                div.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-icon">${item.icon}</div>
+                        <div>
+                            <div class="card-title">${item.name}</div>
+                            <div class="card-profit">+${nextProfit}/hr</div>
                         </div>
-                        <div class="card-footer"><span style="color: #94a3b8; font-size:9px;">Upgrade previous cards to level 10</span></div>
-                    `;
-                } else {
-                    div.innerHTML = `
-                        <div class="card-header">
-                            <div class="card-icon">${item.icon}</div>
-                            <div>
-                                <div class="card-title">${item.name}</div>
-                                <div class="card-profit">+${nextProfit}/hr</div>
-                            </div>
+                    </div>
+                    <div class="card-footer">
+                        <span style="color: #cbd5e1; font-size: 10px;">Lvl ${cardData.level} (Unlimited)</span>
+                        <div class="btn-group">
+                            <button class="buy-btn" onclick="buyMineCard('${item.id}', ${index}, 'coin')">🪙 ${nextCost.toLocaleString()}</button>
+                            <button class="buy-ton-btn" onclick="buyMineCard('${item.id}', ${index}, 'ton', ${nextTonCost})">💎 ${nextTonCost} TON</button>
                         </div>
-                        <div class="card-footer">
-                            <span style="color: #cbd5e1; font-size: 10px;">Lvl ${cardData.level}</span>
-                            <div class="btn-group">
-                                <button class="buy-btn" onclick="buyMineCard('${item.id}', ${index}, 'coin')">🪙 ${nextCost.toLocaleString()}</button>
-                                <button class="buy-ton-btn" onclick="buyMineCard('${item.id}', ${index}, 'ton', ${nextTonCost})">💎 ${nextTonCost} TON</button>
-                            </div>
-                        </div>
-                    `;
-                }
+                    </div>
+                `;
                 container.appendChild(div);
             });
         }
 
         function buyMineCard(cardId, index, method, tonVal = 0) {
-            if (!isCardUnlocked(index)) {
-                showToast('Upgrade previous cards to level 10 to unlock this card!');
-                return;
-            }
-
             const item = mineCardList.find(c => c.id === cardId);
             if (!item) return;
 
             const cardData = gameState.cards[cardId];
-            const cost = Math.floor(item.baseCost * Math.pow(1.5, cardData.level));
+            const cost = Math.floor(item.baseCost * Math.pow(1.4, cardData.level));
             const profitAdd = Math.floor(item.baseProfit * (cardData.level + 1));
 
             if (method === 'coin') {
@@ -1348,7 +1400,7 @@
             renderMineCards();
             updateUI();
             saveGameData();
-            showToast(`✅ ${cardName} upgraded successfully!`);
+            showToast(`✅ ${cardName} upgraded to Lvl ${gameState.cards[cardId].level}!`);
         }
 
         let comboVerifyPending = false;
@@ -1519,6 +1571,10 @@
 
                 const targetNav = document.getElementById('nav-' + tabName);
                 if (targetNav) targetNav.classList.add('active');
+
+                if (tabName === 'leaderboard') {
+                    fetchLeaderboard();
+                }
             } catch (e) {
                 console.error("Tab switch error:", e);
             }
