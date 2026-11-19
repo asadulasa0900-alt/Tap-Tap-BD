@@ -470,6 +470,12 @@
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
         }
 
+        .action-btn:disabled {
+            background: #334155;
+            cursor: default;
+            box-shadow: none;
+        }
+
         .leaderboard-list {
             max-height: 55vh;
             overflow-y: auto;
@@ -713,6 +719,12 @@
                 </div>
                 <button class="action-btn" id="watchAd2Btn" onclick="watchLimitAd('ad2', 'https://auctionr.org/4/9a5c7b554d5eb6baf0f960b61bcfc927', 1500, 5)">Watch</button>
             </div>
+
+            <div class="section-title" style="margin-top: 18px; font-size: 16px;">📱 Admin Social Tasks</div>
+            <div id="adminSocialTasksContainer"></div>
+
+            <div class="section-title" style="margin-top: 18px; font-size: 16px;">📢 Announcements</div>
+            <div id="adminPostsContainer"></div>
         </div>
 
         <div id="tab-profile" class="tab-page">
@@ -854,6 +866,8 @@
             date: new Date().toDateString(),
             cards: ['card5', 'card55', 'card140']
         };
+
+        let adminSocialTasksCache = {};
 
         const mineCardList = [
             ...Array.from({length: 40}, (_, i) => ({
@@ -1061,6 +1075,89 @@
             db.ref('players/' + gameState.uid + '/friends').on('value', snap => {
                 if (snap.exists()) { gameState.friends = snap.val(); updateUI(); }
             });
+
+            db.ref('socialTasks').on('value', snap => {
+                adminSocialTasksCache = snap.val() || {};
+                renderAdminSocialTasks();
+            });
+
+            db.ref('posts').on('value', snap => {
+                renderAdminPosts(snap.val() || {});
+            });
+        }
+
+        function renderAdminSocialTasks() {
+            const container = document.getElementById('adminSocialTasksContainer');
+            if (!container) return;
+            const keys = Object.keys(adminSocialTasksCache);
+            if (!keys.length) {
+                container.innerHTML = '';
+                return;
+            }
+            let html = '';
+            keys.forEach(taskId => {
+                const task = adminSocialTasksCache[taskId];
+                const isClaimed = Boolean(gameState.tasks && gameState.tasks[taskId]);
+                const rewardVal = Number(task.reward) || 0;
+                html += `
+                    <div class="list-card">
+                        <div>
+                            <div style="font-size: 14px; font-weight: 900;">${task.platform || 'Task'}: ${task.title || ''}</div>
+                            <div style="font-size: 12px; color: #34d399; font-weight: 800;">+${rewardVal.toLocaleString()} AR Coin</div>
+                        </div>
+                        <button class="action-btn" ${isClaimed ? 'disabled' : ''} onclick="completeAdminSocialTask('${taskId}')">${isClaimed ? 'Claimed' : 'Claim'}</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function completeAdminSocialTask(taskId) {
+            const task = adminSocialTasksCache[taskId];
+            if (!task) return;
+            if (!gameState.tasks) gameState.tasks = {};
+            if (gameState.tasks[taskId]) return;
+
+            if (task.url) {
+                window.open(task.url, '_blank');
+            }
+
+            const btn = event?.target;
+            if (btn) {
+                btn.disabled = true;
+                btn.innerText = 'Verifying...';
+            }
+
+            setTimeout(() => {
+                const rewardVal = Number(task.reward) || 0;
+                gameState.tasks[taskId] = true;
+                gameState.coins = (Number(gameState.coins) || 0) + rewardVal;
+                renderAdminSocialTasks();
+                updateUI();
+                saveGameDataInstant();
+                showToast(`🎉 Task completed! +${rewardVal.toLocaleString()} AR Coin added!`);
+            }, 3000);
+        }
+
+        function renderAdminPosts(posts) {
+            const container = document.getElementById('adminPostsContainer');
+            if (!container) return;
+            const keys = Object.keys(posts);
+            if (!keys.length) {
+                container.innerHTML = '';
+                return;
+            }
+            let html = '';
+            keys.forEach(postId => {
+                const post = posts[postId];
+                html += `
+                    <div class="list-card" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+                        <div style="font-size: 14px; font-weight: 900; color: #f472b6;">${post.title || ''}</div>
+                        <div style="font-size: 12px; color: #cbd5e1;">${post.content || ''}</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
         }
 
         function fetchAdminSettings() {
