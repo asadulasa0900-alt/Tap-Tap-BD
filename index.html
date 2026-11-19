@@ -320,6 +320,56 @@
             text-shadow: 0 2px 10px rgba(244,114,182,0.4);
         }
 
+        .combo-slots-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 4px 0;
+        }
+
+        .combo-slot-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px dashed rgba(139, 92, 246, 0.45);
+            border-radius: 12px;
+            padding: 8px 6px;
+            min-height: 76px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.25s ease;
+        }
+
+        .combo-slot-box.unlocked {
+            background: linear-gradient(145deg, #064e3b, #0f172a);
+            border: 1.5px solid #34d399;
+            box-shadow: 0 0 14px rgba(52, 211, 153, 0.35);
+        }
+
+        .combo-slot-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .combo-slot-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #94a3b8;
+            line-height: 1.2;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .combo-slot-box.unlocked .combo-slot-label {
+            color: #34d399;
+        }
+
         .mine-category-nav {
             display: flex;
             gap: 6px;
@@ -353,7 +403,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            max-height: 48vh;
+            max-height: 45vh;
             overflow-y: auto;
             padding-bottom: 20px;
             padding-right: 4px;
@@ -456,6 +506,40 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+        }
+
+        .code-task-card {
+            background: linear-gradient(145deg, #1e1b4b, #0f172a);
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+        }
+
+        .code-task-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .code-task-input {
+            flex: 1;
+            padding: 9px 12px;
+            background: #090d16;
+            border: 1px solid rgba(139, 92, 246, 0.45);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            outline: none;
+        }
+
+        .code-task-input:focus {
+            border-color: #f472b6;
         }
 
         .action-btn {
@@ -645,13 +729,22 @@
             
             <div class="list-card" style="flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 12px; border: 1px solid #f472b6;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-size: 14px; font-weight: 900; color: #f472b6;">🎁 Daily Combo (3 Cards)</div>
+                    <div style="font-size: 14px; font-weight: 900; color: #f472b6;">🎁 Daily Combo (<span id="comboMatchedCount">0</span>/3 Found)</div>
                     <div style="font-size: 11px; color: #34d399; font-weight: 800;">Reward: +50,000 AR</div>
                 </div>
-                <div style="display: flex; justify-content: center; gap: 10px; margin: 3px 0;">
-                    <div class="card-icon" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">🃏</div>
-                    <div class="card-icon" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">🃏</div>
-                    <div class="card-icon" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">🃏</div>
+                <div class="combo-slots-row">
+                    <div class="combo-slot-box" id="comboSlot0">
+                        <div class="combo-slot-icon">🃏</div>
+                        <div class="combo-slot-label">Card 1 (?)</div>
+                    </div>
+                    <div class="combo-slot-box" id="comboSlot1">
+                        <div class="combo-slot-icon">🃏</div>
+                        <div class="combo-slot-label">Card 2 (?)</div>
+                    </div>
+                    <div class="combo-slot-box" id="comboSlot2">
+                        <div class="combo-slot-icon">🃏</div>
+                        <div class="combo-slot-label">Card 3 (?)</div>
+                    </div>
                 </div>
                 <button class="action-btn" id="verifyComboBtn" onclick="verifyDailyComboWithAd()">Verify & Claim (+50k)</button>
             </div>
@@ -684,17 +777,48 @@
                 <button class="action-btn" onclick="copyRefLink()">📋 Copy Link</button>
             </div>
 
-            <div class="list-card">
+            <div class="list-card" style="margin-bottom: 15px;">
                 <div>
                     <div style="font-size: 14px; font-weight: 900;">Total Referred Friends</div>
                     <div style="font-size: 11px; color: #94a3b8;">Referral bonus is added automatically</div>
                 </div>
                 <div style="font-size: 18px; font-weight: 900; color: #34d399;"><span id="totalFriendsCount">0</span> Users</div>
             </div>
+
+            <div class="section-title" style="font-size: 16px; margin-top: 10px;">📜 Your Referred Users List</div>
+            <div id="referredUsersList" style="max-height: 36vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px;">
+                <div style="text-align: center; color: #94a3b8; padding: 10px; font-size: 12px;">Loading referred users...</div>
+            </div>
         </div>
 
         <div id="tab-earn" class="tab-page">
             <div class="section-title">💰 Earn More Coins</div>
+
+            <div class="section-title" style="margin-top: 6px; margin-bottom: 10px; font-size: 16px;">🔑 Combo Code Tasks</div>
+
+            <div class="code-task-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 13px; font-weight: 900; color: #f8fafc;">🎬 Combo Code Task 1</div>
+                    <div style="font-size: 12px; color: #34d399; font-weight: 800;">+<span id="comboCode1Reward">5,000</span> AR</div>
+                </div>
+                <div style="font-size: 11px; color: #94a3b8;">Find the code from Admin’s YouTube/post and submit below.</div>
+                <div class="code-task-row">
+                    <input type="text" id="comboCodeInput1" class="code-task-input" placeholder="Enter Combo Code 1...">
+                    <button class="action-btn" id="comboCodeBtn1" onclick="submitComboCodeTask('code1')">Claim</button>
+                </div>
+            </div>
+
+            <div class="code-task-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 13px; font-weight: 900; color: #f8fafc;">🎬 Combo Code Task 2</div>
+                    <div style="font-size: 12px; color: #34d399; font-weight: 800;">+<span id="comboCode2Reward">5,000</span> AR</div>
+                </div>
+                <div style="font-size: 11px; color: #94a3b8;">Find the code from Admin’s YouTube/post and submit below.</div>
+                <div class="code-task-row">
+                    <input type="text" id="comboCodeInput2" class="code-task-input" placeholder="Enter Combo Code 2...">
+                    <button class="action-btn" id="comboCodeBtn2" onclick="submitComboCodeTask('code2')">Claim</button>
+                </div>
+            </div>
             
             <div class="list-card">
                 <div>
@@ -808,6 +932,7 @@
     </div>
 
     <script>
+        const TELEGRAM_BOT_USERNAME = "taptapbdar_bot";
         const OWNER_TON_ADDRESS = "UQB8uiksaC2YbFEMNJfNXkmNG3pBBiLHw3RfS74f2ubamhBf";
 
         const firebaseConfig = {
@@ -853,6 +978,7 @@
             lastEnergyDate: new Date().toDateString(),
             lastDaily: '',
             lastComboDate: '',
+            claimedComboCodes: {},
             tasks: {},
             cards: {},
             adLimits: { lastDate: new Date().toDateString(), ad1: 0, ad2: 0 },
@@ -865,6 +991,11 @@
         let todaysCombo = {
             date: new Date().toDateString(),
             cards: ['card5', 'card55', 'card140']
+        };
+
+        let comboCodeTasksConfig = {
+            code1: { code: '', reward: 5000 },
+            code2: { code: '', reward: 5000 }
         };
 
         let adminSocialTasksCache = {};
@@ -910,7 +1041,6 @@
 
         let currentMineCategory = 'markets';
 
-        // ১০০ লেভেলের জন্য ধীর ও উচ্চ চাহিদাসম্পন্ন লেভেল আপ সিস্টেম
         const MAX_GAME_LEVEL = 100;
         const levelThresholds = Array.from({ length: MAX_GAME_LEVEL }, (_, idx) => {
             if (idx === 0) return 0;
@@ -982,6 +1112,151 @@
             toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
         }
 
+        function renderComboCodeTasksUI() {
+            const c1Reward = Number(comboCodeTasksConfig?.code1?.reward) || 5000;
+            const c2Reward = Number(comboCodeTasksConfig?.code2?.reward) || 5000;
+
+            const r1El = document.getElementById('comboCode1Reward');
+            const r2El = document.getElementById('comboCode2Reward');
+            if (r1El) r1El.innerText = c1Reward.toLocaleString();
+            if (r2El) r2El.innerText = c2Reward.toLocaleString();
+
+            const activeCode1 = String(comboCodeTasksConfig?.code1?.code || '').trim().toUpperCase();
+            const activeCode2 = String(comboCodeTasksConfig?.code2?.code || '').trim().toUpperCase();
+
+            const claimedMap = gameState.claimedComboCodes || {};
+            const isClaimed1 = Boolean(activeCode1 && claimedMap['code1_' + activeCode1]);
+            const isClaimed2 = Boolean(activeCode2 && claimedMap['code2_' + activeCode2]);
+
+            const btn1 = document.getElementById('comboCodeBtn1');
+            const input1 = document.getElementById('comboCodeInput1');
+            if (btn1) {
+                btn1.disabled = isClaimed1;
+                btn1.innerText = isClaimed1 ? 'Claimed' : 'Claim';
+            }
+            if (input1 && isClaimed1) {
+                input1.value = activeCode1;
+                input1.disabled = true;
+            } else if (input1 && !isClaimed1) {
+                input1.disabled = false;
+            }
+
+            const btn2 = document.getElementById('comboCodeBtn2');
+            const input2 = document.getElementById('comboCodeInput2');
+            if (btn2) {
+                btn2.disabled = isClaimed2;
+                btn2.innerText = isClaimed2 ? 'Claimed' : 'Claim';
+            }
+            if (input2 && isClaimed2) {
+                input2.value = activeCode2;
+                input2.disabled = true;
+            } else if (input2 && !isClaimed2) {
+                input2.disabled = false;
+            }
+        }
+
+        function submitComboCodeTask(slotKey) {
+            const inputId = slotKey === 'code1' ? 'comboCodeInput1' : 'comboCodeInput2';
+            const inputEl = document.getElementById(inputId);
+            if (!inputEl) return;
+
+            const enteredCode = String(inputEl.value || '').trim().toUpperCase();
+            if (!enteredCode) {
+                showToast('⚠️ Please enter a combo code first!');
+                return;
+            }
+
+            const adminSlot = comboCodeTasksConfig?.[slotKey] || {};
+            const expectedCode = String(adminSlot.code || '').trim().toUpperCase();
+            const rewardAmount = Math.max(0, Number(adminSlot.reward) || 0);
+
+            if (!expectedCode) {
+                showToast('⚠️ This combo code task is not active right now.');
+                return;
+            }
+
+            if (enteredCode !== expectedCode) {
+                showToast('❌ Invalid combo code! Check Admin post/video and try again.');
+                return;
+            }
+
+            if (!gameState.claimedComboCodes) gameState.claimedComboCodes = {};
+            const claimKey = slotKey + '_' + expectedCode;
+
+            if (gameState.claimedComboCodes[claimKey]) {
+                showToast('⚠️ You have already claimed this combo code!');
+                renderComboCodeTasksUI();
+                return;
+            }
+
+            gameState.claimedComboCodes[claimKey] = true;
+            gameState.coins = (Number(gameState.coins) || 0) + rewardAmount;
+            inputEl.value = '';
+            renderComboCodeTasksUI();
+            updateUI();
+            saveGameDataInstant();
+            showToast(`🎉 Combo Code verified! +${rewardAmount.toLocaleString()} AR Coin added!`);
+        }
+
+        function renderDailyComboSlots() {
+            const activeComboCards = (todaysCombo.cards || ['card5', 'card55', 'card140'])
+                .map(id => String(id).replace(/\s+/g, '').toLowerCase());
+
+            let matchedCount = 0;
+
+            for (let i = 0; i < 3; i++) {
+                const slotEl = document.getElementById('comboSlot' + i);
+                if (!slotEl) continue;
+
+                const targetCardId = activeComboCards[i];
+                const isUnlocked = Boolean(
+                    targetCardId &&
+                    gameState.cards &&
+                    gameState.cards[targetCardId] &&
+                    Number(gameState.cards[targetCardId].level) >= 1
+                );
+
+                if (isUnlocked) {
+                    matchedCount++;
+                    const cardMeta = mineCardList.find(c => c.id === targetCardId);
+                    const customCardImg = window.customMineCardImages && window.customMineCardImages[targetCardId];
+                    const iconHtml = customCardImg
+                        ? `<img src="${customCardImg}" style="width:28px; height:28px; object-fit:cover; border-radius:6px;">`
+                        : (cardMeta ? cardMeta.icon : '✅');
+                    const cardTitle = cardMeta ? cardMeta.name : targetCardId.toUpperCase();
+
+                    slotEl.classList.add('unlocked');
+                    slotEl.innerHTML = `
+                        <div class="combo-slot-icon">${iconHtml}</div>
+                        <div class="combo-slot-label">${cardTitle}</div>
+                    `;
+                } else {
+                    slotEl.classList.remove('unlocked');
+                    slotEl.innerHTML = `
+                        <div class="combo-slot-icon">🃏</div>
+                        <div class="combo-slot-label">Card ${i + 1} (?)</div>
+                    `;
+                }
+            }
+
+            const countEl = document.getElementById('comboMatchedCount');
+            if (countEl) countEl.innerText = matchedCount;
+
+            const verifyBtn = document.getElementById('verifyComboBtn');
+            if (verifyBtn && !comboVerifyPending) {
+                const todayStr = new Date().toDateString();
+                if (gameState.lastComboDate === todayStr) {
+                    verifyBtn.innerText = '✅ Claimed Today';
+                    verifyBtn.disabled = true;
+                } else {
+                    verifyBtn.disabled = false;
+                    verifyBtn.innerText = matchedCount === 3
+                        ? '🎉 Verify & Claim (+50k)'
+                        : `Verify & Claim (${matchedCount}/3)`;
+                }
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             try {
                 const tg = window.Telegram?.WebApp;
@@ -1016,23 +1291,42 @@
                     } catch(e) { console.log("Local parse error", e); }
                 }
 
+                const tgStartParam = tg?.initDataUnsafe?.start_param || '';
                 const urlParams = new URLSearchParams(window.location.search);
-                const refParam = urlParams.get('ref') || urlParams.get('start');
-                
-                if (refParam && !localStorage.getItem('ar_referred_status')) {
-                    localStorage.setItem('ar_pending_ref', refParam);
-                    localStorage.setItem('ar_referred_status', 'processed');
+                const rawParam = tgStartParam || urlParams.get('startapp') || urlParams.get('start') || urlParams.get('ref') || '';
+
+                let extractedRefUid = '';
+                if (rawParam) {
+                    extractedRefUid = rawParam.startsWith('ref_') ? rawParam.replace(/^ref_/, '').trim() : rawParam.trim();
                 }
 
-                const refBy = localStorage.getItem('ar_pending_ref');
-                if (refBy && refBy !== gameState.uid) {
-                    gameState.coins += 10000;
-                    db.ref('players/' + refBy + '/friends').transaction(c => (c || 0) + 1);
-                    db.ref('players/' + refBy + '/pendingRefBonus').transaction(c => (c || 0) + 10000);
-                    localStorage.removeItem('ar_pending_ref');
+                if (extractedRefUid && extractedRefUid !== gameState.uid && !localStorage.getItem('ar_referred_status_' + gameState.uid)) {
+                    localStorage.setItem('ar_referred_status_' + gameState.uid, 'claimed');
+                    localStorage.setItem('ar_referrer_uid_' + gameState.uid, extractedRefUid);
+
+                    gameState.coins = (Number(gameState.coins) || 0) + 10000;
+
+                    const refRecordRef = db.ref('players/' + extractedRefUid + '/referredUsers/' + gameState.uid);
+                    refRecordRef.transaction(existing => {
+                        if (existing) {
+                            return existing;
+                        }
+                        db.ref('players/' + extractedRefUid + '/friends').transaction(c => (Number(c) || 0) + 1);
+                        db.ref('players/' + extractedRefUid + '/pendingRefBonus').transaction(c => (Number(c) || 0) + 10000);
+                        db.ref('players/' + extractedRefUid + '/coins').transaction(c => (Number(c) || 0) + 10000);
+
+                        return {
+                            uid: gameState.uid,
+                            name: gameState.name,
+                            reward: 10000,
+                            joinedAt: Date.now()
+                        };
+                    });
                 }
 
                 renderMineCards();
+                renderDailyComboSlots();
+                renderComboCodeTasksUI();
                 updateUI();
 
                 loadCloudGameData(() => {
@@ -1040,6 +1334,7 @@
                     listenRealtimeUpdates();
                     fetchLeaderboard();
                     fetchAdminSettings();
+                    loadReferredUsersList();
                 });
 
             } catch (e) {
@@ -1076,6 +1371,9 @@
                     if (cloudData.tasks && Object.keys(cloudData.tasks).length > 0) {
                         gameState.tasks = { ...cloudData.tasks, ...gameState.tasks };
                     }
+                    if (cloudData.claimedComboCodes && Object.keys(cloudData.claimedComboCodes).length > 0) {
+                        gameState.claimedComboCodes = { ...cloudData.claimedComboCodes, ...gameState.claimedComboCodes };
+                    }
                     if (cloudData.wallet) {
                         gameState.wallet = cloudData.wallet;
                     }
@@ -1085,6 +1383,8 @@
                 }
                 saveGameDataInstant();
                 renderMineCards();
+                renderDailyComboSlots();
+                renderComboCodeTasksUI();
                 updateUI();
                 if (callback) callback();
             }).catch(err => {
@@ -1127,7 +1427,32 @@
             });
 
             db.ref('players/' + gameState.uid + '/friends').on('value', snap => {
-                if (snap.exists()) { gameState.friends = snap.val(); updateUI(); }
+                if (snap.exists()) {
+                    gameState.friends = snap.val();
+                    updateUI();
+                    loadReferredUsersList();
+                }
+            });
+
+            db.ref('players/' + gameState.uid + '/referredUsers').on('value', () => {
+                loadReferredUsersList();
+            });
+
+            db.ref('comboCodeTasks').on('value', snap => {
+                const val = snap.val();
+                if (val && typeof val === 'object') {
+                    comboCodeTasksConfig = {
+                        code1: {
+                            code: val.code1?.code ?? '',
+                            reward: Number(val.code1?.reward) || 5000
+                        },
+                        code2: {
+                            code: val.code2?.code ?? '',
+                            reward: Number(val.code2?.reward) || 5000
+                        }
+                    };
+                    renderComboCodeTasksUI();
+                }
             });
 
             db.ref('socialTasks').on('value', snap => {
@@ -1137,6 +1462,48 @@
 
             db.ref('posts').on('value', snap => {
                 renderAdminPosts(snap.val() || {});
+            });
+        }
+
+        function loadReferredUsersList() {
+            const listContainer = document.getElementById('referredUsersList');
+            if (!listContainer) return;
+
+            if (!gameState.uid) {
+                listContainer.innerHTML = '<div style="text-align: center; color: #f472b6; padding: 10px; font-size: 12px;">Please wait, loading...</div>';
+                return;
+            }
+
+            db.ref('players/' + gameState.uid + '/referredUsers').once('value', snapshot => {
+                if (!snapshot.exists()) {
+                    listContainer.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 10px; font-size: 12px;">No friends invited yet. Copy your link and start inviting!</div>';
+                    return;
+                }
+
+                let usersHtml = '';
+                let serial = 1;
+                snapshot.forEach(childSnap => {
+                    const user = childSnap.val() || {};
+                    const name = user.name || 'Telegram User';
+                    const uid = user.uid || childSnap.key || '';
+                    const date = user.joinedAt ? new Date(user.joinedAt).toLocaleDateString('en-US') : '—';
+
+                    usersHtml += `
+                        <div class="lb-item" style="padding: 8px 12px;">
+                            <div style="font-size: 11px; color: #94a3b8; width: 25px;">#${serial++}</div>
+                            <div style="flex: 1; min-width: 0; margin-right: 8px;">
+                                <div style="font-size: 12px; color: #f8fafc; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${name}</div>
+                                <div style="font-size: 10px; color: #60a5fa; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${uid}</div>
+                            </div>
+                            <div style="font-size: 10px; color: #94a3b8; margin-right: 8px; white-space: nowrap;">${date}</div>
+                            <div style="font-size: 12px; color: #34d399; font-weight: 900; white-space: nowrap;">+10,000 🪙</div>
+                        </div>
+                    `;
+                });
+                listContainer.innerHTML = usersHtml;
+            }).catch(err => {
+                console.error("Error loading referred users:", err);
+                listContainer.innerHTML = '<div style="text-align: center; color: #f43f5e; padding: 10px; font-size: 12px;">Failed to load friends list.</div>';
             });
         }
 
@@ -1215,9 +1582,15 @@
         }
 
         function fetchAdminSettings() {
-            db.ref('dailyComboSettings').once('value', snap => {
+            db.ref('dailyComboSettings').on('value', snap => {
                 const val = snap.val();
-                if (val && val.cards) { todaysCombo = val; }
+                if (val && Array.isArray(val.cards) && val.cards.length === 3) {
+                    todaysCombo = {
+                        ...val,
+                        cards: val.cards.map(id => String(id).replace(/\s+/g, '').toLowerCase())
+                    };
+                    renderDailyComboSlots();
+                }
             });
             db.ref('appSettings/customCoinImgUrl').once('value', snap => {
                 const imgUrl = snap.val();
@@ -1245,6 +1618,7 @@
             db.ref('mineCardImages').on('value', snap => {
                 window.customMineCardImages = snap.val() || {};
                 renderMineCards();
+                renderDailyComboSlots();
             });
         }
 
@@ -1391,9 +1765,9 @@
             if (pUid) pUid.innerText = gameState.uid;
 
             const refBox = document.getElementById('refLinkBox');
-            if (refBox) {
-                const baseUrl = window.location.href.split('?')[0];
-                refBox.value = baseUrl + '?ref=' + gameState.uid;
+            if (refBox && gameState.uid) {
+                const cleanBot = TELEGRAM_BOT_USERNAME.replace(/^@/, '').trim();
+                refBox.value = `https://t.me/${cleanBot}?start=ref_${gameState.uid}`;
             }
 
             if (loopsStarted) return;
@@ -1495,7 +1869,7 @@
             const tFriends = document.getElementById('totalFriendsCount');
             if (tFriends) tFriends.innerText = gameState.friends;
 
-            let completedTasksCount = Object.keys(gameState.tasks || {}).length;
+            let completedTasksCount = Object.keys(gameState.tasks || {}).length + Object.keys(gameState.claimedComboCodes || {}).length;
             const pTasksCount = document.getElementById('profileTasksCount');
             if (pTasksCount) pTasksCount.innerText = completedTasksCount + ' Items';
 
@@ -1606,10 +1980,21 @@
         function completeCardUpgrade(cardId, profitAdd, cardName) {
             gameState.cards[cardId].level += 1;
             gameState.pph += profitAdd;
+
+            const activeComboCards = (todaysCombo.cards || ['card5', 'card55', 'card140'])
+                .map(id => String(id).replace(/\s+/g, '').toLowerCase());
+            const isComboMatch = activeComboCards.includes(cardId.toLowerCase());
+
             renderMineCards();
+            renderDailyComboSlots();
             updateUI();
             saveGameDataInstant();
-            showToast(`✅ ${cardName} upgraded to Lvl ${gameState.cards[cardId].level}!`);
+
+            if (isComboMatch) {
+                showToast(`🎯 Combo Card Found: ${cardName}! Check top slots!`);
+            } else {
+                showToast(`✅ ${cardName} upgraded to Lvl ${gameState.cards[cardId].level}!`);
+            }
         }
 
         let comboVerifyPending = false;
@@ -1625,34 +2010,39 @@
             comboVerifyPending = true;
 
             const btn = document.getElementById('verifyComboBtn');
-            if (btn) btn.innerText = 'Loading Ad & Verifying...';
-
-            const adsterraLink = 'https://auctionr.org/4/03e62852e0047e5b9397cdccfc07f679';
-            window.open(adsterraLink, '_blank');
+            if (btn) btn.innerText = 'Verifying Combo...';
 
             setTimeout(() => {
-                let allCorrect = true;
-                const activeComboCards = todaysCombo.cards || ['card5', 'card55', 'card140'];
+                let matched = 0;
+                const activeComboCards = (todaysCombo.cards || ['card5', 'card55', 'card140'])
+                    .map(id => String(id).replace(/\s+/g, '').toLowerCase());
+
                 activeComboCards.forEach(cardId => {
-                    if (!gameState.cards[cardId] || gameState.cards[cardId].level < 1) {
-                        allCorrect = false;
+                    if (gameState.cards[cardId] && gameState.cards[cardId].level >= 1) {
+                        matched++;
                     }
                 });
 
                 comboVerifyPending = false;
-                if (btn) btn.innerText = 'Verify & Claim (+50k)';
 
-                if (allCorrect) {
+                if (matched === 3) {
                     const comboReward = 50000;
                     gameState.coins += comboReward;
                     gameState.lastComboDate = todayStr;
+                    renderDailyComboSlots();
                     updateUI();
                     saveGameDataInstant();
-                    showToast(`🎉 Correct! Daily Combo solved! +${comboReward.toLocaleString()} AR Coins added!`);
+                    showToast(`🎉 Verified! +${comboReward.toLocaleString()} AR Coins added! Opening ad...`);
+
+                    const adsterraLink = 'https://auctionr.org/4/03e62852e0047e5b9397cdccfc07f679';
+                    setTimeout(() => {
+                        window.open(adsterraLink, '_blank');
+                    }, 400);
                 } else {
-                    showToast('❌ Combo is incorrect or incomplete! Upgrade the 3 correct secret cards set by Admin first.');
+                    renderDailyComboSlots();
+                    showToast(`❌ Only ${matched}/3 combo cards unlocked! Upgrade the remaining secret cards first.`);
                 }
-            }, 5000);
+            }, 1200);
         }
 
         function useFullEnergy() {
@@ -1784,6 +2174,12 @@
 
                 if (tabName === 'leaderboard') {
                     fetchLeaderboard();
+                } else if (tabName === 'friends') {
+                    loadReferredUsersList();
+                } else if (tabName === 'mine') {
+                    renderDailyComboSlots();
+                } else if (tabName === 'earn') {
+                    renderComboCodeTasksUI();
                 }
             } catch (e) {
                 console.error("Tab switch error:", e);
