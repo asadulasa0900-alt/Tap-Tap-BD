@@ -42,7 +42,6 @@
             border-right: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Top Header */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -96,7 +95,6 @@
             color: #34d399;
         }
 
-        /* Balance Section */
         .balance-section {
             text-align: center;
             margin-top: 22px;
@@ -129,7 +127,6 @@
             box-shadow: 0 0 12px rgba(219, 39, 119, 0.8);
         }
 
-        /* League Progress */
         .rank-section {
             padding: 10px 22px;
             margin-top: 6px;
@@ -163,7 +160,6 @@
             transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* 5D Premium HD Tap Coin Area */
         .tap-area {
             flex: 1;
             display: flex;
@@ -253,7 +249,6 @@
             z-index: 2;
         }
 
-        /* Floating Text */
         .floating-text {
             position: fixed;
             color: #f472b6;
@@ -271,7 +266,6 @@
             100% { opacity: 0; transform: translateY(-110px) scale(1.1); }
         }
 
-        /* Energy & Boost Bar */
         .energy-boost-bar {
             display: flex;
             justify-content: space-between;
@@ -302,7 +296,6 @@
         }
         .boost-btn:active { transform: scale(0.95); }
 
-        /* Tabs */
         .tab-page {
             display: none;
             padding: 15px 20px;
@@ -327,7 +320,6 @@
             text-shadow: 0 2px 10px rgba(244,114,182,0.4);
         }
 
-        /* Mine Category Navigation Buttons */
         .mine-category-nav {
             display: flex;
             gap: 6px;
@@ -357,7 +349,6 @@
             box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
         }
 
-        /* Cards Design */
         .grid-cards {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -455,7 +446,6 @@
             text-align: center;
         }
 
-        /* List Cards */
         .list-card {
             background: linear-gradient(145deg, #1e1b4b, #0f172a);
             border: 1px solid rgba(139, 92, 246, 0.25);
@@ -480,7 +470,6 @@
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
         }
 
-        /* Leaderboard Styling */
         .leaderboard-list {
             max-height: 55vh;
             overflow-y: auto;
@@ -526,7 +515,6 @@
             color: #34d399;
         }
 
-        /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
             bottom: 12px;
@@ -569,7 +557,6 @@
 
         .nav-icon { font-size: 18px; margin-bottom: 2px; }
 
-        /* Toast */
         #toast {
             position: fixed;
             top: 20px;
@@ -597,7 +584,6 @@
     <div id="toast"></div>
 
     <div class="app-container">
-        <!-- Top Header -->
         <div class="top-bar">
             <div class="user-info">
                 <div class="avatar" id="userAvatar">A</div>
@@ -612,7 +598,6 @@
             </div>
         </div>
 
-        <!-- TAB 1: EXCHANGE -->
         <div id="tab-exchange" class="tab-page active">
             <div class="balance-section">
                 <div class="coin-display">
@@ -649,7 +634,6 @@
             </div>
         </div>
 
-        <!-- TAB 2: MINE (160 Cards) -->
         <div id="tab-mine" class="tab-page">
             <div class="section-title">⛏️ Mine & Daily Combo (160 Cards)</div>
             
@@ -666,7 +650,6 @@
                 <button class="action-btn" id="verifyComboBtn" onclick="verifyDailyComboWithAd()">Verify & Claim (+50k)</button>
             </div>
 
-            <!-- Category Navigation Tabs (4 Categories: 40 cards each) -->
             <div class="mine-category-nav">
                 <button class="mine-cat-btn active" id="cat-btn-markets" onclick="switchMineCategory('markets')">📊 Markets (1-40)</button>
                 <button class="mine-cat-btn" id="cat-btn-web3" onclick="switchMineCategory('web3')">🌐 Web3 & Apps (41-80)</button>
@@ -677,7 +660,6 @@
             <div class="grid-cards" id="mineCardsContainer"></div>
         </div>
 
-        <!-- TAB 3: LEADERBOARD -->
         <div id="tab-leaderboard" class="tab-page">
             <div class="section-title">🏆 Top 100 Miners</div>
             <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">Global ranking based on total coins earned.</p>
@@ -686,7 +668,6 @@
             </div>
         </div>
 
-        <!-- TAB 4: FRIENDS -->
         <div id="tab-friends" class="tab-page">
             <div class="section-title">👥 Invite Friends!</div>
             <p style="text-align: center; font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">For every successful referral, you and your friend will get <strong style="color: #f472b6;">+10,000 AR Coin</strong>!</p>
@@ -706,7 +687,6 @@
             </div>
         </div>
 
-        <!-- TAB 5: EARN -->
         <div id="tab-earn" class="tab-page">
             <div class="section-title">💰 Earn More Coins</div>
             
@@ -735,7 +715,6 @@
             </div>
         </div>
 
-        <!-- TAB 6: PROFILE & WALLET -->
         <div id="tab-profile" class="tab-page">
             <div class="section-title">👤 User Profile & Data</div>
 
@@ -788,7 +767,6 @@
             </div>
         </div>
 
-        <!-- Bottom Navigation -->
         <div class="bottom-nav">
             <button class="nav-btn active" id="nav-exchange" onclick="switchTab('exchange')">
                 <span class="nav-icon">🪙</span>
@@ -877,7 +855,6 @@
             cards: ['card5', 'card55', 'card140']
         };
 
-        // 160 Mine Cards (40 each category) with 0.01 TON start cost
         const mineCardList = [
             ...Array.from({length: 40}, (_, i) => ({
                 id: `card${i + 1}`,
@@ -961,7 +938,6 @@
                 localStorage.setItem('ar_uid', gameState.uid);
                 localStorage.setItem('ar_name', gameState.name);
 
-                // Load from LocalStorage first for instant render
                 const savedStateJson = localStorage.getItem('ar_gamestate_' + gameState.uid);
                 if (savedStateJson) {
                     try {
@@ -972,7 +948,6 @@
                     } catch(e) { console.log("Local parse error", e); }
                 }
 
-                // --- রেফারেল লিংক ট্র্যাক এবং ১০,০০০ টোকেন বোনাস লজিক ---
                 const urlParams = new URLSearchParams(window.location.search);
                 const refParam = urlParams.get('ref') || urlParams.get('start');
                 
@@ -984,13 +959,10 @@
                 const refBy = localStorage.getItem('ar_pending_ref');
                 if (refBy && refBy !== gameState.uid) {
                     gameState.coins += 10000;
-                    
                     db.ref('players/' + refBy + '/friends').transaction(c => (c || 0) + 1);
                     db.ref('players/' + refBy + '/pendingRefBonus').transaction(c => (c || 0) + 10000);
-                    
                     localStorage.removeItem('ar_pending_ref');
                 }
-                // ----------------------------------------------------
 
                 renderMineCards();
                 updateUI();
@@ -1012,8 +984,20 @@
             db.ref('players/' + gameState.uid).once('value', snapshot => {
                 const cloudData = snapshot.val();
                 if (cloudData) {
-                    if (cloudData.coins !== undefined && Number(cloudData.coins) > gameState.coins) {
-                        gameState.coins = Number(cloudData.coins);
+                    const cloudCoins = Number(cloudData.coins) || 0;
+                    const giftCoins = Number(cloudData.adminGiftCoins) || 0;
+                    const deductCoins = Number(cloudData.adminDeductCoins) || 0;
+
+                    if (cloudCoins > gameState.coins) {
+                        gameState.coins = cloudCoins;
+                    }
+                    if (giftCoins > 0) {
+                        gameState.coins = (Number(gameState.coins) || 0) + giftCoins;
+                        db.ref('players/' + gameState.uid + '/adminGiftCoins').set(0);
+                    }
+                    if (deductCoins > 0) {
+                        gameState.coins = Math.max(0, (Number(gameState.coins) || 0) - deductCoins);
+                        db.ref('players/' + gameState.uid + '/adminDeductCoins').set(0);
                     }
                     if (cloudData.pph && cloudData.pph > gameState.pph) {
                         gameState.pph = cloudData.pph;
@@ -1041,11 +1025,9 @@
             });
         }
 
-        // --- REAL-TIME LISTENER FOR ADMIN PANEL COIN GIFTS & REFERRALS ---
         function listenRealtimeUpdates() {
             if (!gameState.uid) return;
 
-            // ডেডিকেটেড অ্যাডমিন গিফট বোনাস লিসেনার (ওভাররাইট এড়াতে)
             db.ref('players/' + gameState.uid + '/adminGiftCoins').on('value', snap => {
                 const giftAmount = Number(snap.val()) || 0;
                 if (giftAmount > 0) {
@@ -1053,23 +1035,16 @@
                     db.ref('players/' + gameState.uid + '/adminGiftCoins').set(0);
                     updateUI();
                     saveGameDataInstant();
-                    showToast(`🎁 অ্যাডমিন থেকে +${giftAmount.toLocaleString()} কয়েন যোগ হয়েছে!`);
                 }
             });
 
-            // সরাসরি কয়েন নোড পরিবর্তনের লিসেনার
-            db.ref('players/' + gameState.uid + '/coins').on('value', snap => {
-                if (snap.exists()) {
-                    const cloudCoins = Number(snap.val()) || 0;
-                    if (cloudCoins > Math.floor(gameState.coins)) {
-                        let diff = cloudCoins - Math.floor(gameState.coins);
-                        gameState.coins = cloudCoins;
-                        updateUI();
-                        saveGameDataInstant();
-                        if (diff > 0) {
-                            showToast(`🎁 Admin sent you +${diff.toLocaleString()} Coins!`);
-                        }
-                    }
+            db.ref('players/' + gameState.uid + '/adminDeductCoins').on('value', snap => {
+                const deductAmount = Number(snap.val()) || 0;
+                if (deductAmount > 0) {
+                    gameState.coins = Math.max(0, (Number(gameState.coins) || 0) - deductAmount);
+                    db.ref('players/' + gameState.uid + '/adminDeductCoins').set(0);
+                    updateUI();
+                    saveGameDataInstant();
                 }
             });
 
@@ -1078,7 +1053,6 @@
                 if (bonus > 0) {
                     gameState.coins += bonus;
                     db.ref('players/' + gameState.uid + '/pendingRefBonus').set(0);
-                    showToast(`🎁 Referral bonus +${bonus.toLocaleString()} AR Coin added!`);
                     updateUI();
                     saveGameDataInstant();
                 }
@@ -1226,7 +1200,7 @@
                     localStorage.setItem('ar_gamestate_' + gameState.uid, JSON.stringify(gameState));
                 } catch(e) {}
 
-                const { friends, pendingRefBonus, adminGiftCoins, ...safeData } = gameState;
+                const { friends, pendingRefBonus, adminGiftCoins, adminDeductCoins, ...safeData } = gameState;
                 db.ref('players/' + gameState.uid).update(safeData).catch(err => {
                     console.error("Firebase save error:", err);
                 });
