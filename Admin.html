@@ -570,25 +570,42 @@
             const uid = document.getElementById('targetUidInput').value.trim();
             const amount = parseFloat(document.getElementById('targetAmountInput').value);
 
-            if (!uid || isNaN(amount)) {
-                showToast('⚠️ সঠিক UID এবং কয়েনের পরিমাণ লিখুন!');
+            if (!uid || isNaN(amount) || amount <= 0) {
+                showToast('⚠️ সঠিক UID এবং ধনাত্মক কয়েনের পরিমাণ লিখুন!');
                 return;
             }
 
-            db.ref('players/' + uid + '/coins').once('value', snap => {
+            db.ref('players/' + uid).once('value', snap => {
                 if (!snap.exists()) {
                     showToast('❌ এই UID এর কোনো ইউজার ডাটাবেজে পাওয়া যায়নি!');
                     return;
                 }
 
-                let currentCoins = snap.val() || 0;
-                let newCoins = action === 'add' ? currentCoins + amount : Math.max(0, currentCoins - amount);
+                const userData = snap.val() || {};
+                let currentCoins = Number(userData.coins) || 0;
 
-                db.ref('players/' + uid + '/coins').set(newCoins).then(() => {
-                    showToast(`✅ ইউজারের কয়েন সফলভাবে ${action === 'add' ? 'যোগ করা হয়েছে' : 'কেটে নেওয়া হয়েছে'}!`);
-                    document.getElementById('targetUidInput').value = '';
-                    document.getElementById('targetAmountInput').value = '';
-                });
+                if (action === 'add') {
+                    let newCoins = currentCoins + amount;
+                    Promise.all([
+                        db.ref('players/' + uid + '/coins').set(newCoins),
+                        db.ref('players/' + uid + '/adminGiftCoins').transaction(curr => (Number(curr) || 0) + amount)
+                    ]).then(() => {
+                        showToast(`✅ ইউজারের কয়েন সফলভাবে যোগ করা হয়েছে (+${amount.toLocaleString()})!`);
+                        document.getElementById('targetUidInput').value = '';
+                        document.getElementById('targetAmountInput').value = '';
+                    });
+                } else {
+                    let newCoins = Math.max(0, currentCoins - amount);
+                    let actualDeducted = Math.min(currentCoins, amount);
+                    Promise.all([
+                        db.ref('players/' + uid + '/coins').set(newCoins),
+                        db.ref('players/' + uid + '/adminDeductCoins').transaction(curr => (Number(curr) || 0) + actualDeducted)
+                    ]).then(() => {
+                        showToast(`✅ ইউজারের কয়েন সফলভাবে কেটে নেওয়া হয়েছে (-${actualDeducted.toLocaleString()})!`);
+                        document.getElementById('targetUidInput').value = '';
+                        document.getElementById('targetAmountInput').value = '';
+                    });
+                }
             });
         }
     </script>
