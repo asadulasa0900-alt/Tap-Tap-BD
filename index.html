@@ -983,10 +983,8 @@
 
                 const refBy = localStorage.getItem('ar_pending_ref');
                 if (refBy && refBy !== gameState.uid) {
-                    // নতুন ইউজারকে ১০,০০০ টোকেন বোনাস দেওয়া
                     gameState.coins += 10000;
                     
-                    // ইনভাইটকারীর ফায়ারবেস অ্যাকাউন্টে ১০,০০০ কয়েন ও রেফার কাউন্ট যোগ করা
                     db.ref('players/' + refBy + '/friends').transaction(c => (c || 0) + 1);
                     db.ref('players/' + refBy + '/pendingRefBonus').transaction(c => (c || 0) + 10000);
                     
@@ -997,7 +995,6 @@
                 renderMineCards();
                 updateUI();
 
-                // Load Cloud Data & Listen for Real-time Admin/Referral Bonuses
                 loadCloudGameData(() => {
                     initGameLoops();
                     listenRealtimeUpdates();
@@ -1048,11 +1045,24 @@
         function listenRealtimeUpdates() {
             if (!gameState.uid) return;
 
+            // ডেডিকেটেড অ্যাডমিন গিফট বোনাস লিসেনার (ওভাররাইট এড়াতে)
+            db.ref('players/' + gameState.uid + '/adminGiftCoins').on('value', snap => {
+                const giftAmount = Number(snap.val()) || 0;
+                if (giftAmount > 0) {
+                    gameState.coins = (Number(gameState.coins) || 0) + giftAmount;
+                    db.ref('players/' + gameState.uid + '/adminGiftCoins').set(0);
+                    updateUI();
+                    saveGameDataInstant();
+                    showToast(`🎁 অ্যাডমিন থেকে +${giftAmount.toLocaleString()} কয়েন যোগ হয়েছে!`);
+                }
+            });
+
+            // সরাসরি কয়েন নোড পরিবর্তনের লিসেনার
             db.ref('players/' + gameState.uid + '/coins').on('value', snap => {
                 if (snap.exists()) {
                     const cloudCoins = Number(snap.val()) || 0;
-                    if (cloudCoins !== gameState.coins) {
-                        let diff = cloudCoins - gameState.coins;
+                    if (cloudCoins > Math.floor(gameState.coins)) {
+                        let diff = cloudCoins - Math.floor(gameState.coins);
                         gameState.coins = cloudCoins;
                         updateUI();
                         saveGameDataInstant();
@@ -1216,8 +1226,8 @@
                     localStorage.setItem('ar_gamestate_' + gameState.uid, JSON.stringify(gameState));
                 } catch(e) {}
 
-                const { friends, pendingRefBonus, ...safeData } = gameState;
-                db.ref('players/' + gameState.uid).set(safeData).catch(err => {
+                const { friends, pendingRefBonus, adminGiftCoins, ...safeData } = gameState;
+                db.ref('players/' + gameState.uid).update(safeData).catch(err => {
                     console.error("Firebase save error:", err);
                 });
             }
