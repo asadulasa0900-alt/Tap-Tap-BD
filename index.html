@@ -615,7 +615,7 @@
             <div class="rank-section">
                 <div class="rank-info">
                     <span id="currentLeagueName">Bronze ></span>
-                    <span>Level <span id="leagueLevel">1</span>/10</span>
+                    <span>Level <span id="leagueLevel">1</span>/100</span>
                 </div>
                 <div class="progress-bg">
                     <div class="progress-fill" id="leagueProgress"></div>
@@ -910,6 +910,60 @@
 
         let currentMineCategory = 'markets';
 
+        // ১০০ লেভেলের জন্য ধীর ও উচ্চ চাহিদাসম্পন্ন লেভেল আপ সিস্টেম
+        const MAX_GAME_LEVEL = 100;
+        const levelThresholds = Array.from({ length: MAX_GAME_LEVEL }, (_, idx) => {
+            if (idx === 0) return 0;
+            const step = idx - 1;
+            const raw = 50000 * Math.pow(1.165, step);
+            return Math.round(raw / 1000) * 1000;
+        });
+
+        function getLeagueTitleForLevel(lvl) {
+            if (lvl >= 91) return "Mythic Sovereign";
+            if (lvl >= 81) return "Immortal Legend";
+            if (lvl >= 71) return "Grandmaster";
+            if (lvl >= 61) return "Master";
+            if (lvl >= 51) return "Diamond";
+            if (lvl >= 41) return "Emerald";
+            if (lvl >= 31) return "Platinum";
+            if (lvl >= 21) return "Gold";
+            if (lvl >= 11) return "Silver";
+            return "Bronze";
+        }
+
+        function getLevelProgressData(totalCoins) {
+            const coins = Math.max(0, Number(totalCoins) || 0);
+            let currentLvl = 1;
+
+            for (let i = 1; i < MAX_GAME_LEVEL; i++) {
+                if (coins >= levelThresholds[i]) {
+                    currentLvl = i + 1;
+                } else {
+                    break;
+                }
+            }
+
+            if (currentLvl >= MAX_GAME_LEVEL) {
+                return {
+                    level: MAX_GAME_LEVEL,
+                    league: getLeagueTitleForLevel(MAX_GAME_LEVEL),
+                    progressPct: 100
+                };
+            }
+
+            const prevReq = levelThresholds[currentLvl - 1] || 0;
+            const nextReq = levelThresholds[currentLvl] || (prevReq + 250000);
+            const span = Math.max(1, nextReq - prevReq);
+            const pct = Math.min(100, Math.max(3, ((coins - prevReq) / span) * 100));
+
+            return {
+                level: currentLvl,
+                league: getLeagueTitleForLevel(currentLvl),
+                progressPct: pct
+            };
+        }
+
         function switchMineCategory(cat) {
             currentMineCategory = cat;
             document.querySelectorAll('.mine-cat-btn').forEach(btn => btn.classList.remove('active'));
@@ -1174,6 +1228,24 @@
                     }
                 }
             });
+            db.ref('appSettings/mineTabImageUrl').on('value', snap => {
+                const tabImgUrl = snap.val();
+                const mineTab = document.getElementById('tab-mine');
+                if (tabImgUrl && mineTab) {
+                    let banner = document.getElementById('customMineTabBanner');
+                    if (!banner) {
+                        banner = document.createElement('img');
+                        banner.id = 'customMineTabBanner';
+                        banner.style.cssText = 'width:100%; max-height:140px; object-fit:cover; border-radius:14px; margin-bottom:12px; border:1px solid rgba(244,114,182,0.5);';
+                        mineTab.insertBefore(banner, mineTab.firstChild.nextSibling);
+                    }
+                    banner.src = tabImgUrl;
+                }
+            });
+            db.ref('mineCardImages').on('value', snap => {
+                window.customMineCardImages = snap.val() || {};
+                renderMineCards();
+            });
         }
 
         function checkAndResetDailyAdLimits() {
@@ -1436,25 +1508,19 @@
                 if (c2) c2.innerText = Math.max(0, ad2Rem);
             }
 
-            let league = "Bronze", lvl = 1, nextGoal = 5000;
-            if (wholeCoins >= 1000000) { league = "Grandmaster"; lvl = 10; nextGoal = 10000000; }
-            else if (wholeCoins >= 500000) { league = "Master"; lvl = 8; nextGoal = 1000000; }
-            else if (wholeCoins >= 100000) { league = "Diamond"; lvl = 6; nextGoal = 500000; }
-            else if (wholeCoins >= 25000) { league = "Platinum"; lvl = 4; nextGoal = 100000; }
-            else if (wholeCoins >= 5000) { league = "Silver"; lvl = 2; nextGoal = 25000; }
+            const levelInfo = getLevelProgressData(wholeCoins);
 
             const cLeagueName = document.getElementById('currentLeagueName');
-            if (cLeagueName) cLeagueName.innerText = league + " >";
+            if (cLeagueName) cLeagueName.innerText = levelInfo.league + " >";
 
             const uRankBadge = document.getElementById('userRankBadge');
-            if (uRankBadge) uRankBadge.innerText = league + " League";
+            if (uRankBadge) uRankBadge.innerText = levelInfo.league + " League";
 
             const leagueLevel = document.getElementById('leagueLevel');
-            if (leagueLevel) leagueLevel.innerText = lvl;
+            if (leagueLevel) leagueLevel.innerText = levelInfo.level;
 
-            let pct = Math.min(100, (wholeCoins / nextGoal) * 100);
             const lProg = document.getElementById('leagueProgress');
-            if (lProg) lProg.style.width = Math.max(5, pct) + '%';
+            if (lProg) lProg.style.width = levelInfo.progressPct.toFixed(1) + '%';
         }
 
         function calculateCardCost(baseCost, level) {
@@ -1487,12 +1553,17 @@
                 const nextTonCost = Math.min(12.0, parseFloat((item.tonCost * Math.pow(1.12, cardData.level)).toFixed(2)));
                 const nextProfit = calculateCardProfit(item.baseProfit, cardData.level);
 
+                const customCardImg = window.customMineCardImages && window.customMineCardImages[item.id];
+                const cardIconHtml = customCardImg
+                    ? `<img src="${customCardImg}" style="width:34px; height:34px; object-fit:cover; border-radius:8px;">`
+                    : item.icon;
+
                 const div = document.createElement('div');
                 div.className = 'upgrade-card';
                 
                 div.innerHTML = `
                     <div class="card-header">
-                        <div class="card-icon">${item.icon}</div>
+                        <div class="card-icon">${cardIconHtml}</div>
                         <div>
                             <div class="card-title">${item.name}</div>
                             <div class="card-profit">+${formatNumber(nextProfit)}/hr</div>
